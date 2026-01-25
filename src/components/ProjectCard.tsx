@@ -15,11 +15,11 @@ const bgColors = [
 ];
 
 const CATEGORIES = [
-    { id: 'ui_score', label: 'UI Design' },
-    { id: 'ux_score', label: 'UX / Value' },
-    { id: 'stability_score', label: 'Stability' },
-    { id: 'innovation_score', label: 'Innovation' },
-    { id: 'doc_score', label: 'Docs' },
+    { id: 'ui_score', label: 'Visual Appeal & Aesthetics' },
+    { id: 'ux_score', label: 'Usability & User Flow' },
+    { id: 'stability_score', label: 'Performance & Reliability' },
+    { id: 'innovation_score', label: 'Originality & Innovation' },
+    { id: 'doc_score', label: 'Documentation & Clarity' },
 ];
 
 const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
@@ -106,11 +106,6 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                         <div className="absolute top-2 right-2 px-2 py-1 bg-background border-2 border-foreground text-xs font-bold uppercase z-10">
                             {project.country === 'TR' ? '🇹🇷 Turkey' : '🌍 Global'}
                         </div>
-
-                        {/* Flip Hint */}
-                        <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/50 text-white text-xs font-bold rounded flex items-center gap-1 backdrop-blur-sm">
-                            <RotateCw className="w-3 h-3" /> Tap to Vote
-                        </div>
                     </div>
 
                     {/* Content Section */}
@@ -158,6 +153,11 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                             )}
                         </div>
                     </div>
+
+                    {/* Flip Hint - Moved to Card Bottom Right */}
+                    <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/50 text-white text-xs font-bold rounded flex items-center gap-1 backdrop-blur-sm z-20">
+                        <RotateCw className="w-3 h-3" /> Tap to Vote
+                    </div>
                 </div>
 
                 {/* BACK FACE (Voting) */}
@@ -170,7 +170,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                     <div className="p-4 flex-1 overflow-y-auto no-scrollbar space-y-4">
                         {/* Presets */}
                         <div className="flex gap-2 justify-center pb-2 border-b-2 border-muted">
-                            {[8, 9, 10].map(val => (
+                            {[1, 5, 10].map(val => (
                                 <button
                                     key={val}
                                     onClick={(e) => handlePreset(val, e)}

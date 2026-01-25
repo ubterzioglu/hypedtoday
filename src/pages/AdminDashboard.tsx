@@ -128,6 +128,9 @@ const AdminDashboard = () => {
                             </button>
                         </div>
 
+                        <BrutalButton onClick={() => window.open('/', '_blank')} variant="secondary" size="sm">
+                            <span className="font-bold">Home</span>
+                        </BrutalButton>
                         <BrutalButton onClick={handleLogout} variant="tertiary" size="sm">
                             <LogOut className="w-4 h-4 mr-2" /> Logout
                         </BrutalButton>
@@ -222,7 +225,7 @@ const AdminDashboard = () => {
                                                     onClick={() => handleDeleteFeedback(item.id)}
                                                     variant="primary"
                                                     size="sm"
-                                                    className="bg-destructive hover:bg-destructive/90 text-white"
+                                                    className="bg-red-600 text-white border-2 border-white hover:bg-red-700 font-bold"
                                                 >
                                                     <Trash2 className="w-4 h-4 mr-2" /> Delete
                                                 </BrutalButton>

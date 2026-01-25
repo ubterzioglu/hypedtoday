@@ -4,6 +4,7 @@ import { Rocket, Compass, Vote, Trophy, HelpCircle, Mail } from "lucide-react";
 import HeroBackground, { type BackgroundType } from "./HeroBackground";
 import heroBg from "@/assets/hero-bg.jpg";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 // =====================================================
 // ARKA PLAN AYARLARI - Buradan kolayca değiştir!
@@ -79,7 +80,7 @@ const HeroSection = () => {
         {/* Main Heading - Vibecoding Community */}
         <motion.h1
           variants={itemVariants}
-          className="font-display text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight mb-4"
+          className="font-display text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-4"
         >
           <span className="text-foreground">Vibecoding Community</span>
         </motion.h1>
@@ -161,16 +162,15 @@ const HeroSection = () => {
           </motion.div>
 
           <motion.div variants={buttonVariants} className="col-span-2 md:col-span-1">
-            <Link to="/contact">
-              <BrutalButton
-                variant="secondary"
-                size="lg"
-                className="w-full flex-col h-auto py-4 gap-1"
-              >
-                <Mail className="w-6 h-6" />
-                <span className="text-xs md:text-sm">Contact</span>
-              </BrutalButton>
-            </Link>
+            <BrutalButton
+              variant="secondary"
+              size="lg"
+              className="w-full flex-col h-auto py-4 gap-1"
+              onClick={() => toast.info("Coming soon!")}
+            >
+              <Mail className="w-6 h-6" />
+              <span className="text-xs md:text-sm">Contact</span>
+            </BrutalButton>
           </motion.div>
         </motion.div>
 
