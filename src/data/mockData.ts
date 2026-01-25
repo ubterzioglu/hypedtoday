@@ -151,3 +151,36 @@ export async function submitVote(vote: Vote): Promise<void> {
         throw error;
     }
 }
+
+// Leaderboard Entry Interface
+export interface LeaderboardEntry {
+    project_id: string;
+    name: string;
+    country: 'TR' | 'OTHER';
+    image_url?: string;
+    motto?: string;
+    vote_count: number;
+    avg_ui: number;
+    avg_ux: number;
+    avg_stability: number;
+    avg_innovation: number;
+    avg_doc: number;
+    total_score: number;
+}
+
+/**
+ * Fetch leaderboard data
+ */
+export async function getLeaderboard(): Promise<LeaderboardEntry[]> {
+    const { data, error } = await supabase
+        .from('project_stats')
+        .select('*')
+        .order('total_score', { ascending: false }); // Sort by highest score
+
+    if (error) {
+        console.error('Error fetching leaderboard:', error);
+        return [];
+    }
+
+    return data || [];
+}

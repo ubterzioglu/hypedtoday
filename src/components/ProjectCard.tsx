@@ -108,7 +108,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                         </div>
 
                         {/* Flip Hint */}
-                        <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/50 text-white text-xs font-bold rounded flex items-center gap-1 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/50 text-white text-xs font-bold rounded flex items-center gap-1 backdrop-blur-sm">
                             <RotateCw className="w-3 h-3" /> Tap to Vote
                         </div>
                     </div>

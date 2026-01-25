@@ -6,6 +6,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Showroom from "./pages/Showroom";
 import AddProject from "./pages/AddProject";
+import Leaderboard from "./pages/Leaderboard";
 import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -20,6 +21,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/showroom" element={<Showroom />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/add-project" element={<AddProject />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={
