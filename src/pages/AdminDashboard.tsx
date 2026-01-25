@@ -171,7 +171,7 @@ const AdminDashboard = () => {
                                                     />
                                                     <div className="flex gap-4">
                                                         <label className="flex items-center gap-2 font-bold cursor-pointer">
-                                                            <input type="radio" checked={editForm.country === "TR"} onChange={() => setEditForm({ ...editForm, country: "TR" })} /> 🇹🇷 Turkey
+                                                            <input type="radio" checked={editForm.country === "TR"} onChange={() => setEditForm({ ...editForm, country: "TR" })} /> 🔴 Turkey
                                                         </label>
                                                         <label className="flex items-center gap-2 font-bold cursor-pointer">
                                                             <input type="radio" checked={editForm.country === "OTHER"} onChange={() => setEditForm({ ...editForm, country: "OTHER" })} /> 🌍 Other
@@ -187,7 +187,7 @@ const AdminDashboard = () => {
                                                     <div>
                                                         <h3 className="text-xl font-black">{project.name}</h3>
                                                         <p className="text-sm font-bold text-muted-foreground flex items-center gap-2">
-                                                            {project.country === "TR" ? "🇹🇷 Turkey" : "🌍 Global"}
+                                                            {project.country === "TR" ? "🔴 Turkey" : "🌍 Global"}
                                                             <span className="text-xs font-normal opacity-50">ID: {project.id.slice(0, 8)}</span>
                                                         </p>
                                                     </div>

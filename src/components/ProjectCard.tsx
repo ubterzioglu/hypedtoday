@@ -104,7 +104,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
 
                         {/* Country Badge */}
                         <div className="absolute top-2 right-2 px-2 py-1 bg-background border-2 border-foreground text-xs font-bold uppercase z-10">
-                            {project.country === 'TR' ? '🇹🇷 Turkey' : '🌍 Global'}
+                            {project.country === 'TR' ? '🔴 Turkey' : '🌍 Global'}
                         </div>
                     </div>
 
@@ -189,15 +189,15 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                                         <span className="text-xs font-black uppercase text-muted-foreground">{cat.label}</span>
                                         <span className="text-xs font-bold text-primary">{scores[cat.id] || '-'}</span>
                                     </div>
-                                    <div className="grid grid-cols-5 gap-1">
+                                    <div className="grid grid-cols-10 gap-0.5">
                                         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
                                             <button
                                                 key={num}
                                                 onClick={(e) => handleScore(cat.id, num, e)}
                                                 className={`
-                                                    h-8 text-xs font-bold border-2 border-foreground transition-all
+                                                    h-6 text-[10px] font-bold border border-foreground transition-all
                                                     ${scores[cat.id] === num
-                                                        ? 'bg-primary text-primary-foreground transform scale-110 z-10'
+                                                        ? 'bg-primary text-primary-foreground transform scale-110 z-10 border-2'
                                                         : 'bg-background hover:bg-muted text-muted-foreground'
                                                     }
                                                 `}
