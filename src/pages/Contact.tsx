@@ -49,8 +49,8 @@ const Contact = () => {
                     Contact Us
                 </h1>
 
-                {/* Social Grid */}
-                <div className="grid grid-cols-3 gap-4 md:gap-8 mb-16">
+                {/* Social Grid - Resized */}
+                <div className="grid grid-cols-6 gap-2 md:gap-4 mb-8 justify-center max-w-lg mx-auto">
                     {SOCIAL_LINKS.map((link, i) => (
                         <a
                             key={i}
@@ -58,13 +58,13 @@ const Contact = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                             className={`
-                                aspect-square flex items-center justify-center rounded-full border-4 border-foreground 
-                                hover:scale-105 transition-transform shadow-brutal hover:shadow-brutal-lg
+                                aspect-square w-12 h-12 md:w-14 md:h-14 flex items-center justify-center rounded-full border-2 border-foreground 
+                                hover:scale-105 transition-transform shadow-brutal hover:shadow-brutal-sm mx-auto
                                 ${link.color} text-white
                             `}
                             title={link.label}
                         >
-                            <link.icon className="w-8 h-8 md:w-12 md:h-12" />
+                            <link.icon className="w-5 h-5 md:w-6 md:h-6" />
                         </a>
                     ))}
                 </div>
