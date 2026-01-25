@@ -80,9 +80,9 @@ const HeroSection = () => {
         {/* Main Heading - Vibecoding Community */}
         <motion.h1
           variants={itemVariants}
-          className="font-display text-4xl md:text-6xl lg:text-7xl font-extrabold leading-tight mb-4"
+          className="font-display text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 lowercase"
         >
-          <span className="text-foreground">Vibecoding Community</span>
+          <span className="text-foreground">vibecoding community</span>
         </motion.h1>
 
         {/* Tagline */}

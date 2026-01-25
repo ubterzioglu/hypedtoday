@@ -33,11 +33,6 @@ const Leaderboard = () => {
                 {/* Header */}
                 <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div>
-                        <Link to="/">
-                            <BrutalButton variant="secondary" size="sm" className="mb-4">
-                                <ArrowLeft className="w-4 h-4 mr-2" /> Back
-                            </BrutalButton>
-                        </Link>
                         <h1 className="text-5xl md:text-7xl font-display font-black uppercase text-primary drop-shadow-lg flex items-center gap-4">
                             <Trophy className="w-12 h-12 md:w-20 md:h-20" />
                             Leaderboard
@@ -46,6 +41,13 @@ const Leaderboard = () => {
                             Top vibe creators ranked by valid community votes.
                         </p>
                     </div>
+
+                    <Link to="/">
+                        <BrutalButton variant="secondary" size="lg">
+                            <ArrowLeft className="w-5 h-5 mr-2" />
+                            Back
+                        </BrutalButton>
+                    </Link>
                 </div>
 
                 {/* List */}

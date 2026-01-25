@@ -60,32 +60,31 @@ const Showroom = () => {
 
             {/* Filter Tabs */}
             <div className="border-b-4 border-foreground bg-card">
-                <div className="container mx-auto px-4 py-4">
-                    <div className="flex gap-3 justify-center">
-                        <BrutalButton
-                            variant={filter === 'ALL' ? 'accent' : 'primary'}
-                            size="default"
-                            onClick={() => setFilter('ALL')}
-                            className="min-w-[120px]"
-                        >
-                            🌍 All Projects
-                        </BrutalButton>
-                        <BrutalButton
-                            variant={filter === 'TR' ? 'accent' : 'secondary'}
-                            size="default"
-                            onClick={() => setFilter('TR')}
-                            className="min-w-[120px]"
-                        >
-                            🇹🇷 Turkey
-                        </BrutalButton>
-                        <BrutalButton
-                            variant={filter === 'OTHER' ? 'accent' : 'tertiary'}
-                            size="default"
-                            onClick={() => setFilter('OTHER')}
-                            className="min-w-[120px]"
-                        >
-                            🌐 Other Countries
-                        </BrutalButton>
+                <div className="container mx-auto px-4 py-6">
+                    <div className="flex justify-center">
+                        <div className="inline-flex bg-muted p-1 border-2 border-foreground rounded-lg overflow-hidden flex-wrap justify-center gap-1 w-full md:w-auto">
+                            <button
+                                onClick={() => setFilter('ALL')}
+                                className={`flex-1 md:flex-none px-2 md:px-6 py-2 rounded-md font-bold text-[10px] md:text-sm transition-all border border-transparent whitespace-nowrap ${filter === 'ALL' ? 'bg-primary text-secondary-foreground border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' : 'hover:bg-background/50 text-muted-foreground'
+                                    }`}
+                            >
+                                🌍 ALL
+                            </button>
+                            <button
+                                onClick={() => setFilter('TR')}
+                                className={`flex-1 md:flex-none px-2 md:px-6 py-2 rounded-md font-bold text-[10px] md:text-sm transition-all border border-transparent whitespace-nowrap ${filter === 'TR' ? 'bg-[#ff4d4d] text-white border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' : 'hover:bg-background/50 text-muted-foreground'
+                                    }`}
+                            >
+                                🔴 TURKEY
+                            </button>
+                            <button
+                                onClick={() => setFilter('OTHER')}
+                                className={`flex-1 md:flex-none px-2 md:px-6 py-2 rounded-md font-bold text-[10px] md:text-sm transition-all border border-transparent whitespace-nowrap ${filter === 'OTHER' ? 'bg-[#00f3ff] text-black border-foreground shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]' : 'hover:bg-background/50 text-muted-foreground'
+                                    }`}
+                            >
+                                🌐 GLOBAL
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
