@@ -170,7 +170,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                     <div className="p-4 flex-1 overflow-y-auto no-scrollbar space-y-4">
                         {/* Presets */}
                         <div className="flex gap-2 justify-center pb-2 border-b-2 border-muted">
-                            {[1, 5, 10].map(val => (
+                            {[1, 4, 7].map(val => (
                                 <button
                                     key={val}
                                     onClick={(e) => handlePreset(val, e)}
@@ -189,8 +189,8 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                                         <span className="text-xs font-black uppercase text-muted-foreground">{cat.label}</span>
                                         <span className="text-xs font-bold text-primary">{scores[cat.id] || '-'}</span>
                                     </div>
-                                    <div className="grid grid-cols-10 gap-0.5">
-                                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
+                                    <div className="grid grid-cols-7 gap-0.5">
+                                        {[1, 2, 3, 4, 5, 6, 7].map(num => (
                                             <button
                                                 key={num}
                                                 onClick={(e) => handleScore(cat.id, num, e)}
