@@ -142,4 +142,31 @@
     transform: translate(-4px, -4px);
     box-shadow: var(--shadow-brutal-lg);
   }
+
+  /* 3D Transform Utilities for Flip Card */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+
+  /* Hide scrollbar for cleaner card UI */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
