@@ -83,10 +83,11 @@ const AdminDashboard = () => {
         if (!confirm(`Delete project "${name}"?`)) return;
         try {
             await deleteProject(id);
+            setProjects(prev => prev.filter(p => p.id !== id)); // Optimistic update
             toast.success("Project deleted");
-            loadProjects();
         } catch (err) {
             toast.error("Failed to delete");
+            loadProjects(); // Revert on failure
         }
     };
 
@@ -193,7 +194,7 @@ const AdminDashboard = () => {
                                                     </div>
                                                     <div className="flex gap-2">
                                                         <button onClick={() => startEdit(project)} className="p-2 border-2 border-foreground hover:bg-muted transition-colors"><Edit2 className="w-5 h-5" /></button>
-                                                        <button onClick={() => handleDeleteProject(project.id, project.name)} className="p-2 border-2 border-foreground bg-red-100 hover:bg-destructive hover:text-white transition-colors"><Trash2 className="w-5 h-5" /></button>
+                                                        <button onClick={() => handleDeleteProject(project.id, project.name)} className="p-2 border-2 border-white bg-red-600 text-white hover:bg-red-700 transition-colors font-bold"><Trash2 className="w-5 h-5" /></button>
                                                     </div>
                                                 </>
                                             )}
