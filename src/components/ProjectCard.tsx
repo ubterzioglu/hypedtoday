@@ -92,7 +92,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                             <img
                                 src={project.image_url}
                                 alt={project.name}
-                                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                className="w-full h-full object-cover"
                             />
                         ) : (
                             <div className={`w-full h-full ${bgColors[index % bgColors.length]} flex items-center justify-center`}>
@@ -109,20 +109,20 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                     </div>
 
                     {/* Content Section */}
-                    <div className="p-6 flex-1 flex flex-col">
+                    <div className="p-4 flex-1 flex flex-col">
                         <div className="mb-2">
-                            <h3 className="text-2xl font-bold text-foreground leading-tight mb-1 truncate">
+                            <h3 className="text-xl font-bold text-foreground leading-tight mb-0.5 truncate">
                                 {project.name}
                             </h3>
                             {project.motto && (
-                                <p className="text-sm font-bold text-secondary uppercase tracking-tight truncate">
+                                <p className="text-[11px] font-bold text-secondary uppercase tracking-tight truncate">
                                     {project.motto}
                                 </p>
                             )}
                         </div>
 
                         {project.description && (
-                            <p className="text-muted-foreground text-sm mb-4 line-clamp-3 leading-relaxed flex-1">
+                            <p className="text-muted-foreground text-xs mb-3 line-clamp-3 leading-relaxed flex-1">
                                 {project.description}
                             </p>
                         )}
