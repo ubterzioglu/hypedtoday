@@ -158,30 +158,35 @@ const ProjectSubmissionForm = () => {
                     <label className="block text-sm font-bold mb-2 uppercase flex items-center gap-2">
                         <Upload className="w-4 h-4" /> Project Image
                     </label>
-                    <div className="border-4 border-dashed border-foreground/30 p-8 text-center hover:bg-muted/30 transition-colors relative cursor-pointer group bg-card">
+                    <div className="bg-card border-4 border-foreground p-4">
                         <input
                             type="file"
                             accept="image/*"
                             onChange={handleImageChange}
-                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                            className="w-full text-sm font-medium file:mr-4 file:py-2 file:px-4 file:border-2 file:border-foreground file:text-sm file:font-bold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90 file:cursor-pointer cursor-pointer"
                         />
+                        <p className="text-xs text-muted-foreground mt-2 font-bold">
+                            Recommended: 16:9 ratio (e.g., 1280x720). Max 5MB.
+                        </p>
 
-                        {imagePreview ? (
-                            <div className="relative">
+                        {imagePreview && (
+                            <div className="mt-4 relative group w-fit">
                                 <img
                                     src={imagePreview}
                                     alt="Preview"
-                                    className="h-48 w-full object-cover border-2 border-foreground mx-auto shadow-brutal"
+                                    className="h-32 w-auto object-cover border-2 border-foreground shadow-brutal"
                                 />
-                                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 text-white font-bold">
-                                    Change Image
-                                </div>
-                            </div>
-                        ) : (
-                            <div className="py-4">
-                                <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                                <p className="font-bold text-lg">Drop image here</p>
-                                <p className="text-sm text-muted-foreground mt-2">Max 5MB • JPG, PNG</p>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setValue("imageFile", undefined);
+                                        setImagePreview(null);
+                                    }}
+                                    className="absolute -top-2 -right-2 bg-destructive text-white border-2 border-foreground p-1 hover:scale-110 transition-transform"
+                                >
+                                    <span className="sr-only">Remove</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
+                                </button>
                             </div>
                         )}
                     </div>
