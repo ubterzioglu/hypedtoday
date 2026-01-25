@@ -1,8 +1,9 @@
 import { motion, type Variants } from "framer-motion";
 import { BrutalButton } from "@/components/ui/brutal-button";
-import { Rocket, Compass, Vote, Trophy, HelpCircle } from "lucide-react";
+import { Rocket, Compass, Vote, Trophy, HelpCircle, Mail } from "lucide-react";
 import HeroBackground, { type BackgroundType } from "./HeroBackground";
 import heroBg from "@/assets/hero-bg.jpg";
+import { Link } from "react-router-dom";
 
 // =====================================================
 // ARKA PLAN AYARLARI - Buradan kolayca değiştir!
@@ -10,13 +11,13 @@ import heroBg from "@/assets/hero-bg.jpg";
 const BACKGROUND_CONFIG = {
   // "video" | "image" | "animation" seçeneklerinden birini seç
   type: "image" as BackgroundType,
-  
+
   // Görsel kullanmak için:
   imageSrc: heroBg,
-  
+
   // Video kullanmak için (type: "video" yap ve video URL'si ekle):
   // videoSrc: "/videos/hero-video.mp4",
-  
+
   // Overlay karanlık seviyesi (0-1 arası, 1 = tamamen karanlık)
   overlayOpacity: 0.6,
 };
@@ -59,7 +60,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 py-20">
+    <section className="relative min-h-screen flex items-start justify-center overflow-hidden px-4 pt-12 pb-16">
       {/* Dinamik Arka Plan */}
       <HeroBackground
         type={BACKGROUND_CONFIG.type}
@@ -67,44 +68,28 @@ const HeroSection = () => {
         videoSrc={undefined}
         overlayOpacity={BACKGROUND_CONFIG.overlayOpacity}
       />
-      
+
       <motion.div
         className="relative z-10 max-w-5xl mx-auto text-center"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        {/* Badge */}
-        <motion.div
-          variants={itemVariants}
-          className="inline-block mb-8"
-        >
-          <span className="inline-flex items-center gap-2 px-4 py-2 bg-muted/80 backdrop-blur-sm border-2 border-foreground text-sm font-bold uppercase tracking-widest">
-            <span className="w-2 h-2 bg-primary animate-pulse" />
-            Beta'da Canlı
-          </span>
-        </motion.div>
 
-        {/* Main Heading */}
+        {/* Main Heading - Vibecoding Community */}
         <motion.h1
           variants={itemVariants}
-          className="font-display text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight mb-6"
+          className="font-display text-5xl md:text-7xl lg:text-8xl font-extrabold leading-tight mb-4"
         >
-          <span className="text-foreground">Projeni Paylaş,</span>
-          <br />
-          <span className="text-gradient-hero">Oylamayı Kazan</span>
+          <span className="text-foreground">Vibecoding Community</span>
         </motion.h1>
 
-        {/* Subheading */}
+        {/* Tagline */}
         <motion.p
           variants={itemVariants}
-          className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed"
+          className="text-xl md:text-2xl font-semibold text-muted-foreground tracking-wide mb-12"
         >
-          En yaratıcı projeler burada yarışıyor. 
-          <span className="text-secondary font-semibold"> Ekle, </span>
-          <span className="text-tertiary font-semibold">keşfet, </span>
-          <span className="text-accent font-semibold">oyla </span>
-          ve en tepelere çık! 🚀
+          innovate. connect. create. promote.
         </motion.p>
 
         {/* Buttons Grid */}
@@ -113,36 +98,42 @@ const HeroSection = () => {
           variants={containerVariants}
         >
           <motion.div variants={buttonVariants}>
-            <BrutalButton
-              variant="primary"
-              size="lg"
-              className="w-full flex-col h-auto py-4 gap-1"
-            >
-              <Rocket className="w-6 h-6" />
-              <span className="text-xs md:text-sm">Proje Ekle</span>
-            </BrutalButton>
+            <Link to="/add-project">
+              <BrutalButton
+                variant="primary"
+                size="lg"
+                className="w-full flex-col h-auto py-4 gap-1"
+              >
+                <Rocket className="w-6 h-6" />
+                <span className="text-xs md:text-sm">Add Project</span>
+              </BrutalButton>
+            </Link>
           </motion.div>
 
           <motion.div variants={buttonVariants}>
-            <BrutalButton
-              variant="secondary"
-              size="lg"
-              className="w-full flex-col h-auto py-4 gap-1"
-            >
-              <Compass className="w-6 h-6" />
-              <span className="text-xs md:text-sm">Keşfet</span>
-            </BrutalButton>
+            <Link to="/showroom">
+              <BrutalButton
+                variant="secondary"
+                size="lg"
+                className="w-full flex-col h-auto py-4 gap-1"
+              >
+                <Compass className="w-6 h-6" />
+                <span className="text-xs md:text-sm">Explore</span>
+              </BrutalButton>
+            </Link>
           </motion.div>
 
           <motion.div variants={buttonVariants}>
-            <BrutalButton
-              variant="tertiary"
-              size="lg"
-              className="w-full flex-col h-auto py-4 gap-1"
-            >
-              <Vote className="w-6 h-6" />
-              <span className="text-xs md:text-sm">Oyla</span>
-            </BrutalButton>
+            <Link to="/showroom">
+              <BrutalButton
+                variant="tertiary"
+                size="lg"
+                className="w-full flex-col h-auto py-4 gap-1"
+              >
+                <Vote className="w-6 h-6" />
+                <span className="text-xs md:text-sm">Vote</span>
+              </BrutalButton>
+            </Link>
           </motion.div>
 
           <motion.div variants={buttonVariants}>
@@ -152,7 +143,7 @@ const HeroSection = () => {
               className="w-full flex-col h-auto py-4 gap-1"
             >
               <Trophy className="w-6 h-6" />
-              <span className="text-xs md:text-sm">Sıralama</span>
+              <span className="text-xs md:text-sm">Rankings</span>
             </BrutalButton>
           </motion.div>
 
@@ -163,56 +154,47 @@ const HeroSection = () => {
               className="w-full flex-col h-auto py-4 gap-1"
             >
               <HelpCircle className="w-6 h-6" />
-              <span className="text-xs md:text-sm">Nasıl Çalışır?</span>
+              <span className="text-xs md:text-sm">How It Works?</span>
             </BrutalButton>
+          </motion.div>
+
+          <motion.div variants={buttonVariants} className="col-span-2 md:col-span-1">
+            <a href="mailto:ubterzioglu@gmail.com">
+              <BrutalButton
+                variant="secondary"
+                size="lg"
+                className="w-full flex-col h-auto py-4 gap-1"
+              >
+                <Mail className="w-6 h-6" />
+                <span className="text-xs md:text-sm">Contact</span>
+              </BrutalButton>
+            </a>
           </motion.div>
         </motion.div>
 
-        {/* Stats */}
+        {/* Join Us Button */}
         <motion.div
           variants={itemVariants}
-          className="mt-16 grid grid-cols-3 gap-8 max-w-xl mx-auto"
+          className="mt-8"
         >
-          <div className="text-center">
-            <p className="text-3xl md:text-4xl font-display font-bold text-primary">1.2K+</p>
-            <p className="text-sm text-muted-foreground uppercase tracking-wide">Proje</p>
-          </div>
-          <div className="text-center">
-            <p className="text-3xl md:text-4xl font-display font-bold text-secondary">8.5K+</p>
-            <p className="text-sm text-muted-foreground uppercase tracking-wide">Oy</p>
-          </div>
-          <div className="text-center">
-            <p className="text-3xl md:text-4xl font-display font-bold text-tertiary">3.2K+</p>
-            <p className="text-sm text-muted-foreground uppercase tracking-wide">Üye</p>
-          </div>
+          <a
+            href="https://www.linkedin.com/groups/16927008/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <BrutalButton
+              variant="primary"
+              size="lg"
+              className="px-12 py-4 text-lg font-bold"
+            >
+              Join us! 🚀
+            </BrutalButton>
+          </a>
         </motion.div>
 
-        {/* Scroll indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
-          animate={{
-            y: [0, 10, 0],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        >
-          <div className="w-6 h-10 border-2 border-foreground rounded-full flex items-start justify-center p-2">
-            <motion.div
-              className="w-1.5 h-1.5 bg-primary rounded-full"
-              animate={{
-                y: [0, 16, 0],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-          </div>
-        </motion.div>
+
+
+
       </motion.div>
     </section>
   );
