@@ -198,3 +198,42 @@ export async function submitFeedback(message: string): Promise<void> {
         throw error;
     }
 }
+
+// Feedback Interface
+export interface Feedback {
+    id: string;
+    message: string;
+    created_at: string;
+}
+
+/**
+ * Get all feedback (Admin only)
+ */
+export async function getFeedbacks(): Promise<Feedback[]> {
+    const { data, error } = await supabase
+        .from('feedback')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        console.error('Error fetching feedback:', error);
+        throw error;
+    }
+
+    return data || [];
+}
+
+/**
+ * Delete feedback
+ */
+export async function deleteFeedback(id: string): Promise<void> {
+    const { error } = await supabase
+        .from('feedback')
+        .delete()
+        .eq('id', id);
+
+    if (error) {
+        console.error('Error deleting feedback:', error);
+        throw error;
+    }
+}
