@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
 import { Project, Comment } from "@/types";
 import { BrutalButton } from "@/components/ui/brutal-button";
 import { ArrowLeft, Send, Loader2, MessageSquare } from "lucide-react";
