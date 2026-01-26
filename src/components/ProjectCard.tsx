@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Project } from "@/types";
-import { ExternalLink, Linkedin, RotateCw, CheckCheck, Loader2, MessageSquare } from "lucide-react";
+import { ExternalLink, Linkedin, RotateCw, CheckCheck, Loader2, MessageSquare, ChevronUp, ChevronDown } from "lucide-react";
 import { BrutalButton } from "./ui/brutal-button";
 import { submitVote } from "@/data/mockData";
 import { toast } from "sonner";
@@ -26,6 +26,18 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
     const [isFlipped, setIsFlipped] = useState(false);
     const [scores, setScores] = useState<Record<string, number>>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const descriptionRef = useRef<HTMLDivElement>(null);
+
+    const scrollDescription = (direction: 'up' | 'down', e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (descriptionRef.current) {
+            const scrollAmount = 40;
+            descriptionRef.current.scrollBy({
+                top: direction === 'down' ? scrollAmount : -scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    };
 
     const handleFlip = () => {
         if (!isSubmitting) setIsFlipped(!isFlipped);
@@ -137,13 +149,31 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                         </div>
 
                         {project.description && (
-                            <div className="relative flex-1 min-h-0 mb-3">
-                                <div className="description-scroll h-full max-h-[72px] overflow-y-auto no-scrollbar pr-1">
+                            <div className="relative flex-1 min-h-0 mb-3 group/desc">
+                                <div 
+                                    ref={descriptionRef}
+                                    className="description-scroll h-full max-h-[72px] overflow-y-auto pr-6"
+                                >
                                     <p className="text-muted-foreground text-xs leading-relaxed">
                                         {project.description}
                                     </p>
                                 </div>
-                                <div className="description-fade absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-card to-transparent pointer-events-none" />
+                                {/* Scroll arrows */}
+                                <div className="absolute right-0 top-0 bottom-0 flex flex-col justify-center gap-0.5 opacity-0 group-hover/desc:opacity-100 transition-opacity">
+                                    <button
+                                        onClick={(e) => scrollDescription('up', e)}
+                                        className="p-0.5 rounded bg-muted/80 hover:bg-primary/20 text-muted-foreground hover:text-primary transition-colors"
+                                    >
+                                        <ChevronUp className="w-3 h-3" />
+                                    </button>
+                                    <button
+                                        onClick={(e) => scrollDescription('down', e)}
+                                        className="p-0.5 rounded bg-muted/80 hover:bg-primary/20 text-muted-foreground hover:text-primary transition-colors"
+                                    >
+                                        <ChevronDown className="w-3 h-3" />
+                                    </button>
+                                </div>
+                                <div className="description-fade absolute bottom-0 left-0 right-6 h-4 bg-gradient-to-t from-card to-transparent pointer-events-none" />
                             </div>
                         )}
 

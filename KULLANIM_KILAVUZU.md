@@ -1,3 +1,87 @@
+## MCP Ayarları ve Gerekli CLI Kurulumu Rehberi
+
+### 1. MCP Ayarları
+
+1. MCP sunucusu için gerekli dosyaları ve yapılandırmaları kontrol et:
+   - `mcp-server` veya benzeri backend dosyası varsa, yapılandırmasını gözden geçir.
+   - Gerekli environment dosyalarını (.env) oluştur ve API anahtarlarını ekle.
+   - MCP ile ilgili bağımlılıkları yükle:
+     ```
+     npm install mcp-server
+     ```
+   - MCP sunucusunu başlatmak için:
+     ```
+     npm run mcp
+     ```
+   - MCP ile ilgili hata alırsan, logları incele ve eksik bağımlılıkları yükle.
+
+### 2. Vercel CLI Kurulumu
+
+- Vercel CLI ile projeni kolayca deploy edebilirsin.
+- Kurulum:
+  ```
+  npm install -g vercel
+  ```
+- Giriş yap:
+  ```
+  vercel login
+  ```
+- Deploy etmek için:
+  ```
+  vercel
+  ```
+
+### 3. Supabase CLI Kurulumu
+
+- Supabase ile veritabanı ve authentication işlemlerini yönetebilirsin.
+- Kurulum:
+  ```
+  npm install -g supabase
+  ```
+  veya
+  ```
+  brew install supabase/tap/supabase
+  ```
+- Giriş yap:
+  ```
+  supabase login
+  ```
+- Projeyi başlatmak için:
+  ```
+  supabase start
+  ```
+
+### 4. GitHub CLI Kurulumu
+
+- GitHub CLI ile repo yönetimi ve işbirliği kolaylaşır.
+- Kurulum:
+  ```
+  npm install -g gh
+  ```
+  veya
+  ```
+  winget install --id GitHub.cli
+  ```
+- Giriş yap:
+  ```
+  gh auth login
+  ```
+- Repo klonlamak için:
+  ```
+  gh repo clone <kullanıcı>/<repo>
+  ```
+
+### 5. Ortak Çalışma İçin Ekstra İpuçları
+
+- Tüm ekip üyeleri yukarıdaki CLI’ları kurmalı.
+- Ortak .env dosyası ve config ayarlarını paylaşın.
+- Geliştirme ve deploy süreçlerinde MCP, Vercel, Supabase ve GitHub CLI’larını aktif kullanın.
+
+### 6. Sık Karşılaşılan Sorunlar ve Çözümleri
+
+- Bağımlılık hatası: `npm install` ile eksik paketleri yükle.
+- Yetki hatası: CLI’larda login işlemini tekrar yap.
+- Deploy hatası: Vercel/Supabase dashboard’dan logları incele.
 # 🎨 Landing Page Kullanım Kılavuzu
 
 ## 📁 Dosya Yapısı

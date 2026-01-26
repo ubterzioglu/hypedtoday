@@ -170,16 +170,34 @@
     scrollbar-width: none;
   }
 
-  /* Smooth scroll for description area */
+  /* Soft aesthetic scrollbar for description area */
   .description-scroll {
     scroll-behavior: smooth;
-    mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
   }
 
-  .description-scroll:hover {
-    mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+  .description-scroll::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .description-scroll::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+  }
+
+  .description-scroll::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 10px;
+    transition: background 0.3s ease;
+  }
+
+  .description-scroll::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.6);
+  }
+
+  /* Firefox scrollbar */
+  .description-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
   }
 
   /* Hide fade when content is short */
