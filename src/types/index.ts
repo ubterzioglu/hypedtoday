@@ -16,6 +16,13 @@ export interface Project {
     created_at: string; // ISO timestamp
 }
 
+export interface Comment {
+    id: string;
+    project_id: string;
+    content: string;
+    created_at: string;
+}
+
 // Form data type (what user submits)
 export interface ProjectFormData {
     name: string;

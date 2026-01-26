@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Showroom from "./pages/Showroom";
+import ProjectComments from "./pages/ProjectComments";
 import AddProject from "./pages/AddProject";
 import Leaderboard from "./pages/Leaderboard";
 import Contact from "./pages/Contact";
@@ -23,6 +24,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/showroom" element={<Showroom />} />
+          <Route path="/project/:id/comments" element={<ProjectComments />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/contact" element={<Contact />} />

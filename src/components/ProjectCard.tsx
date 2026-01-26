@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Project } from "@/types";
-import { ExternalLink, Linkedin, RotateCw, CheckCheck, Loader2 } from "lucide-react";
+import { ExternalLink, Linkedin, RotateCw, CheckCheck, Loader2, MessageSquare } from "lucide-react";
 import { BrutalButton } from "./ui/brutal-button";
 import { submitVote } from "@/data/mockData";
 import { toast } from "sonner";
@@ -169,9 +169,21 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                         </div>
                     </div>
 
-                    {/* Flip Hint - Moved to Card Bottom Right */}
-                    <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/50 text-white text-xs font-bold rounded flex items-center gap-1 backdrop-blur-sm z-20">
-                        <RotateCw className="w-3 h-3" /> Tap to Vote
+                    {/* Actions - Comments & Flip Hint */}
+                    <div className="absolute bottom-2 right-2 flex items-center gap-2 z-20">
+                        <div
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                window.location.href = `/project/${project.id}/comments`;
+                            }}
+                            className="px-2 py-1 bg-black/50 hover:bg-black/70 text-white text-xs font-bold rounded flex items-center gap-1 backdrop-blur-sm cursor-pointer transition-colors"
+                        >
+                            <MessageSquare className="w-3 h-3" /> Comments
+                        </div>
+
+                        <div className="px-2 py-1 bg-black/50 text-white text-xs font-bold rounded flex items-center gap-1 backdrop-blur-sm">
+                            <RotateCw className="w-3 h-3" /> Tap to Vote
+                        </div>
                     </div>
                 </div>
 
