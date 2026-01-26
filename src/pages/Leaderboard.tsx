@@ -52,7 +52,7 @@ const Leaderboard = () => {
 
                 {/* List */}
                 <div className="bg-card border-4 border-foreground shadow-brutal-lg overflow-hidden">
-                    <div className="max-h-[800px] overflow-y-auto no-scrollbar">
+                    <div className="max-h-[800px] overflow-y-auto custom-scrollbar">
                         {loading ? (
                             <div className="p-10 text-center font-bold text-xl anim-pulse">
                                 Calculating vibes...

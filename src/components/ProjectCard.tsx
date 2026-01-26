@@ -138,7 +138,10 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
 
                         {project.description && (
                             <div className="relative flex-1 min-h-0 mb-3">
-                                <div className="description-scroll h-full max-h-[72px] overflow-y-auto no-scrollbar pr-1">
+                                <div
+                                    className="description-scroll h-full max-h-[72px] overflow-y-auto custom-scrollbar pr-1"
+                                    onClick={(e) => e.stopPropagation()}
+                                >
                                     <p className="text-muted-foreground text-xs leading-relaxed">
                                         {project.description}
                                     </p>
