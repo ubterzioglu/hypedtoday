@@ -162,7 +162,7 @@
 
   /* Custom scrollbar for description */
   .custom-scrollbar::-webkit-scrollbar {
-    width: 12px;
+    width: 24px;
   }
 
   .custom-scrollbar::-webkit-scrollbar-track {

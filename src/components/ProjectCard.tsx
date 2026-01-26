@@ -125,7 +125,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                                     {project.name}
                                 </h3>
                                 {project.motto && (
-                                    <p className="text-[11px] font-bold text-secondary uppercase tracking-tight truncate">
+                                    <p className="text-[11px] font-bold text-secondary uppercase tracking-tight line-clamp-2 leading-tight">
                                         {project.motto}
                                     </p>
                                 )}
