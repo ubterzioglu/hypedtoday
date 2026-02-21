@@ -102,7 +102,7 @@ const ProjectSubmissionForm = () => {
                     <input
                         {...register("name")}
                         className="w-full px-4 py-3 bg-background border-4 border-foreground focus:outline-none focus:border-primary transition-colors"
-                        placeholder="e.g., Vibecoding AI"
+                        placeholder="e.g., supporttopromote AI"
                     />
                     {errors.name && <p className="mt-1 text-sm text-destructive font-bold">{errors.name.message}</p>}
                 </div>

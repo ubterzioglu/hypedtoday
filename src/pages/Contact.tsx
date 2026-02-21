@@ -7,15 +7,15 @@ import HeroBackground from "@/components/HeroBackground";
 import { Link } from "react-router-dom";
 
 const SOCIAL_LINKS = [
-    { icon: Twitter, href: "https://twitter.com/vclove", color: "bg-sky-500", label: "X / Twitter" },
-    { icon: MessageCircle, href: "https://reddit.com/r/vclove", color: "bg-orange-600", label: "Reddit" },
-    { icon: Facebook, href: "https://facebook.com/vclove", color: "bg-blue-600", label: "Facebook" },
+    { icon: Twitter, href: "https://twitter.com/supporttopromote", color: "bg-sky-500", label: "X / Twitter" },
+    { icon: MessageCircle, href: "https://reddit.com/r/supporttopromote", color: "bg-orange-600", label: "Reddit" },
+    { icon: Facebook, href: "https://facebook.com/supporttopromote", color: "bg-blue-600", label: "Facebook" },
     { icon: Phone, href: "https://wa.me/905551234567", color: "bg-green-500", label: "WhatsApp" },
-    { icon: Linkedin, href: "https://linkedin.com/company/vclove", color: "bg-blue-700", label: "LinkedIn" },
-    { icon: Instagram, href: "https://instagram.com/vclove", color: "bg-pink-600", label: "Instagram" },
+    { icon: Linkedin, href: "https://linkedin.com/company/supporttopromote", color: "bg-blue-700", label: "LinkedIn" },
+    { icon: Instagram, href: "https://instagram.com/supporttopromote", color: "bg-pink-600", label: "Instagram" },
     { icon: MapPin, href: "https://maps.google.com/?q=Istanbul", color: "bg-red-500", label: "Location" },
     { icon: Phone, href: "tel:+905551234567", color: "bg-yellow-500", label: "Call Us" },
-    { icon: Mail, href: "mailto:contact@vclove.online", color: "bg-purple-600", label: "Email" },
+    { icon: Mail, href: "mailto:contact@supporttopromote.online", color: "bg-purple-600", label: "Email" },
 ];
 
 import heroBg from "@/assets/hero-bg.jpg";

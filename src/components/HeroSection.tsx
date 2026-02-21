@@ -78,12 +78,12 @@ const HeroSection = () => {
         animate="visible"
       >
 
-        {/* Main Heading - Vibecoding Community */}
+        {/* Main Heading - supporttopromote */}
         <motion.h1
           variants={itemVariants}
           className="font-display text-3xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 lowercase"
         >
-          <span className="text-foreground">vibecoding community</span>
+          <span className="text-foreground">supporttopromote</span>
         </motion.h1>
 
         {/* Tagline */}
