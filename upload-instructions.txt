@@ -1,0 +1,19 @@
+=== Supabase Storage Bucket Oluşturma Adımları ===
+
+1. Supabase Dashboard'a git:
+   https://supabase.com/dashboard/project/gicrpczuonnxzmldfotl/storage
+
+2. "Create a new bucket" butonuna tıkla
+
+3. Bucket ayarları:
+   - Name: project-images
+   - Public bucket: ✓ (checkbox'a tıkla)
+
+4. Bucket oluşturduktan sonra şu komutu çalıştır:
+   npx tsx upload-images.ts
+
+=== Not ===
+Bucket'ı oluşturduktan sonra tüm fotoğraflar otomatik olarak yüklenecek ve public URL'ler oluşturulacak.
+
+Yükleme tamamlandıktan sonra CSV import işlemini yapabiliriz:
+npx tsx import-csv.ts
