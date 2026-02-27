@@ -19,7 +19,11 @@
       "Bash(supabase db remote commit:*)",
       "Bash(git config:*)",
       "Bash(supabase projects list:*)",
-      "Bash(/c/Users/ubter/IdeaProjects/hyped/hypedtoday/public/robots.txt:*)"
+      "Bash(/c/Users/ubter/IdeaProjects/hyped/hypedtoday/public/robots.txt:*)",
+      "Bash(git rebase --abort)",
+      "Bash(git reset --hard origin/main)",
+      "Bash(git mv KULLANIM_KILAVUZU.md .0documentation/)",
+      "Bash(git mv vote-flip-spec.md .0documentation/)"
     ]
   }
 }
