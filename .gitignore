@@ -26,3 +26,6 @@ dist-ssr
 *.sw?
 .vercel
 .env*.local
+
+# Deleted/Unused files storage
+.0delete/
