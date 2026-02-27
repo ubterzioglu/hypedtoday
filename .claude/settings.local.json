@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git pull:*)",
+      "Bash(npm run dev:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(npx supabase link:*)",
+      "Bash(npx tsx:*)",
+      "Bash(nslookup:*)",
+      "Bash(git commit:*)",
+      "Bash(git clone:*)",
+      "Bash(npm install:*)",
+      "Bash(supabase status:*)",
+      "Bash(supabase db reset:*)",
+      "Bash(supabase link:*)",
+      "Bash(ls:*)",
+      "Bash(ssh:*)",
+      "Bash(psql:*)",
+      "Bash(supabase db remote commit:*)",
+      "Bash(git config:*)",
+      "Bash(supabase projects list:*)",
+      "Bash(/c/Users/ubter/IdeaProjects/hyped/hypedtoday/public/robots.txt:*)"
+    ]
+  }
+}
