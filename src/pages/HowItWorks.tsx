@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { BrutalButton } from "@/components/ui/brutal-button";
-import HeroBackground from "@/components/HeroBackground";
-import { ArrowLeft, Rocket, Search, Vote, Trophy, ArrowRight, Share2, HeartHandshake } from "lucide-react";
-import heroBg from "@/assets/hero-bg.jpg";
+import { HelpCircle, Rocket, Search, Vote, Trophy, ArrowRight, Share2, HeartHandshake } from "lucide-react";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const STEPS = [
     {
@@ -11,7 +11,7 @@ const STEPS = [
         title: "1. Submit Project",
         description: "Have a cool project? Share it with the community! Just add your GitHub repo or project URL.",
         color: "bg-primary",
-        textColor: "text-secondary-foreground"
+        textColor: "text-primary-foreground"
     },
     {
         icon: Search,
@@ -25,7 +25,7 @@ const STEPS = [
         title: "3. Share",
         description: "Spread the word! Share your project link with friends and followers to gather maximum vibes.",
         color: "bg-tertiary",
-        textColor: "text-secondary-foreground"
+        textColor: "text-tertiary-foreground"
     },
     {
         icon: Vote,
@@ -52,35 +52,30 @@ const STEPS = [
 
 const HowItWorks = () => {
     return (
-        <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary selection:text-black">
-            <HeroBackground type="image" imageSrc={heroBg} overlayOpacity={0.9} />
+        <div className="min-h-screen bg-background flex flex-col">
+            <Header />
 
-            <div className="relative z-10 container mx-auto px-4 py-8 max-w-6xl">
+            {/* Page Header */}
+            <div className="bg-gradient-to-r from-highlight/30 via-primary/20 to-secondary/30 border-b-4 border-foreground">
+                <div className="container mx-auto px-4 py-10">
+                    <div className="flex items-center gap-4">
+                        <div className="w-16 h-16 bg-highlight border-4 border-foreground flex items-center justify-center">
+                            <HelpCircle className="w-8 h-8" />
+                        </div>
+                        <div>
+                            <h1 className="text-4xl md:text-5xl font-black uppercase">
+                                How It Works
+                            </h1>
+                            <p className="text-muted-foreground font-medium text-lg">
+                                From code to fame in 6 simple steps
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                {/* Header & Back */}
-                <header className="mb-12 flex flex-col md:flex-row justify-between items-center gap-6">
-                    <Link to="/">
-                        <BrutalButton variant="secondary" size="default">
-                            <ArrowLeft className="w-5 h-5 mr-2" />
-                            Home
-                        </BrutalButton>
-                    </Link>
-
-                    <motion.div
-                        initial={{ y: -20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        className="text-center md:text-right"
-                    >
-                        <h1 className="text-4xl md:text-6xl font-display font-black uppercase text-primary drop-shadow-lg mb-2">
-                            How It Works
-                        </h1>
-                        <p className="text-muted-foreground text-lg font-bold">
-                            From code to fame in 6 simple steps.
-                        </p>
-                    </motion.div>
-                </header>
-
-                {/* Steps Grid - Updated to 3 columns */}
+            <main className="flex-1 container mx-auto px-4 py-12 max-w-6xl">
+                {/* Steps Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
                     {STEPS.map((step, index) => (
                         <motion.div
@@ -93,7 +88,7 @@ const HowItWorks = () => {
                                 ${step.color} ${step.textColor}
                             `}
                         >
-                            <div className="absolute -top-6 -left-6 w-12 h-12 bg-background border-4 border-foreground flex items-center justify-center font-black text-xl mb-4 text-foreground z-10 rounded-full">
+                            <div className="absolute -top-6 -left-6 w-12 h-12 bg-background border-4 border-foreground flex items-center justify-center font-black text-xl text-foreground z-10">
                                 {index + 1}
                             </div>
 
@@ -114,21 +109,20 @@ const HowItWorks = () => {
                     transition={{ delay: 0.6 }}
                     className="text-center"
                 >
-                    <div className="inline-block p-1 border-4 border-primary rounded-xl">
-                        <div className="bg-card border-2 border-foreground p-8 md:p-12 rounded-lg">
-                            <h2 className="text-3xl md:text-5xl font-black uppercase mb-6">
-                                Ready to Showcase?
-                            </h2>
-                            <Link to="/add-project">
-                                <BrutalButton variant="primary" size="lg" className="w-full md:w-auto px-12 py-6 text-xl">
-                                    Start Now <ArrowRight className="ml-2 w-6 h-6" />
-                                </BrutalButton>
-                            </Link>
-                        </div>
+                    <div className="bg-card border-4 border-foreground p-8 md:p-12 shadow-brutal">
+                        <h2 className="text-3xl md:text-5xl font-black uppercase mb-6">
+                            Ready to Showcase?
+                        </h2>
+                        <Link to="/add-project">
+                            <BrutalButton variant="primary" size="lg" className="px-12 py-6 text-xl">
+                                Start Now <ArrowRight className="ml-2 w-6 h-6" />
+                            </BrutalButton>
+                        </Link>
                     </div>
                 </motion.div>
+            </main>
 
-            </div>
+            <Footer />
         </div>
     );
 };

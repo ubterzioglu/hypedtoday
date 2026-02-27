@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { BrutalButton } from "@/components/ui/brutal-button";
 import { submitFeedback } from "@/data/mockData";
-import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone, MessageCircle, Twitter, Send, ArrowLeft } from "lucide-react";
-
-import HeroBackground from "@/components/HeroBackground";
-import { Link } from "react-router-dom";
+import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone, MessageCircle, Twitter, Send, MailIcon } from "lucide-react";
+import { toast } from "sonner";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const SOCIAL_LINKS = [
     { icon: Twitter, href: "https://twitter.com/supporttopromote", color: "bg-sky-500", label: "X / Twitter" },
@@ -17,8 +17,6 @@ const SOCIAL_LINKS = [
     { icon: Phone, href: "tel:+905551234567", color: "bg-yellow-500", label: "Call Us" },
     { icon: Mail, href: "mailto:contact@supporttopromote.online", color: "bg-purple-600", label: "Email" },
 ];
-
-import heroBg from "@/assets/hero-bg.jpg";
 
 const Contact = () => {
     const [message, setMessage] = useState("");
@@ -44,24 +42,31 @@ const Contact = () => {
     };
 
     return (
-        <div className="min-h-screen bg-background text-foreground font-sans selection:bg-primary selection:text-black">
-            <HeroBackground type="image" imageSrc={heroBg} overlayOpacity={0.9} />
+        <div className="min-h-screen bg-background flex flex-col">
+            <Header />
 
-            <div className="relative z-10 container mx-auto px-4 py-16 max-w-4xl">
-                <div className="flex flex-col md:flex-row justify-between items-center mb-8 relative">
-                    <Link to="/" className="absolute left-0 top-0 md:static">
-                        <BrutalButton variant="secondary" size="default">
-                            <ArrowLeft className="w-5 h-5 mr-2" />
-                            Home
-                        </BrutalButton>
-                    </Link>
-                    <h1 className="text-5xl md:text-7xl font-display font-black uppercase text-primary drop-shadow-lg text-center flex-1">
-                        Contact Us
-                    </h1>
+            {/* Page Header */}
+            <div className="bg-gradient-to-r from-secondary/20 via-primary/20 to-tertiary/20 border-b-4 border-foreground">
+                <div className="container mx-auto px-4 py-10">
+                    <div className="flex items-center gap-4">
+                        <div className="w-16 h-16 bg-secondary border-4 border-foreground flex items-center justify-center">
+                            <MailIcon className="w-8 h-8" />
+                        </div>
+                        <div>
+                            <h1 className="text-4xl md:text-5xl font-black uppercase">
+                                Contact Us
+                            </h1>
+                            <p className="text-muted-foreground font-medium text-lg">
+                                Get in touch with our community
+                            </p>
+                        </div>
+                    </div>
                 </div>
+            </div>
 
-                {/* Social Grid - Resized */}
-                <div className="grid grid-cols-3 md:grid-cols-9 gap-2 md:gap-4 mb-8 justify-center max-w-4xl mx-auto">
+            <main className="flex-1 container mx-auto px-4 py-12 max-w-4xl">
+                {/* Social Grid */}
+                <div className="grid grid-cols-3 md:grid-cols-9 gap-3 mb-10">
                     {SOCIAL_LINKS.map((link, i) => (
                         <a
                             key={i}
@@ -69,13 +74,13 @@ const Contact = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                             className={`
-                                aspect-square w-12 h-12 md:w-14 md:h-14 flex items-center justify-center rounded-full border-2 border-foreground 
-                                hover:scale-105 transition-transform shadow-brutal hover:shadow-brutal-sm mx-auto
+                                aspect-square flex items-center justify-center rounded-full border-2 border-foreground 
+                                hover:scale-105 transition-transform shadow-brutal hover:shadow-brutal-sm
                                 ${link.color} text-white
                             `}
                             title={link.label}
                         >
-                            <link.icon className="w-5 h-5 md:w-6 md:h-6" />
+                            <link.icon className="w-5 h-5" />
                         </a>
                     ))}
                 </div>
@@ -106,7 +111,9 @@ const Contact = () => {
                         </BrutalButton>
                     </form>
                 </div>
-            </div>
+            </main>
+
+            <Footer />
         </div>
     );
 };

@@ -4,22 +4,17 @@ import { getProjects, updateProject, deleteProject, getFeedbacks, deleteFeedback
 import { Project, Country } from "@/types";
 import { BrutalButton } from "@/components/ui/brutal-button";
 import { useNavigate } from "react-router-dom";
-import { Loader2, LogOut, Edit2, Trash2, Save, X, MessageSquare, LayoutGrid } from "lucide-react";
+import { Loader2, LogOut, Edit2, Trash2, MessageSquare, LayoutGrid, Shield } from "lucide-react";
 import { toast } from "sonner";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const AdminDashboard = () => {
-    // Auth & Routing
     const navigate = useNavigate();
-
-    // Tabs
     const [activeTab, setActiveTab] = useState<'projects' | 'feedback'>('projects');
-
-    // Data State
     const [projects, setProjects] = useState<Project[]>([]);
     const [feedbacks, setFeedbacks] = useState<Feedback[]>([]);
     const [loading, setLoading] = useState(true);
-
-    // Edit State (Projects)
     const [editingId, setEditingId] = useState<string | null>(null);
     const [editForm, setEditForm] = useState({ name: "", country: "TR" as Country });
 
@@ -57,7 +52,6 @@ const AdminDashboard = () => {
         navigate('/admin/login');
     };
 
-    // --- Project Actions ---
     const startEdit = (project: Project) => {
         setEditingId(project.id);
         setEditForm({ name: project.name, country: project.country });
@@ -83,15 +77,14 @@ const AdminDashboard = () => {
         if (!confirm(`Delete project "${name}"?`)) return;
         try {
             await deleteProject(id);
-            setProjects(prev => prev.filter(p => p.id !== id)); // Optimistic update
+            setProjects(prev => prev.filter(p => p.id !== id));
             toast.success("Project deleted");
         } catch (err) {
             toast.error("Failed to delete");
-            loadProjects(); // Revert on failure
+            loadProjects();
         }
     };
 
-    // --- Feedback Actions ---
     const handleDeleteFeedback = async (id: string) => {
         if (!confirm("Delete this feedback?")) return;
         try {
@@ -104,46 +97,56 @@ const AdminDashboard = () => {
     };
 
     return (
-        <div className="min-h-screen bg-background font-sans">
-            {/* Header */}
-            <header className="border-b-4 border-foreground bg-card sticky top-0 z-20">
-                <div className="container mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <h1 className="text-2xl md:text-3xl font-black uppercase flex items-center gap-2">
-                        <span className="text-primary">Admin</span> Dashboard
-                    </h1>
+        <div className="min-h-screen bg-background flex flex-col">
+            <Header />
 
-                    <div className="flex items-center gap-4">
-                        {/* Tabs */}
-                        <div className="flex gap-2">
+            {/* Admin Header */}
+            <div className="bg-primary border-b-4 border-foreground">
+                <div className="container mx-auto px-4 py-4">
+                    <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 bg-primary-foreground border-2 border-foreground flex items-center justify-center">
+                                <Shield className="w-6 h-6 text-primary" />
+                            </div>
+                            <h1 className="text-2xl font-black uppercase text-primary-foreground">
+                                Admin Dashboard
+                            </h1>
+                        </div>
+
+                        <div className="flex items-center gap-2">
                             <button
                                 onClick={() => setActiveTab('projects')}
-                                className={`px-4 py-2 font-bold border-2 transition-all flex items-center gap-2 ${activeTab === 'projects' ? 'bg-primary text-black border-primary' : 'bg-transparent text-white border-white hover:bg-white hover:text-black'}`}
+                                className={`px-4 py-2 font-bold border-2 border-foreground transition-all flex items-center gap-2 ${
+                                    activeTab === 'projects' 
+                                        ? 'bg-card text-foreground' 
+                                        : 'bg-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/30'
+                                }`}
                             >
                                 <LayoutGrid className="w-4 h-4" /> Projects
                             </button>
                             <button
                                 onClick={() => setActiveTab('feedback')}
-                                className={`px-4 py-2 font-bold border-2 transition-all flex items-center gap-2 ${activeTab === 'feedback' ? 'bg-secondary text-black border-secondary' : 'bg-transparent text-white border-white hover:bg-white hover:text-black'}`}
+                                className={`px-4 py-2 font-bold border-2 border-foreground transition-all flex items-center gap-2 ${
+                                    activeTab === 'feedback' 
+                                        ? 'bg-card text-foreground' 
+                                        : 'bg-primary-foreground/20 text-primary-foreground hover:bg-primary-foreground/30'
+                                }`}
                             >
                                 <MessageSquare className="w-4 h-4" /> Feedback
                             </button>
+                            <BrutalButton onClick={handleLogout} variant="secondary" size="sm">
+                                <LogOut className="w-4 h-4 mr-2" /> Logout
+                            </BrutalButton>
                         </div>
-
-                        <BrutalButton onClick={() => window.open('/', '_blank')} variant="secondary" size="sm">
-                            <span className="font-bold">Home</span>
-                        </BrutalButton>
-                        <BrutalButton onClick={handleLogout} variant="tertiary" size="sm">
-                            <LogOut className="w-4 h-4 mr-2" /> Logout
-                        </BrutalButton>
                     </div>
                 </div>
-            </header>
+            </div>
 
             {/* Main Content */}
-            <main className="container mx-auto px-4 py-8">
+            <main className="flex-1 container mx-auto px-4 py-8">
                 {loading ? (
                     <div className="flex items-center justify-center py-20">
-                        <Loader2 className="w-12 h-12 animate-spin text-foreground" />
+                        <Loader2 className="w-12 h-12 animate-spin text-primary" />
                     </div>
                 ) : (
                     <>
@@ -175,7 +178,7 @@ const AdminDashboard = () => {
                                                             <input type="radio" checked={editForm.country === "TR"} onChange={() => setEditForm({ ...editForm, country: "TR" })} /> 🔴 Turkey
                                                         </label>
                                                         <label className="flex items-center gap-2 font-bold cursor-pointer">
-                                                            <input type="radio" checked={editForm.country === "OTHER"} onChange={() => setEditForm({ ...editForm, country: "OTHER" })} /> 🌍 Other
+                                                            <input type="radio" checked={editForm.country === "OTHER"} onChange={() => setEditForm({ ...editForm, country: "OTHER" })} /> 🌍 Global
                                                         </label>
                                                     </div>
                                                     <div className="flex gap-2">
@@ -194,7 +197,7 @@ const AdminDashboard = () => {
                                                     </div>
                                                     <div className="flex gap-2">
                                                         <button onClick={() => startEdit(project)} className="p-2 border-2 border-foreground hover:bg-muted transition-colors"><Edit2 className="w-5 h-5" /></button>
-                                                        <button onClick={() => handleDeleteProject(project.id, project.name)} className="p-2 border-2 border-white bg-red-600 text-white hover:bg-red-700 transition-colors font-bold"><Trash2 className="w-5 h-5" /></button>
+                                                        <button onClick={() => handleDeleteProject(project.id, project.name)} className="p-2 border-2 border-foreground bg-red-600 text-white hover:bg-red-700 transition-colors"><Trash2 className="w-5 h-5" /></button>
                                                     </div>
                                                 </>
                                             )}
@@ -215,7 +218,7 @@ const AdminDashboard = () => {
                                             key={item.id}
                                             initial={{ opacity: 0 }}
                                             animate={{ opacity: 1 }}
-                                            className="bg-card border-4 border-foreground p-6 shadow-brutal relative group"
+                                            className="bg-card border-4 border-foreground p-6 shadow-brutal relative"
                                         >
                                             <p className="text-lg font-medium whitespace-pre-wrap mb-4 font-mono">"{item.message}"</p>
                                             <div className="flex justify-between items-end border-t-2 border-muted pt-4">
@@ -226,7 +229,7 @@ const AdminDashboard = () => {
                                                     onClick={() => handleDeleteFeedback(item.id)}
                                                     variant="primary"
                                                     size="sm"
-                                                    className="bg-red-600 text-white border-2 border-white hover:bg-red-700 font-bold"
+                                                    className="bg-red-600 text-white hover:bg-red-700"
                                                 >
                                                     <Trash2 className="w-4 h-4 mr-2" /> Delete
                                                 </BrutalButton>
@@ -240,6 +243,8 @@ const AdminDashboard = () => {
                     </>
                 )}
             </main>
+
+            <Footer />
         </div>
     );
 };

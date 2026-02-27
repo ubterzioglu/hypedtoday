@@ -1,20 +1,20 @@
-
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { Project, Comment } from "@/types";
 import { BrutalButton } from "@/components/ui/brutal-button";
-import { ArrowLeft, Send, Loader2, MessageSquare } from "lucide-react";
+import { ArrowLeft, Send, Loader2, MessageSquare, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const ProjectComments = () => {
     const { id } = useParams<{ id: string }>();
     const [newComment, setNewComment] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    // Fetch Project Details
     const { data: project, isLoading: isProjectLoading } = useQuery({
         queryKey: ['project', id],
         queryFn: async () => {
@@ -30,7 +30,6 @@ const ProjectComments = () => {
         enabled: !!id
     });
 
-    // Fetch Comments
     const { data: comments, isLoading: isCommentsLoading, refetch } = useQuery({
         queryKey: ['comments', id],
         queryFn: async () => {
@@ -72,67 +71,123 @@ const ProjectComments = () => {
     };
 
     if (isProjectLoading) {
-        return <div className="min-h-screen flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin" /></div>;
+        return (
+            <div className="min-h-screen bg-background flex flex-col">
+                <Header />
+                <div className="flex-1 flex items-center justify-center">
+                    <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                </div>
+                <Footer />
+            </div>
+        );
     }
 
     if (!project) {
-        return <div className="min-h-screen flex items-center justify-center">Project not found</div>;
+        return (
+            <div className="min-h-screen bg-background flex flex-col">
+                <Header />
+                <div className="flex-1 flex items-center justify-center">
+                    <p className="text-xl font-bold">Project not found</p>
+                </div>
+                <Footer />
+            </div>
+        );
     }
 
     return (
-        <div className="min-h-screen bg-background border-x-4 border-foreground max-w-2xl mx-auto flex flex-col">
-            {/* Header */}
-            <div className="p-4 border-b-4 border-foreground bg-card sticky top-0 z-10 flex items-center gap-4">
-                <Link to="/" className="p-2 hover:bg-muted rounded-full transition-colors border-2 border-transparent hover:border-foreground">
-                    <ArrowLeft className="w-6 h-6" />
-                </Link>
-                <div className="flex-1 min-w-0">
-                    <h1 className="text-xl font-bold truncate">{project.name}</h1>
-                    <p className="text-xs text-muted-foreground uppercase font-bold tracking-wider">Comments</p>
+        <div className="min-h-screen bg-background flex flex-col">
+            <Header />
+
+            {/* Page Header */}
+            <div className="bg-gradient-to-r from-tertiary/20 via-primary/20 to-secondary/20 border-b-4 border-foreground">
+                <div className="container mx-auto px-4 py-6">
+                    <div className="flex items-center gap-4">
+                        <Link to="/showroom">
+                            <div className="w-12 h-12 bg-card border-4 border-foreground flex items-center justify-center hover:bg-muted transition-colors">
+                                <ArrowLeft className="w-6 h-6" />
+                            </div>
+                        </Link>
+                        <div className="flex-1 min-w-0">
+                            <h1 className="text-2xl font-black truncate">{project.name}</h1>
+                            <p className="text-sm text-muted-foreground">Project Comments</p>
+                        </div>
+                        {project.project_url && (
+                            <a
+                                href={project.project_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="hidden sm:flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground border-2 border-foreground font-bold hover:shadow-brutal transition-shadow"
+                            >
+                                <ExternalLink className="w-4 h-4" />
+                                Visit
+                            </a>
+                        )}
+                    </div>
                 </div>
             </div>
 
-            {/* Comments List */}
-            <div className="flex-1 p-4 space-y-4 overflow-y-auto">
-                {isCommentsLoading ? (
-                    <div className="flex justify-center py-8"><Loader2 className="w-6 h-6 animate-spin text-muted-foreground" /></div>
-                ) : comments?.length === 0 ? (
-                    <div className="text-center py-12 text-muted-foreground flex flex-col items-center gap-2 opacity-60">
-                        <MessageSquare className="w-12 h-12" />
-                        <p className="font-bold">No comments yet. Be the first!</p>
-                    </div>
-                ) : (
-                    comments?.map((comment) => (
-                        <div key={comment.id} className="bg-card border-2 border-foreground p-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                            <p className="text-sm whitespace-pre-wrap">{comment.content}</p>
-                            <p className="text-[10px] text-muted-foreground mt-2 font-bold text-right">
-                                {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
-                            </p>
+            {/* Main Content */}
+            <main className="flex-1 container mx-auto px-4 py-8 max-w-2xl">
+                {/* Comments List */}
+                <div className="bg-card border-4 border-foreground mb-6 min-h-[400px]">
+                    <div className="p-4 border-b-2 border-foreground bg-muted">
+                        <div className="flex items-center gap-2">
+                            <MessageSquare className="w-5 h-5" />
+                            <span className="font-bold">
+                                {comments?.length || 0} Comments
+                            </span>
                         </div>
-                    ))
-                )}
-            </div>
+                    </div>
 
-            {/* Input Area */}
-            <div className="p-4 border-t-4 border-foreground bg-background sticky bottom-0">
-                <form onSubmit={handleSubmit} className="flex gap-2">
-                    <input
-                        type="text"
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
-                        placeholder="Write a comment..."
-                        className="flex-1 bg-muted border-2 border-foreground px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary font-bold placeholder:font-normal"
-                        disabled={isSubmitting}
-                    />
-                    <BrutalButton
-                        type="submit"
-                        disabled={!newComment.trim() || isSubmitting}
-                        className="px-4"
-                    >
-                        {isSubmitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-                    </BrutalButton>
-                </form>
-            </div>
+                    <div className="p-4 space-y-4">
+                        {isCommentsLoading ? (
+                            <div className="flex justify-center py-8">
+                                <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
+                            </div>
+                        ) : comments?.length === 0 ? (
+                            <div className="text-center py-12 text-muted-foreground flex flex-col items-center gap-2 opacity-60">
+                                <MessageSquare className="w-12 h-12" />
+                                <p className="font-bold">No comments yet. Be the first!</p>
+                            </div>
+                        ) : (
+                            comments?.map((comment) => (
+                                <div 
+                                    key={comment.id} 
+                                    className="bg-background border-2 border-foreground p-4 shadow-brutal-sm"
+                                >
+                                    <p className="text-sm whitespace-pre-wrap">{comment.content}</p>
+                                    <p className="text-[10px] text-muted-foreground mt-2 font-bold text-right">
+                                        {formatDistanceToNow(new Date(comment.created_at), { addSuffix: true })}
+                                    </p>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </div>
+
+                {/* Input Area */}
+                <div className="bg-card border-4 border-foreground p-4 sticky bottom-4">
+                    <form onSubmit={handleSubmit} className="flex gap-2">
+                        <input
+                            type="text"
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                            placeholder="Write a comment..."
+                            className="flex-1 bg-background border-4 border-foreground px-4 py-3 text-sm focus:outline-none focus:border-primary font-bold placeholder:font-normal"
+                            disabled={isSubmitting}
+                        />
+                        <BrutalButton
+                            type="submit"
+                            disabled={!newComment.trim() || isSubmitting}
+                            className="px-6"
+                        >
+                            {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
+                        </BrutalButton>
+                    </form>
+                </div>
+            </main>
+
+            <Footer />
         </div>
     );
 };
