@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -17,22 +18,42 @@ import ComingSoon from "./pages/ComingSoon";
 
 const queryClient = new QueryClient();
 
-// Check if we're in development mode
-const isDevelopment = import.meta.env.DEV;
-
-// Check if coming soon mode is enabled
-const isComingSoonMode = import.meta.env.VITE_COMING_SOON_MODE === "true";
-
 // Route wrapper that conditionally shows coming soon or actual routes
 const AppRoutes = () => {
   const [searchParams] = useSearchParams();
+  const [isComingSoon, setIsComingSoon] = useState<boolean | null>(null);
+  
   const previewMode = searchParams.get("preview") === "true";
   
+  useEffect(() => {
+    // Runtime'da environment variable'ı kontrol et
+    const comingSoonValue = import.meta.env.VITE_COMING_SOON_MODE;
+    console.log("VITE_COMING_SOON_MODE:", comingSoonValue);
+    console.log("VITE_COMING_SOON_MODE type:", typeof comingSoonValue);
+    
+    // Farklı formatları kontrol et: "true", true, "1", 1
+    const isEnabled = 
+      comingSoonValue === "true" || 
+      comingSoonValue === true ||
+      comingSoonValue === "1" ||
+      comingSoonValue === 1;
+    
+    setIsComingSoon(isEnabled);
+  }, []);
+
+  // Loading state - henüz kontrol edilmedi
+  if (isComingSoon === null) {
+    return (
+      <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-[#a3e635] border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
   // Show coming soon if:
   // - Coming soon mode is enabled AND
   // - Not in preview mode
-  // In development, always show full site unless explicitly coming soon mode + no preview
-  const showComingSoon = isComingSoonMode && !previewMode;
+  const showComingSoon = isComingSoon && !previewMode;
 
   if (showComingSoon) {
     return (
