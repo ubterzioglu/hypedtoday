@@ -8,9 +8,13 @@ const FeaturedCarousel = () => {
 
     useEffect(() => {
         const fetchProjects = async () => {
-            const data = await getProjects();
-            // Get top 10 projects or just the first 10 for now
-            setProjects(data.slice(0, 10));
+            try {
+                const data = await getProjects();
+                // Get top 10 projects or just the first 10 for now
+                setProjects(data.slice(0, 10));
+            } catch (error) {
+                console.error("Failed to load featured projects:", error);
+            }
         };
         fetchProjects();
     }, []);
