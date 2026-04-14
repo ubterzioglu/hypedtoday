@@ -11,16 +11,9 @@ const AdminLogin = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (password === "PPPlll!11321132") {
-            localStorage.setItem("isAdmin", "true");
-            navigate("/admin");
-            toast.success("Welcome back, Admin!");
-        } else {
-            toast.error("Invalid password");
-            setPassword("");
-        }
+        toast.error("Admin login is being migrated to Supabase Auth. Please wait for the auth system update.");
     };
 
     return (
