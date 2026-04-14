@@ -29,3 +29,4 @@ dist-ssr
 
 # Deleted/Unused files storage
 .0delete/
+.secret

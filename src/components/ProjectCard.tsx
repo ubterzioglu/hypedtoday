@@ -1,5 +1,4 @@
-import { useState, useRef } from "react";
-import { motion } from "framer-motion";
+import { useState, useRef, useCallback } from "react";
 import { Project } from "@/types";
 import { ExternalLink, Linkedin, RotateCw, CheckCheck, Loader2, MessageSquare, ChevronUp, ChevronDown } from "lucide-react";
 import { BrutalButton } from "./ui/brutal-button";
@@ -15,11 +14,16 @@ const bgColors = [
 ];
 
 const CATEGORIES = [
-    { id: 'ui_score', label: 'Visual Appeal & Aesthetics' },
-    { id: 'ux_score', label: 'Usability & User Flow' },
-    { id: 'stability_score', label: 'Performance & Reliability' },
-    { id: 'innovation_score', label: 'Originality & Innovation' },
-    { id: 'doc_score', label: 'Documentation & Clarity' },
+    { id: 'ui_score', label: 'Visual Appeal' },
+    { id: 'ux_score', label: 'Usability' },
+    { id: 'stability_score', label: 'Reliability' },
+    { id: 'innovation_score', label: 'Innovation' },
+    { id: 'doc_score', label: 'Clarity' },
+];
+
+const SCORE_ROWS = [
+    [1, 2, 3, 4, 5],
+    [6, 7, 8, 9, 10],
 ];
 
 const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
@@ -31,17 +35,23 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
     const scrollDescription = (direction: 'up' | 'down', e: React.MouseEvent) => {
         e.stopPropagation();
         if (descriptionRef.current) {
-            const scrollAmount = 40;
             descriptionRef.current.scrollBy({
-                top: direction === 'down' ? scrollAmount : -scrollAmount,
+                top: direction === 'down' ? 40 : -40,
                 behavior: 'smooth'
             });
         }
     };
 
-    const handleFlip = () => {
-        if (!isSubmitting) setIsFlipped(!isFlipped);
-    };
+    const handleFlip = useCallback(() => {
+        if (!isSubmitting) setIsFlipped(prev => !prev);
+    }, [isSubmitting]);
+
+    const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleFlip();
+        }
+    }, [handleFlip]);
 
     const handleScore = (category: string, score: number, e: React.MouseEvent) => {
         e.stopPropagation();
@@ -51,14 +61,13 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
     const handlePreset = (score: number, e: React.MouseEvent) => {
         e.stopPropagation();
         const newScores: Record<string, number> = {};
-        CATEGORIES.forEach(cat => newScores[cat.id] = score);
+        CATEGORIES.forEach(cat => { newScores[cat.id] = score; });
         setScores(newScores);
     };
 
     const handleSubmit = async (e: React.MouseEvent) => {
         e.stopPropagation();
 
-        // Validation
         const missing = CATEGORIES.some(cat => !scores[cat.id]);
         if (missing) {
             toast.error("Please rate all 5 categories!");
@@ -76,9 +85,9 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                 doc_score: scores['doc_score']
             });
             toast.success("Vote submitted! 🎉");
-            setIsFlipped(false); // Flip back
-            setScores({}); // Reset
-        } catch (error) {
+            setIsFlipped(false);
+            setScores({});
+        } catch {
             toast.error("Failed to submit vote");
         } finally {
             setIsSubmitting(false);
@@ -87,33 +96,18 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
 
     return (
         <div
-            className="h-[420px] w-full perspective-1000 cursor-pointer group"
+            className={`flip-card ${isFlipped ? 'is-flipped' : ''}`}
             onClick={handleFlip}
+            onKeyDown={handleKeyDown}
+            tabIndex={0}
+            role="button"
+            aria-expanded={isFlipped}
+            aria-label={`${project.name} - tap to ${isFlipped ? 'view details' : 'vote'}`}
         >
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0, rotateY: isFlipped ? 180 : 0 }}
-                transition={{ duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
-                className="relative w-full h-full transform-style-3d"
-            >
-                {/* FRONT FACE (Summary) */}
-                <div className="absolute inset-0 backface-hidden bg-card border-4 border-foreground flex flex-col overflow-hidden">
-                    {/* Image Section */}
+            <div className="flip-inner">
+                {/* FRONT FACE */}
+                <div className="flip-front bg-card border-4 border-foreground flex flex-col overflow-hidden">
                     <div className="h-48 bg-muted border-b-4 border-foreground relative overflow-hidden">
-                        {project.image_url ? (
-                            <img
-                                src={project.image_url}
-                                alt={project.name}
-                                className="w-full h-full object-cover"
-                            />
-                        ) : (
-                            <div className={`w-full h-full ${bgColors[index % bgColors.length]} flex items-center justify-center`}>
-                                <span className="text-4xl font-black text-foreground/20 uppercase tracking-tighter">
-                                    {project.country === 'TR' ? 'TR' : 'GL'}
-                                </span>
-                            </div>
-                        )}
-
                         {project.image_url ? (
                             <img
                                 src={project.image_url}
@@ -129,7 +123,6 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                         )}
                     </div>
 
-                    {/* Content Section */}
                     <div className="p-4 flex-1 flex flex-col">
                         <div className="mb-2 flex justify-between items-start gap-2">
                             <div className="min-w-0 flex-1">
@@ -142,7 +135,6 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                                     </p>
                                 )}
                             </div>
-                            {/* Country Badge */}
                             <div className="px-2 py-1 bg-background border-2 border-foreground text-[10px] font-bold uppercase shrink-0">
                                 {project.country === 'TR' ? '🔴 Turkey' : '🌍 Global'}
                             </div>
@@ -159,7 +151,6 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                                         {project.description}
                                     </p>
                                 </div>
-                                {/* Scroll arrows */}
                                 <div className="absolute right-0 top-0 bottom-0 flex flex-col justify-center gap-0.5 opacity-0 group-hover/desc:opacity-100 transition-opacity">
                                     <button
                                         onClick={(e) => scrollDescription('up', e)}
@@ -205,7 +196,6 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                         </div>
                     </div>
 
-                    {/* Actions - Comments & Flip Hint */}
                     <div className="absolute bottom-2 right-2 flex items-center gap-2 z-20">
                         <div
                             onClick={(e) => {
@@ -224,32 +214,44 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                 </div>
 
                 {/* BACK FACE (Voting) */}
-                <div className="absolute inset-0 backface-hidden rotate-y-180 bg-card border-4 border-primary flex flex-col overflow-hidden">
+                <div className="flip-back bg-card border-4 border-primary flex flex-col overflow-hidden">
                     <div className="bg-primary p-3 border-b-4 border-foreground flex justify-between items-center">
-                        <h3 className="font-bold text-primary-foreground uppercase tracking-wide">Vote Project</h3>
+                        <h3 className="font-bold text-primary-foreground uppercase tracking-wide text-sm">Vote: {project.name}</h3>
                         <RotateCw className="w-4 h-4 text-primary-foreground opacity-50" />
                     </div>
 
+                    <div className="p-3 flex-1 overflow-y-auto no-scrollbar space-y-3">
+                        {/* Preset buttons */}
+                        <div className="flex gap-1.5" onClick={e => e.stopPropagation()}>
+                            {[7, 8, 9, 10].map(presetScore => (
+                                <button
+                                    key={presetScore}
+                                    onClick={(e) => handlePreset(presetScore, e)}
+                                    className="flex-1 py-1.5 text-[10px] font-bold uppercase bg-muted hover:bg-primary hover:text-primary-foreground border-2 border-foreground transition-all"
+                                >
+                                    All {presetScore}
+                                </button>
+                            ))}
+                        </div>
 
-                    <div className="p-4 flex-1 overflow-y-auto no-scrollbar space-y-4">
                         {/* Categories */}
-                        <div className="space-y-3">
+                        <div className="space-y-2.5">
                             {CATEGORIES.map(cat => (
-                                <div key={cat.id}>
+                                <div key={cat.id} onClick={e => e.stopPropagation()}>
                                     <div className="flex justify-between items-end mb-1">
-                                        <span className="text-xs font-black uppercase text-muted-foreground">{cat.label}</span>
-                                        <span className="text-xs font-bold text-primary">{scores[cat.id] || '-'}</span>
+                                        <span className="text-[10px] font-black uppercase text-muted-foreground">{cat.label}</span>
+                                        <span className="text-[10px] font-bold text-primary">{scores[cat.id] || '-'}</span>
                                     </div>
-                                    <div className="grid grid-cols-7 gap-0.5">
-                                        {[1, 2, 3, 4, 5, 6, 7].map(num => (
+                                    <div className="grid grid-cols-5 gap-1">
+                                        {SCORE_ROWS.flat().map(num => (
                                             <button
                                                 key={num}
                                                 onClick={(e) => handleScore(cat.id, num, e)}
                                                 className={`
-                                                    h-6 text-[10px] font-bold border border-foreground transition-all
+                                                    h-7 text-[11px] font-bold border border-foreground/50 transition-all
                                                     ${scores[cat.id] === num
-                                                        ? 'bg-primary text-primary-foreground transform scale-110 z-10 border-2'
-                                                        : 'bg-background hover:bg-muted text-muted-foreground'
+                                                        ? 'bg-primary text-primary-foreground border-primary scale-105'
+                                                        : 'bg-background hover:bg-muted text-muted-foreground hover:border-foreground'
                                                     }
                                                 `}
                                             >
@@ -262,7 +264,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                         </div>
                     </div>
 
-                    <div className="p-4 border-t-4 border-foreground bg-muted">
+                    <div className="p-3 border-t-4 border-foreground bg-muted" onClick={e => e.stopPropagation()}>
                         <BrutalButton
                             onClick={handleSubmit}
                             variant="primary"
@@ -274,7 +276,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
                         </BrutalButton>
                     </div>
                 </div>
-            </motion.div>
+            </div>
         </div>
     );
 };

@@ -52,23 +52,37 @@ ALTER TABLE feedback ENABLE ROW LEVEL SECURITY;
 ALTER TABLE comments ENABLE ROW LEVEL SECURITY;
 
 -- Projects policies
+DROP POLICY IF EXISTS "Anyone can view projects" ON projects;
+DROP POLICY IF EXISTS "Anyone can insert projects" ON projects;
+DROP POLICY IF EXISTS "Anyone can update projects" ON projects;
+DROP POLICY IF EXISTS "Anyone can delete projects" ON projects;
 CREATE POLICY "Anyone can view projects" ON projects FOR SELECT USING (true);
 CREATE POLICY "Anyone can insert projects" ON projects FOR INSERT WITH CHECK (true);
 CREATE POLICY "Anyone can update projects" ON projects FOR UPDATE USING (true);
 CREATE POLICY "Anyone can delete projects" ON projects FOR DELETE USING (true);
 
 -- Votes policies
+DROP POLICY IF EXISTS "Anyone can view votes" ON votes;
+DROP POLICY IF EXISTS "Anyone can insert votes" ON votes;
+DROP POLICY IF EXISTS "Anyone can update votes" ON votes;
+DROP POLICY IF EXISTS "Anyone can delete votes" ON votes;
 CREATE POLICY "Anyone can view votes" ON votes FOR SELECT USING (true);
 CREATE POLICY "Anyone can insert votes" ON votes FOR INSERT WITH CHECK (true);
 CREATE POLICY "Anyone can update votes" ON votes FOR UPDATE USING (true);
 CREATE POLICY "Anyone can delete votes" ON votes FOR DELETE USING (true);
 
 -- Feedback policies
+DROP POLICY IF EXISTS "Anyone can view feedback" ON feedback;
+DROP POLICY IF EXISTS "Anyone can insert feedback" ON feedback;
+DROP POLICY IF EXISTS "Anyone can delete feedback" ON feedback;
 CREATE POLICY "Anyone can view feedback" ON feedback FOR SELECT USING (true);
 CREATE POLICY "Anyone can insert feedback" ON feedback FOR INSERT WITH CHECK (true);
 CREATE POLICY "Anyone can delete feedback" ON feedback FOR DELETE USING (true);
 
 -- Comments policies
+DROP POLICY IF EXISTS "Anyone can view comments" ON comments;
+DROP POLICY IF EXISTS "Anyone can insert comments" ON comments;
+DROP POLICY IF EXISTS "Anyone can delete comments" ON comments;
 CREATE POLICY "Anyone can view comments" ON comments FOR SELECT USING (true);
 CREATE POLICY "Anyone can insert comments" ON comments FOR INSERT WITH CHECK (true);
 CREATE POLICY "Anyone can delete comments" ON comments FOR DELETE USING (true);
