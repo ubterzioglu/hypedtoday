@@ -18,6 +18,11 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-card border-b-4 border-foreground">
+      <div className="bg-accent text-accent-foreground border-b-2 border-foreground">
+        <div className="container mx-auto px-4 py-2 text-center text-xs sm:text-sm font-bold uppercase tracking-wide">
+          Test yayinindayiz. Beklenmedik hatalarla karsilasirsan bizimle iletisime gec.
+        </div>
+      </div>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
