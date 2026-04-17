@@ -1,0 +1,149 @@
+{
+  "nav": {
+    "home": "Home",
+    "explore": "Explore",
+    "addProject": "Add Project",
+    "leaderboard": "Leaderboard",
+    "howItWorks": "How It Works",
+    "contact": "Contact"
+  },
+  "header": {
+    "banner": "We are in beta. If you encounter unexpected issues, please contact us.",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "myClaims": "My Claims",
+    "myReviews": "Reviews",
+    "admin": "Admin",
+    "adminDashboard": "Admin Dashboard"
+  },
+  "footer": {
+    "navigation": "Navigation",
+    "connect": "Connect",
+    "rights": "© {{year}} HYPED. All rights reserved."
+  },
+  "home": {
+    "welcomeTo": "Welcome to",
+    "tagline": "Innovate. Connect. Create. Promote.",
+    "addYourProject": "Add Your Project",
+    "platformStats": "Platform Stats",
+    "quickActions": "Quick Actions",
+    "topProjects": "Top Projects",
+    "viewAll": "View All",
+    "joinTitle": "Join Our Community!",
+    "joinDesc": "Connect with other creators, get feedback on your projects, and discover amazing work from around the world.",
+    "joinLinkedIn": "Join LinkedIn Group 🚀"
+  },
+  "hero": {
+    "tagline": "innovate. connect. create. promote.",
+    "addProject": "Add Project",
+    "explore": "Explore",
+    "vote": "Vote",
+    "leaderboard": "Leaderboard",
+    "howItWorks": "How It Works?",
+    "contact": "Contact",
+    "joinUs": "Join us! 🚀"
+  },
+  "quickActions": {
+    "addProject": "Add Project",
+    "addProjectDesc": "Showcase your work",
+    "explore": "Explore",
+    "exploreDesc": "Discover projects",
+    "vote": "Vote",
+    "voteDesc": "Rate & support",
+    "leaderboard": "Leaderboard",
+    "leaderboardDesc": "Top ranked",
+    "howItWorks": "How It Works",
+    "howItWorksDesc": "Learn more",
+    "contact": "Contact",
+    "contactDesc": "Get in touch"
+  },
+  "stats": {
+    "activePosts": "Active Posts",
+    "supporters": "Supporters",
+    "approvedSupports": "Approved Supports",
+    "totalPoints": "Total Points"
+  },
+  "projectCard": {
+    "support": "Support",
+    "signInToClaim": "Sign in to claim support tasks",
+    "noTasks": "No tasks available",
+    "claim": "Claim {{task}}",
+    "loginTo": "Login to {{task}}",
+    "approved": "approved",
+    "pending": "pending",
+    "supportThisPost": "Support This Post"
+  },
+  "showroom": {
+    "title": "LinkedIn Post Feed",
+    "subtitle": "Support posts by liking, commenting, or reposting",
+    "postsNeedSupport_one": "<bold>{{count}}</bold> post needs support",
+    "postsNeedSupport_other": "<bold>{{count}}</bold> posts need support",
+    "noPosts": "No posts yet. Be the first to request support!",
+    "submitPost": "Submit a Post",
+    "tryAgain": "Try Again",
+    "failedToLoad": "Failed to load posts. Please try again later."
+  },
+  "leaderboard": {
+    "title": "Top Supporters",
+    "subtitle": "Ranked by support points earned",
+    "rank": "Rank",
+    "supporter": "Supporter",
+    "points": "Points",
+    "pts": "pts",
+    "anonymous": "Anonymous",
+    "loading": "Loading rankings...",
+    "empty": "No supporters yet! Be the first to help."
+  },
+  "addProject": {
+    "title": "Request Support",
+    "subtitle": "Submit a LinkedIn post for community support",
+    "linkedinFeedLink": "LinkedIn Feed"
+  },
+  "howItWorks": {
+    "title": "How It Works",
+    "subtitle": "From code to fame in 6 simple steps",
+    "readyTitle": "Ready to Showcase?",
+    "startNow": "Start Now",
+    "step1Title": "1. Submit Project",
+    "step1Desc": "Have a cool project? Share it with the community! Just add your GitHub repo or project URL.",
+    "step2Title": "2. Verification",
+    "step2Desc": "Our team briefly reviews your submission to ensure it's legit and safe for the community.",
+    "step3Title": "3. Share",
+    "step3Desc": "Spread the word! Share your project link with friends and followers to gather maximum vibes.",
+    "step4Title": "4. Get Votes",
+    "step4Desc": "Community members vote on your project based on UI, UX, Innovation, and more.",
+    "step5Title": "5. You Vote Too!",
+    "step5Desc": "Don't just watch! Support fellow developers by voting on their projects. Vibe is mutual.",
+    "step6Title": "6. Climb Ranks",
+    "step6Desc": "Earn points, rise up the leaderboard, and get recognized as a top vibe creator!"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Get in touch with our community",
+    "sendFeedback": "Send Feedback",
+    "placeholder": "Tell us what you think...",
+    "submit": "Submit Feedback",
+    "submitting": "Sending...",
+    "errorEmpty": "Please enter a message!",
+    "successMsg": "Feedback sent! Thank you.",
+    "errorMsg": "Error sending feedback."
+  },
+  "auth": {
+    "title": "Sign In",
+    "subtitle": "Sign in to manage projects and access admin features",
+    "welcome": "Welcome",
+    "chooseMethod": "Choose a sign-in method to continue",
+    "google": "Continue with Google",
+    "github": "Continue with GitHub",
+    "emailLabel": "Email for Magic Link",
+    "sendMagicLink": "Send Magic Link",
+    "sending": "Sending...",
+    "checkEmail": "Check your email!",
+    "magicLinkSent": "We sent a login link to",
+    "errorEmail": "Please enter your email",
+    "errorGoogle": "Failed to sign in with Google",
+    "errorGitHub": "Failed to sign in with GitHub",
+    "errorMagicLink": "Failed to send magic link",
+    "successMagicLink": "Check your email for a login link!"
+  }
+}

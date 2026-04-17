@@ -3,32 +3,38 @@ import { Rocket, Menu, X, LogOut, User } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/lib/auth";
-
-const navItems = [
-  { label: "Home", to: "/" },
-  { label: "Explore", to: "/showroom" },
-  { label: "Add Project", to: "/add-project" },
-  { label: "Leaderboard", to: "/leaderboard" },
-  { label: "How It Works", to: "/how-it-works" },
-  { label: "Contact", to: "/contact" },
-];
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, signOut } = useAuth();
+  const { t, i18n } = useTranslation();
+
+  const navItems = [
+    { label: t("nav.home"), to: "/" },
+    { label: t("nav.explore"), to: "/showroom" },
+    { label: t("nav.addProject"), to: "/add-project" },
+    { label: t("nav.leaderboard"), to: "/leaderboard" },
+    { label: t("nav.howItWorks"), to: "/how-it-works" },
+    { label: t("nav.contact"), to: "/contact" },
+  ];
 
   const handleSignOut = async () => {
     await signOut();
     navigate("/");
   };
 
+  const toggleLang = () => {
+    i18n.changeLanguage(i18n.language === "tr" ? "en" : "tr");
+  };
+
   return (
     <header className="sticky top-0 z-50 bg-card border-b-4 border-foreground">
       <div className="bg-accent text-accent-foreground border-b-2 border-foreground">
         <div className="container mx-auto px-4 py-2 text-center text-xs sm:text-sm font-bold uppercase tracking-wide">
-          Test yayinindayiz. Beklenmedik hatalarla karsilasirsan bizimle iletisime gec.
+          {t("header.banner")}
         </div>
       </div>
       <div className="container mx-auto px-4">
@@ -45,7 +51,7 @@ const Header = () => {
           <nav className="hidden md:flex items-center gap-1">
             {navItems.map((item) => (
               <Link
-                key={item.label}
+                key={item.to}
                 to={item.to}
                 className={`px-4 py-2 text-sm font-bold uppercase transition-all border-2 border-transparent hover:border-foreground ${
                   location.pathname === item.to
@@ -71,26 +77,26 @@ const Header = () => {
                   to="/my-claims"
                   className="px-3 py-1 text-xs font-bold uppercase bg-secondary text-secondary-foreground border-2 border-foreground hover:bg-secondary/80"
                 >
-                  My Claims
+                  {t("header.myClaims")}
                 </Link>
                 <Link
                   to="/my-reviews"
                   className="px-3 py-1 text-xs font-bold uppercase bg-accent text-accent-foreground border-2 border-foreground hover:bg-accent/80"
                 >
-                  Reviews
+                  {t("header.myReviews")}
                 </Link>
-                {user.role === 'admin' && (
+                {user.role === "admin" && (
                   <Link
                     to="/admin"
                     className="px-3 py-1 text-xs font-bold uppercase bg-primary text-primary-foreground border-2 border-foreground hover:bg-primary/80"
                   >
-                    Admin
+                    {t("header.admin")}
                   </Link>
                 )}
                 <button
                   onClick={handleSignOut}
                   className="p-2 border-2 border-foreground hover:bg-muted transition-colors"
-                  title="Sign out"
+                  title={t("header.signOut")}
                 >
                   <LogOut className="w-4 h-4" />
                 </button>
@@ -100,21 +106,32 @@ const Header = () => {
                 to="/admin/login"
                 className="px-4 py-2 text-sm font-bold uppercase border-2 border-foreground hover:bg-muted transition-all ml-2"
               >
-                Sign In
+                {t("header.signIn")}
               </Link>
             )}
+
+            <button
+              onClick={toggleLang}
+              className="ml-2 px-3 py-1 text-xs font-black uppercase border-2 border-foreground hover:bg-muted transition-colors"
+            >
+              {i18n.language === "tr" ? "EN" : "TR"}
+            </button>
           </nav>
 
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden w-10 h-10 bg-muted border-2 border-foreground flex items-center justify-center"
-          >
-            {mobileMenuOpen ? (
-              <X className="w-5 h-5" />
-            ) : (
-              <Menu className="w-5 h-5" />
-            )}
-          </button>
+          <div className="md:hidden flex items-center gap-2">
+            <button
+              onClick={toggleLang}
+              className="px-3 py-1 text-xs font-black uppercase border-2 border-foreground hover:bg-muted transition-colors"
+            >
+              {i18n.language === "tr" ? "EN" : "TR"}
+            </button>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="w-10 h-10 bg-muted border-2 border-foreground flex items-center justify-center"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -129,7 +146,7 @@ const Header = () => {
             <nav className="flex flex-col p-4 gap-2">
               {navItems.map((item) => (
                 <Link
-                  key={item.label}
+                  key={item.to}
                   to={item.to}
                   onClick={() => setMobileMenuOpen(false)}
                   className={`px-4 py-3 text-sm font-bold uppercase border-2 border-foreground ${
@@ -154,26 +171,26 @@ const Header = () => {
                   </div>
                   <Link to="/my-claims" onClick={() => setMobileMenuOpen(false)}
                     className="px-4 py-3 text-sm font-bold uppercase bg-secondary text-secondary-foreground border-2 border-foreground">
-                    My Claims
+                    {t("header.myClaims")}
                   </Link>
                   <Link to="/my-reviews" onClick={() => setMobileMenuOpen(false)}
                     className="px-4 py-3 text-sm font-bold uppercase bg-accent text-accent-foreground border-2 border-foreground">
-                    My Reviews
+                    {t("header.myReviews")}
                   </Link>
-                  {user.role === 'admin' && (
+                  {user.role === "admin" && (
                     <Link
                       to="/admin"
                       onClick={() => setMobileMenuOpen(false)}
                       className="px-4 py-3 text-sm font-bold uppercase bg-primary text-primary-foreground border-2 border-foreground"
                     >
-                      Admin Dashboard
+                      {t("header.adminDashboard")}
                     </Link>
                   )}
                   <button
                     onClick={() => { setMobileMenuOpen(false); handleSignOut(); }}
                     className="px-4 py-3 text-sm font-bold uppercase bg-destructive text-white border-2 border-foreground flex items-center gap-2"
                   >
-                    <LogOut className="w-4 h-4" /> Sign Out
+                    <LogOut className="w-4 h-4" /> {t("header.signOut")}
                   </button>
                 </>
               ) : (
@@ -182,7 +199,7 @@ const Header = () => {
                   onClick={() => setMobileMenuOpen(false)}
                   className="px-4 py-3 text-sm font-bold uppercase border-2 border-foreground hover:bg-muted"
                 >
-                  Sign In
+                  {t("header.signIn")}
                 </Link>
               )}
             </nav>

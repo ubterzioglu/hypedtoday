@@ -7,14 +7,16 @@ import TopProjects from "@/components/TopProjects";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { BrutalButton } from "@/components/ui/brutal-button";
+import { useTranslation } from "react-i18next";
 
 const Index = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
 
       <main className="flex-1 container mx-auto px-4 py-8">
-        {/* Hero Section */}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -26,19 +28,19 @@ const Index = () => {
                 <div className="flex items-center gap-2 mb-2">
                   <Sparkles className="w-5 h-5 text-primary" />
                   <span className="text-sm font-bold uppercase text-primary">
-                    Welcome to
+                    {t("home.welcomeTo")}
                   </span>
                 </div>
                 <h1 className="font-display text-4xl md:text-6xl font-black mb-2">
                   hyped.today
                 </h1>
                 <p className="text-lg text-muted-foreground">
-                  Innovate. Connect. Create. Promote.
+                  {t("home.tagline")}
                 </p>
               </div>
               <Link to="/add-project">
                 <BrutalButton variant="primary" size="lg" className="px-8">
-                  Add Your Project
+                  {t("home.addYourProject")}
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </BrutalButton>
               </Link>
@@ -46,7 +48,6 @@ const Index = () => {
           </div>
         </motion.section>
 
-        {/* Stats Section */}
         <motion.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -55,12 +56,11 @@ const Index = () => {
         >
           <h2 className="text-lg font-bold uppercase mb-4 flex items-center gap-2">
             <span className="w-2 h-2 bg-primary" />
-            Platform Stats
+            {t("home.platformStats")}
           </h2>
           <DashboardStats />
         </motion.section>
 
-        {/* Quick Actions */}
         <motion.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -69,12 +69,11 @@ const Index = () => {
         >
           <h2 className="text-lg font-bold uppercase mb-4 flex items-center gap-2">
             <span className="w-2 h-2 bg-secondary" />
-            Quick Actions
+            {t("home.quickActions")}
           </h2>
           <QuickActions />
         </motion.section>
 
-        {/* Top Projects */}
         <motion.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -84,19 +83,18 @@ const Index = () => {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold uppercase flex items-center gap-2">
               <span className="w-2 h-2 bg-accent" />
-              Top Projects
+              {t("home.topProjects")}
             </h2>
             <Link
               to="/leaderboard"
               className="text-sm font-bold text-primary hover:underline flex items-center gap-1"
             >
-              View All <ArrowRight className="w-4 h-4" />
+              {t("home.viewAll")} <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
           <TopProjects />
         </motion.section>
 
-        {/* Join CTA */}
         <motion.section
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -105,23 +103,18 @@ const Index = () => {
         >
           <div className="bg-primary border-4 border-foreground p-8 text-center">
             <h2 className="text-2xl md:text-3xl font-black text-primary-foreground mb-4">
-              Join Our Community!
+              {t("home.joinTitle")}
             </h2>
             <p className="text-primary-foreground/80 mb-6 max-w-2xl mx-auto">
-              Connect with other creators, get feedback on your projects, and
-              discover amazing work from around the world.
+              {t("home.joinDesc")}
             </p>
             <a
               href="https://www.linkedin.com/company/hyped-today/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <BrutalButton
-                variant="secondary"
-                size="lg"
-                className="px-12"
-              >
-                Join LinkedIn Group 🚀
+              <BrutalButton variant="secondary" size="lg" className="px-12">
+                {t("home.joinLinkedIn")}
               </BrutalButton>
             </a>
           </div>

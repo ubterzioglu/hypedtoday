@@ -1,27 +1,29 @@
 import { Link } from "react-router-dom";
 import { Rocket, Github, Twitter, Linkedin } from "lucide-react";
-
-const footerLinks = [
-  { label: "Home", to: "/" },
-  { label: "Explore", to: "/showroom" },
-  { label: "Add Project", to: "/add-project" },
-  { label: "Leaderboard", to: "/leaderboard" },
-  { label: "How It Works", to: "/how-it-works" },
-  { label: "Contact", to: "/contact" },
-];
+import { useTranslation } from "react-i18next";
 
 const socialLinks = [
-  { icon: Twitter, href: "https://twitter.com/supporttopromote", label: "Twitter" },
+  { icon: Twitter, href: "https://twitter.com/hypedtoday", label: "Twitter" },
   { icon: Linkedin, href: "https://www.linkedin.com/company/hyped-today/", label: "LinkedIn" },
   { icon: Github, href: "#", label: "GitHub" },
 ];
 
 const Footer = () => {
+  const { t } = useTranslation();
+
+  const footerLinks = [
+    { label: t("nav.home"), to: "/" },
+    { label: t("nav.explore"), to: "/showroom" },
+    { label: t("nav.addProject"), to: "/add-project" },
+    { label: t("nav.leaderboard"), to: "/leaderboard" },
+    { label: t("nav.howItWorks"), to: "/how-it-works" },
+    { label: t("nav.contact"), to: "/contact" },
+  ];
+
   return (
     <footer className="bg-card border-t-4 border-foreground mt-auto">
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Brand */}
           <div>
             <Link to="/" className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 bg-primary border-2 border-foreground flex items-center justify-center">
@@ -34,13 +36,12 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Links */}
           <div>
-            <h3 className="font-bold uppercase mb-4 text-sm">Navigation</h3>
+            <h3 className="font-bold uppercase mb-4 text-sm">{t("footer.navigation")}</h3>
             <div className="grid grid-cols-2 gap-2">
               {footerLinks.map((link) => (
                 <Link
-                  key={link.label}
+                  key={link.to}
                   to={link.to}
                   className="text-sm text-muted-foreground hover:text-primary transition-colors"
                 >
@@ -50,9 +51,8 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Social */}
           <div>
-            <h3 className="font-bold uppercase mb-4 text-sm">Connect</h3>
+            <h3 className="font-bold uppercase mb-4 text-sm">{t("footer.connect")}</h3>
             <div className="flex gap-2">
               {socialLinks.map((social) => (
                 <a
@@ -70,10 +70,9 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Copyright */}
         <div className="mt-8 pt-4 border-t-2 border-foreground/20 text-center">
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} HYPED. All rights reserved.
+            {t("footer.rights", { year: new Date().getFullYear() })}
           </p>
         </div>
       </div>

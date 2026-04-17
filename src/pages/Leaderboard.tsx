@@ -5,8 +5,10 @@ import LeaderboardItem from "@/components/LeaderboardItem";
 import { Trophy, Medal } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useTranslation } from "react-i18next";
 
 const Leaderboard = () => {
+    const { t } = useTranslation();
     const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -40,10 +42,10 @@ const Leaderboard = () => {
                         </div>
                         <div>
                             <h1 className="text-4xl md:text-5xl font-black uppercase">
-                                Top Supporters
+                                {t("leaderboard.title")}
                             </h1>
                             <p className="text-muted-foreground font-medium text-lg">
-                                Ranked by support points earned
+                                {t("leaderboard.subtitle")}
                             </p>
                         </div>
                     </div>
@@ -57,8 +59,8 @@ const Leaderboard = () => {
                         <div className="flex flex-col items-center justify-end">
                             <div className="w-full bg-gray-300 border-4 border-foreground p-4 text-center">
                                 <Medal className="w-8 h-8 mx-auto mb-2 text-gray-500" />
-                                <p className="font-bold text-sm truncate">{entries[1].display_name ?? 'Anonymous'}</p>
-                                <p className="text-xs text-muted-foreground">{entries[1].total_points} pts</p>
+                                <p className="font-bold text-sm truncate">{entries[1].display_name ?? t("leaderboard.anonymous")}</p>
+                                <p className="text-xs text-muted-foreground">{entries[1].total_points} {t("leaderboard.pts")}</p>
                             </div>
                             <div className="w-full h-24 bg-gray-300/50 border-x-4 border-b-4 border-foreground flex items-center justify-center font-black text-2xl">
                                 2
@@ -69,8 +71,8 @@ const Leaderboard = () => {
                         <div className="flex flex-col items-center justify-end -mt-4">
                             <div className="w-full bg-yellow-400 border-4 border-foreground p-4 text-center shadow-brutal">
                                 <Trophy className="w-10 h-10 mx-auto mb-2 text-yellow-700" />
-                                <p className="font-bold truncate">{entries[0].display_name ?? 'Anonymous'}</p>
-                                <p className="text-xs font-bold">{entries[0].total_points} pts</p>
+                                <p className="font-bold truncate">{entries[0].display_name ?? t("leaderboard.anonymous")}</p>
+                                <p className="text-xs font-bold">{entries[0].total_points} {t("leaderboard.pts")}</p>
                             </div>
                             <div className="w-full h-32 bg-yellow-400/50 border-x-4 border-b-4 border-foreground flex items-center justify-center font-black text-3xl">
                                 1
@@ -81,8 +83,8 @@ const Leaderboard = () => {
                         <div className="flex flex-col items-center justify-end">
                             <div className="w-full bg-amber-600 border-4 border-foreground p-4 text-center text-white">
                                 <Medal className="w-8 h-8 mx-auto mb-2" />
-                                <p className="font-bold text-sm truncate">{entries[2].display_name ?? 'Anonymous'}</p>
-                                <p className="text-xs opacity-80">{entries[2].total_points} pts</p>
+                                <p className="font-bold text-sm truncate">{entries[2].display_name ?? t("leaderboard.anonymous")}</p>
+                                <p className="text-xs opacity-80">{entries[2].total_points} {t("leaderboard.pts")}</p>
                             </div>
                             <div className="w-full h-16 bg-amber-600/50 border-x-4 border-b-4 border-foreground flex items-center justify-center font-black text-2xl">
                                 3
@@ -93,18 +95,18 @@ const Leaderboard = () => {
 
                 <div className="bg-card border-4 border-foreground shadow-brutal overflow-hidden">
                     <div className="bg-primary border-b-4 border-foreground px-4 py-3 flex items-center justify-between">
-                        <span className="font-bold text-primary-foreground">Rank</span>
-                        <span className="font-bold text-primary-foreground flex-1 text-center">Supporter</span>
-                        <span className="font-bold text-primary-foreground">Points</span>
+                        <span className="font-bold text-primary-foreground">{t("leaderboard.rank")}</span>
+                        <span className="font-bold text-primary-foreground flex-1 text-center">{t("leaderboard.supporter")}</span>
+                        <span className="font-bold text-primary-foreground">{t("leaderboard.points")}</span>
                     </div>
                     <div className="max-h-[600px] overflow-y-auto custom-scrollbar">
                         {loading ? (
                             <div className="p-10 text-center font-bold text-xl animate-pulse">
-                                Loading rankings...
+                                {t("leaderboard.loading")}
                             </div>
                         ) : entries.length === 0 ? (
                             <div className="p-10 text-center font-bold text-xl">
-                                No supporters yet! Be the first to help.
+                                {t("leaderboard.empty")}
                             </div>
                         ) : (
                             entries.map((entry, index) => (

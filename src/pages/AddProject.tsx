@@ -5,8 +5,10 @@ import RequestCapacityWidget from "@/components/RequestCapacityWidget";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const AddProject = () => {
+    const { t } = useTranslation();
     return (
         <div className="min-h-screen bg-background flex flex-col">
             <Header />
@@ -20,10 +22,10 @@ const AddProject = () => {
                         </div>
                         <div>
                             <h1 className="text-4xl md:text-5xl font-black">
-                                Request Support
+                                {t("addProject.title")}
                             </h1>
                             <p className="text-muted-foreground font-medium text-lg">
-                                Submit a LinkedIn post for community support
+                                {t("addProject.subtitle")}
                             </p>
                         </div>
                     </div>
@@ -63,7 +65,7 @@ const AddProject = () => {
                         <p>
                             Your post will be visible in the{" "}
                             <Link to="/showroom" className="text-primary font-bold hover:underline">
-                                LinkedIn Feed
+                                {t("addProject.linkedinFeedLink")}
                             </Link>{" "}
                             for supporters to discover.
                         </p>

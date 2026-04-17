@@ -8,8 +8,10 @@ import { Link } from "react-router-dom";
 import { BrutalButton } from "@/components/ui/brutal-button";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useTranslation } from "react-i18next";
 
 const Showroom = () => {
+    const { t } = useTranslation();
     const [posts, setPosts] = useState<PublicPost[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -30,7 +32,7 @@ const Showroom = () => {
             setPosts(data || []);
         } catch (err) {
             console.error('Failed to load posts:', err);
-            setError('Failed to load posts. Please try again later.');
+            setError(t("showroom.failedToLoad"));
         } finally {
             setLoading(false);
         }
@@ -47,10 +49,8 @@ const Showroom = () => {
                             <Linkedin className="w-6 h-6" />
                         </div>
                         <div>
-                            <h1 className="text-3xl md:text-4xl font-black">LinkedIn Post Feed</h1>
-                            <p className="text-muted-foreground">
-                                Support posts by liking, commenting, or reposting
-                            </p>
+                            <h1 className="text-3xl md:text-4xl font-black">{t("showroom.title")}</h1>
+                            <p className="text-muted-foreground">{t("showroom.subtitle")}</p>
                         </div>
                     </div>
                 </div>
@@ -64,15 +64,13 @@ const Showroom = () => {
                 ) : error ? (
                     <div className="text-center py-20">
                         <p className="text-destructive text-xl mb-4">{error}</p>
-                        <BrutalButton onClick={loadPosts} variant="primary">Try Again</BrutalButton>
+                        <BrutalButton onClick={loadPosts} variant="primary">{t("showroom.tryAgain")}</BrutalButton>
                     </div>
                 ) : posts.length === 0 ? (
                     <div className="text-center py-20 bg-card border-4 border-foreground">
-                        <p className="text-muted-foreground text-xl mb-4">
-                            No posts yet. Be the first to request support!
-                        </p>
+                        <p className="text-muted-foreground text-xl mb-4">{t("showroom.noPosts")}</p>
                         <Link to="/add-project">
-                            <BrutalButton variant="primary">Submit a Post</BrutalButton>
+                            <BrutalButton variant="primary">{t("showroom.submitPost")}</BrutalButton>
                         </Link>
                     </div>
                 ) : (
@@ -82,7 +80,8 @@ const Showroom = () => {
                             animate={{ opacity: 1, y: 0 }}
                             className="text-center text-muted-foreground mb-6"
                         >
-                            <span className="text-primary font-bold">{posts.length}</span> post{posts.length !== 1 && 's'} need support
+                            <span className="text-primary font-bold">{posts.length}</span>{" "}
+                            {posts.length === 1 ? t("showroom.postsNeedSupport_one", { count: posts.length }) : t("showroom.postsNeedSupport_other", { count: posts.length })}
                         </motion.p>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

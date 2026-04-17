@@ -1,0 +1,149 @@
+{
+  "nav": {
+    "home": "Ana Sayfa",
+    "explore": "Keşfet",
+    "addProject": "Proje Ekle",
+    "leaderboard": "Sıralama",
+    "howItWorks": "Nasıl Çalışır",
+    "contact": "İletişim"
+  },
+  "header": {
+    "banner": "Test yayınındayız. Beklenmedik hatalarla karşılaşırsan bizimle iletişime geç.",
+    "signIn": "Giriş Yap",
+    "signOut": "Çıkış Yap",
+    "myClaims": "Görevlerim",
+    "myReviews": "İncelemelerim",
+    "admin": "Yönetim",
+    "adminDashboard": "Yönetim Paneli"
+  },
+  "footer": {
+    "navigation": "Navigasyon",
+    "connect": "Bağlantı",
+    "rights": "© {{year}} HYPED. Tüm hakları saklıdır."
+  },
+  "home": {
+    "welcomeTo": "Hoş geldin",
+    "tagline": "Yenilik. Bağlantı. Üretim. Tanıtım.",
+    "addYourProject": "Projen Ekle",
+    "platformStats": "Platform İstatistikleri",
+    "quickActions": "Hızlı İşlemler",
+    "topProjects": "En İyi Projeler",
+    "viewAll": "Tümünü Gör",
+    "joinTitle": "Topluluğumuza Katıl!",
+    "joinDesc": "Diğer yaratıcılarla bağlantı kur, projelerine geri bildirim al ve dünyanın her yerinden harika çalışmalar keşfet.",
+    "joinLinkedIn": "LinkedIn Grubuna Katıl 🚀"
+  },
+  "hero": {
+    "tagline": "yenilik. bağlantı. üretim. tanıtım.",
+    "addProject": "Proje Ekle",
+    "explore": "Keşfet",
+    "vote": "Oy Ver",
+    "leaderboard": "Sıralama",
+    "howItWorks": "Nasıl Çalışır?",
+    "contact": "İletişim",
+    "joinUs": "Katıl! 🚀"
+  },
+  "quickActions": {
+    "addProject": "Proje Ekle",
+    "addProjectDesc": "Çalışmanı sergile",
+    "explore": "Keşfet",
+    "exploreDesc": "Projeleri keşfet",
+    "vote": "Oy Ver",
+    "voteDesc": "Değerlendir & destekle",
+    "leaderboard": "Sıralama",
+    "leaderboardDesc": "En üst sıradakiler",
+    "howItWorks": "Nasıl Çalışır",
+    "howItWorksDesc": "Daha fazla öğren",
+    "contact": "İletişim",
+    "contactDesc": "Bize ulaş"
+  },
+  "stats": {
+    "activePosts": "Aktif Gönderiler",
+    "supporters": "Destekçiler",
+    "approvedSupports": "Onaylanan Destekler",
+    "totalPoints": "Toplam Puan"
+  },
+  "projectCard": {
+    "support": "Destek",
+    "signInToClaim": "Görev almak için giriş yapın",
+    "noTasks": "Görev yok",
+    "claim": "{{task}} Al",
+    "loginTo": "{{task}} için Giriş Yap",
+    "approved": "onaylı",
+    "pending": "beklemede",
+    "supportThisPost": "Bu Gönderiyi Destekle"
+  },
+  "showroom": {
+    "title": "LinkedIn Gönderi Akışı",
+    "subtitle": "Beğenerek, yorum yaparak veya paylaşarak gönderileri destekle",
+    "postsNeedSupport_one": "<bold>{{count}}</bold> gönderi destek bekliyor",
+    "postsNeedSupport_other": "<bold>{{count}}</bold> gönderi destek bekliyor",
+    "noPosts": "Henüz gönderi yok. İlk destek talebini sen oluştur!",
+    "submitPost": "Gönderi Ekle",
+    "tryAgain": "Tekrar Dene",
+    "failedToLoad": "Gönderiler yüklenemedi. Lütfen daha sonra tekrar deneyin."
+  },
+  "leaderboard": {
+    "title": "En İyi Destekçiler",
+    "subtitle": "Destek puanına göre sıralanmış",
+    "rank": "Sıra",
+    "supporter": "Destekçi",
+    "points": "Puan",
+    "pts": "puan",
+    "anonymous": "Anonim",
+    "loading": "Sıralama yükleniyor...",
+    "empty": "Henüz destekçi yok! İlk sen ol."
+  },
+  "addProject": {
+    "title": "Destek İste",
+    "subtitle": "Topluluk desteği için bir LinkedIn gönderisi gönder",
+    "linkedinFeedLink": "LinkedIn Akışı"
+  },
+  "howItWorks": {
+    "title": "Nasıl Çalışır",
+    "subtitle": "Koddan şöhrete 6 basit adımda",
+    "readyTitle": "Sergilemeye Hazır mısın?",
+    "startNow": "Hemen Başla",
+    "step1Title": "1. Proje Gönder",
+    "step1Desc": "Harika bir projen mi var? Toplulukla paylaş! GitHub repo veya proje URL'sini ekle.",
+    "step2Title": "2. Doğrulama",
+    "step2Desc": "Ekibimiz başvurunun gerçek ve topluluk için güvenli olduğundan emin olmak için kısaca inceler.",
+    "step3Title": "3. Paylaş",
+    "step3Desc": "Haberi yay! Maksimum destek toplamak için proje linkini arkadaşlarınla ve takipçilerinle paylaş.",
+    "step4Title": "4. Oy Al",
+    "step4Desc": "Topluluk üyeleri projenizi UI, UX, Yenilik ve daha fazlası üzerinden değerlendirir.",
+    "step5Title": "5. Sen de Oy Ver!",
+    "step5Desc": "Sadece izleme! Diğer geliştiricilerin projelerine oy vererek destek ol. Destek karşılıklıdır.",
+    "step6Title": "6. Sıralamada Yüksel",
+    "step6Desc": "Puan kazan, sıralamada yüksel ve en iyi içerik üreticisi olarak tanın!"
+  },
+  "contact": {
+    "title": "İletişim",
+    "subtitle": "Topluluğumuzla iletişime geçin",
+    "sendFeedback": "Geri Bildirim Gönder",
+    "placeholder": "Ne düşündüğünü söyle...",
+    "submit": "Geri Bildirim Gönder",
+    "submitting": "Gönderiliyor...",
+    "errorEmpty": "Lütfen bir mesaj girin!",
+    "successMsg": "Geri bildirim gönderildi! Teşekkürler.",
+    "errorMsg": "Geri bildirim gönderilirken hata oluştu."
+  },
+  "auth": {
+    "title": "Giriş Yap",
+    "subtitle": "Projeleri yönetmek ve yönetim özelliklerine erişmek için giriş yapın",
+    "welcome": "Hoş Geldin",
+    "chooseMethod": "Devam etmek için bir giriş yöntemi seçin",
+    "google": "Google ile Devam Et",
+    "github": "GitHub ile Devam Et",
+    "emailLabel": "Sihirli Link için E-posta",
+    "sendMagicLink": "Sihirli Link Gönder",
+    "sending": "Gönderiliyor...",
+    "checkEmail": "E-postanı kontrol et!",
+    "magicLinkSent": "Giriş linki gönderildi:",
+    "errorEmail": "Lütfen e-posta adresinizi girin",
+    "errorGoogle": "Google ile giriş başarısız",
+    "errorGitHub": "GitHub ile giriş başarısız",
+    "errorMagicLink": "Sihirli link gönderilemedi",
+    "successMagicLink": "Giriş linki için e-postanızı kontrol edin!"
+  }
+}

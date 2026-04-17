@@ -222,21 +222,27 @@
       "type": "file"
     },
     {
-      "path": "src\\pages\\AdminDashboard.tsx",
-      "accessCount": 7,
-      "lastAccessed": 1776425145685,
-      "type": "file"
-    },
-    {
       "path": "",
-      "accessCount": 6,
-      "lastAccessed": 1776425109301,
+      "accessCount": 12,
+      "lastAccessed": 1776440830857,
       "type": "directory"
     },
     {
+      "path": "src\\pages\\Leaderboard.tsx",
+      "accessCount": 12,
+      "lastAccessed": 1776441131212,
+      "type": "file"
+    },
+    {
       "path": "src\\pages\\AddProject.tsx",
-      "accessCount": 6,
-      "lastAccessed": 1776425144780,
+      "accessCount": 11,
+      "lastAccessed": 1776441132662,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\AdminDashboard.tsx",
+      "accessCount": 7,
+      "lastAccessed": 1776425145685,
       "type": "file"
     },
     {
@@ -258,6 +264,18 @@
       "type": "directory"
     },
     {
+      "path": "src\\pages\\Contact.tsx",
+      "accessCount": 5,
+      "lastAccessed": 1776441050501,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\Showroom.tsx",
+      "accessCount": 5,
+      "lastAccessed": 1776441058993,
+      "type": "file"
+    },
+    {
       "path": "src\\types\\index.ts",
       "accessCount": 4,
       "lastAccessed": 1776414797326,
@@ -270,9 +288,9 @@
       "type": "file"
     },
     {
-      "path": "src\\pages\\Contact.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1776414318320,
+      "path": "src\\components\\Header.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1776440992236,
       "type": "file"
     },
     {
@@ -288,33 +306,33 @@
       "type": "file"
     },
     {
-      "path": "src\\components\\Header.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1776415011943,
-      "type": "file"
-    },
-    {
       "path": "src\\tests\\security-regression.test.ts",
       "accessCount": 3,
       "lastAccessed": 1776415879795,
       "type": "file"
     },
     {
-      "path": "src\\pages\\Showroom.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1776425131229,
-      "type": "file"
-    },
-    {
-      "path": "src\\pages\\Leaderboard.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1776425146027,
-      "type": "file"
-    },
-    {
       "path": "src\\lib\\supabase.ts",
       "accessCount": 3,
       "lastAccessed": 1776439318864,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\SupporterDashboard.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1776440832673,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\OwnerReviews.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1776440833022,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\DashboardStats.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1776441020062,
       "type": "file"
     },
     {
@@ -342,12 +360,6 @@
       "type": "file"
     },
     {
-      "path": "src\\components\\DashboardStats.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1776414427845,
-      "type": "file"
-    },
-    {
       "path": "src\\components\\TopProjects.tsx",
       "accessCount": 2,
       "lastAccessed": 1776414442521,
@@ -357,18 +369,6 @@
       "path": "supabase\\migrations\\20260415092000_views_and_dtos.sql",
       "accessCount": 2,
       "lastAccessed": 1776425130785,
-      "type": "file"
-    },
-    {
-      "path": "src\\pages\\OwnerReviews.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1776425132107,
-      "type": "file"
-    },
-    {
-      "path": "src\\pages\\SupporterDashboard.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1776425132383,
       "type": "file"
     },
     {

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Linkedin, Trophy, Users, Zap } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { useTranslation } from "react-i18next";
 
 interface Stats {
     totalPosts: number;
@@ -11,6 +12,7 @@ interface Stats {
 }
 
 const DashboardStats = () => {
+    const { t } = useTranslation();
     const [stats, setStats] = useState<Stats>({
         totalPosts: 0,
         totalSupporters: 0,
@@ -47,10 +49,10 @@ const DashboardStats = () => {
     }, []);
 
     const statCards = [
-        { icon: Linkedin, label: "Active Posts", value: stats.totalPosts, color: "bg-primary", textColor: "text-primary-foreground" },
-        { icon: Users, label: "Supporters", value: stats.totalSupporters, color: "bg-secondary", textColor: "text-secondary-foreground" },
-        { icon: Trophy, label: "Approved Supports", value: stats.totalApprovedClaims, color: "bg-accent", textColor: "text-accent-foreground" },
-        { icon: Zap, label: "Total Points", value: stats.totalPoints, color: "bg-tertiary", textColor: "text-tertiary-foreground" },
+        { icon: Linkedin, label: t("stats.activePosts"), value: stats.totalPosts, color: "bg-primary", textColor: "text-primary-foreground" },
+        { icon: Users, label: t("stats.supporters"), value: stats.totalSupporters, color: "bg-secondary", textColor: "text-secondary-foreground" },
+        { icon: Trophy, label: t("stats.approvedSupports"), value: stats.totalApprovedClaims, color: "bg-accent", textColor: "text-accent-foreground" },
+        { icon: Zap, label: t("stats.totalPoints"), value: stats.totalPoints, color: "bg-tertiary", textColor: "text-tertiary-foreground" },
     ];
 
     if (loading) {

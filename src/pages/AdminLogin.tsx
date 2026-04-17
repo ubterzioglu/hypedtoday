@@ -7,8 +7,10 @@ import { toast } from "sonner";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/lib/auth";
+import { useTranslation } from "react-i18next";
 
 const AdminLogin = () => {
+    const { t } = useTranslation();
     const [email, setEmail] = useState("");
     const [magicLinkSent, setMagicLinkSent] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -29,16 +31,16 @@ const AdminLogin = () => {
     const handleMagicLink = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!email.trim()) {
-            toast.error("Please enter your email");
+            toast.error(t("auth.errorEmail"));
             return;
         }
         setIsSubmitting(true);
         try {
             await signInWithMagicLink(email, nextPath);
             setMagicLinkSent(true);
-            toast.success("Check your email for a login link!");
+            toast.success(t("auth.successMagicLink"));
         } catch {
-            toast.error("Failed to send magic link");
+            toast.error(t("auth.errorMagicLink"));
         } finally {
             setIsSubmitting(false);
         }
@@ -48,7 +50,7 @@ const AdminLogin = () => {
         try {
             await signInWithGoogle(nextPath);
         } catch {
-            toast.error("Failed to sign in with Google");
+            toast.error(t("auth.errorGoogle"));
         }
     };
 
@@ -56,7 +58,7 @@ const AdminLogin = () => {
         try {
             await signInWithGitHub(nextPath);
         } catch {
-            toast.error("Failed to sign in with GitHub");
+            toast.error(t("auth.errorGitHub"));
         }
     };
 
@@ -76,10 +78,10 @@ const AdminLogin = () => {
                         </div>
                         <div>
                             <h1 className="text-4xl md:text-5xl font-black uppercase">
-                                Sign In
+                                {t("auth.title")}
                             </h1>
                             <p className="text-muted-foreground font-medium text-lg">
-                                Sign in to manage projects and access admin features
+                                {t("auth.subtitle")}
                             </p>
                         </div>
                     </div>
@@ -93,9 +95,9 @@ const AdminLogin = () => {
                     className="w-full max-w-md"
                 >
                     <div className="bg-card border-4 border-foreground p-8 shadow-brutal">
-                        <h2 className="text-2xl font-bold text-center mb-2">Welcome</h2>
+                        <h2 className="text-2xl font-bold text-center mb-2">{t("auth.welcome")}</h2>
                         <p className="text-muted-foreground text-center mb-8 text-sm">
-                            Choose a sign-in method to continue
+                            {t("auth.chooseMethod")}
                         </p>
 
                         <div className="space-y-4">
@@ -111,7 +113,7 @@ const AdminLogin = () => {
                                     <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                                     <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                                 </svg>
-                                Continue with Google
+                                {t("auth.google")}
                             </BrutalButton>
 
                             <BrutalButton
@@ -121,7 +123,7 @@ const AdminLogin = () => {
                                 className="w-full flex items-center justify-center gap-3"
                             >
                                 <Github className="w-5 h-5" />
-                                Continue with GitHub
+                                {t("auth.github")}
                             </BrutalButton>
 
                             <div className="relative my-6">
@@ -136,16 +138,16 @@ const AdminLogin = () => {
                             {magicLinkSent ? (
                                 <div className="text-center p-4 bg-primary/10 border-2 border-foreground">
                                     <Mail className="w-8 h-8 mx-auto mb-2 text-primary" />
-                                    <p className="font-bold">Check your email!</p>
+                                    <p className="font-bold">{t("auth.checkEmail")}</p>
                                     <p className="text-sm text-muted-foreground mt-1">
-                                        We sent a login link to <span className="font-bold">{email}</span>
+                                        {t("auth.magicLinkSent")} <span className="font-bold">{email}</span>
                                     </p>
                                 </div>
                             ) : (
                                 <form onSubmit={handleMagicLink} className="space-y-4">
                                     <div>
                                         <label htmlFor="email" className="block text-sm font-bold mb-2 uppercase tracking-wide">
-                                            Email for Magic Link
+                                            {t("auth.emailLabel")}
                                         </label>
                                         <input
                                             id="email"
@@ -165,9 +167,9 @@ const AdminLogin = () => {
                                         disabled={isSubmitting}
                                     >
                                         {isSubmitting ? (
-                                            <><Loader2 className="w-4 h-4 animate-spin" /> Sending...</>
+                                            <><Loader2 className="w-4 h-4 animate-spin" /> {t("auth.sending")}</>
                                         ) : (
-                                            <><Mail className="w-4 h-4" /> Send Magic Link</>
+                                            <><Mail className="w-4 h-4" /> {t("auth.sendMagicLink")}</>
                                         )}
                                     </BrutalButton>
                                 </form>
