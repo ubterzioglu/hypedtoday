@@ -82,7 +82,7 @@ const AdminSettings = () => {
                                 type="text"
                                 value={editValues[s.key] ?? ''}
                                 onChange={e => setEditValues(prev => ({ ...prev, [s.key]: e.target.value }))}
-                                className="px-3 py-2 border-2 border-foreground font-mono text-sm w-32 text-right"
+                                className="px-3 py-2 border-2 border-foreground bg-background text-foreground font-mono text-sm w-32 text-right placeholder:text-muted-foreground"
                             />
                             <BrutalButton variant="primary" size="sm" onClick={() => handleSave(s.key)}>
                                 <Save className="w-3 h-3" />

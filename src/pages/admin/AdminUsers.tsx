@@ -111,7 +111,7 @@ const AdminUsers = () => {
                                         value={editLimits}
                                         onChange={e => setEditLimits(e.target.value)}
                                         placeholder='{"daily_post_limit":5}'
-                                        className="px-2 py-1 border-2 border-foreground text-xs font-mono w-48"
+                                        className="px-2 py-1 border-2 border-foreground bg-background text-foreground text-xs font-mono w-48 placeholder:text-muted-foreground"
                                     />
                                     <BrutalButton variant="primary" size="sm" onClick={() => handleSaveLimits(u.id)}>Save</BrutalButton>
                                     <BrutalButton variant="secondary" size="sm" onClick={() => setEditingId(null)}>Cancel</BrutalButton>
