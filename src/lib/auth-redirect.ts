@@ -22,10 +22,10 @@ export function getAuthRedirectUrl(): string | undefined {
 
   const configuredUrl = normalizeBaseUrl(import.meta.env.VITE_SITE_URL ?? "");
   if (configuredUrl) {
-    return `${configuredUrl}/`;
+    return `${configuredUrl}/auth/callback`;
   }
 
-  return `${window.location.origin}/`;
+  return `${window.location.origin}/auth/callback`;
 }
 
 export { normalizeBaseUrl };

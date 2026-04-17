@@ -240,6 +240,12 @@
       "type": "file"
     },
     {
+      "path": "src\\App.tsx",
+      "accessCount": 6,
+      "lastAccessed": 1776439358942,
+      "type": "file"
+    },
+    {
       "path": "src\\lib\\api.ts",
       "accessCount": 5,
       "lastAccessed": 1776414834098,
@@ -282,12 +288,6 @@
       "type": "file"
     },
     {
-      "path": "src\\App.tsx",
-      "accessCount": 3,
-      "lastAccessed": 1776414992604,
-      "type": "file"
-    },
-    {
       "path": "src\\components\\Header.tsx",
       "accessCount": 3,
       "lastAccessed": 1776415011943,
@@ -309,6 +309,12 @@
       "path": "src\\pages\\Leaderboard.tsx",
       "accessCount": 3,
       "lastAccessed": 1776425146027,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\supabase.ts",
+      "accessCount": 3,
+      "lastAccessed": 1776439318864,
       "type": "file"
     },
     {
@@ -405,12 +411,6 @@
       "path": "supabase\\functions\\submit-feedback\\index.ts",
       "accessCount": 1,
       "lastAccessed": 1776414781202,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\supabase.ts",
-      "accessCount": 1,
-      "lastAccessed": 1776414792449,
       "type": "file"
     },
     {

@@ -16,6 +16,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import HowItWorks from "./pages/HowItWorks";
 import OwnerReviews from "./pages/OwnerReviews";
 import SupporterDashboard from "./pages/SupporterDashboard";
+import AuthCallback from "./pages/AuthCallback";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +55,7 @@ const App = () => (
                 <SupporterDashboard />
               </ProtectedRoute>
             } />
+            <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
