@@ -12,7 +12,7 @@ export function corsHeaders(req: Request, extra?: Record<string, string>): Recor
     return {
         'Access-Control-Allow-Origin': allowed,
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Authorization, Content-Type, X-Client-Info',
+        'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, accept, origin',
         'Access-Control-Max-Age': '86400',
         ...extra,
     };

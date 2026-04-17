@@ -1,6 +1,6 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
-import { normalizeBaseUrl, normalizePath } from "@/lib/auth-redirect";
+import { normalizeBaseUrl, normalizePath, getAuthRedirectUrl } from "@/lib/auth-redirect";
 
 describe("normalizeBaseUrl", () => {
   it("normalizes a bare production URL", () => {
@@ -25,5 +25,50 @@ describe("normalizePath", () => {
   it("falls back to root for unsafe values", () => {
     expect(normalizePath("https://evil.example")).toBe("/");
     expect(normalizePath(undefined)).toBe("/");
+  });
+});
+
+describe("getAuthRedirectUrl", () => {
+  it("uses window.location.origin when VITE_SITE_URL is not set", () => {
+    vi.stubEnv("VITE_SITE_URL", "");
+    const result = getAuthRedirectUrl("/add-project");
+    expect(result).toContain(window.location.origin);
+    expect(result).toContain("/auth/callback?next=%2Fadd-project");
+    vi.unstubAllEnvs();
+  });
+
+  it("uses VITE_SITE_URL when set", () => {
+    vi.stubEnv("VITE_SITE_URL", "https://hyped.today");
+    const result = getAuthRedirectUrl("/admin");
+    expect(result).toBe("https://hyped.today/auth/callback?next=%2Fadmin");
+    vi.unstubAllEnvs();
+  });
+
+  it("returns / when nextPath is undefined", () => {
+    vi.stubEnv("VITE_SITE_URL", "https://hyped.today");
+    const result = getAuthRedirectUrl(undefined);
+    expect(result).toContain("next=%2F");
+    vi.unstubAllEnvs();
+  });
+
+  it("returns / when nextPath is empty string", () => {
+    vi.stubEnv("VITE_SITE_URL", "https://hyped.today");
+    const result = getAuthRedirectUrl("");
+    expect(result).toContain("next=%2F");
+    vi.unstubAllEnvs();
+  });
+
+  it("returns / when nextPath is invalid (not starting with /)", () => {
+    vi.stubEnv("VITE_SITE_URL", "https://hyped.today");
+    const result = getAuthRedirectUrl("https://evil.com");
+    expect(result).toContain("next=%2F");
+    vi.unstubAllEnvs();
+  });
+
+  it("correctly encodes query string in nextPath", () => {
+    vi.stubEnv("VITE_SITE_URL", "https://hyped.today");
+    const result = getAuthRedirectUrl("/add-project?foo=bar");
+    expect(result).toContain("next=%2Fadd-project%3Ffoo%3Dbar");
+    vi.unstubAllEnvs();
   });
 });
