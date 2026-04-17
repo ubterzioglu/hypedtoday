@@ -1,7 +1,0 @@
-{"t":0,"agent":"system","event":"skill_invoked","skill_name":"plan"}
-{"t":0,"agent":"system","event":"skill_invoked","skill_name":"superpowers:dispatching-parallel-agents"}
-{"t":0,"agent":"a5dd423","agent_type":"general-purpose","event":"agent_start","parent_mode":"none"}
-{"t":0,"agent":"a5dd423","agent_type":"general-purpose","event":"agent_stop","success":true,"duration_ms":15200}
-{"t":0,"agent":"ab90afc","agent_type":"general-purpose","event":"agent_start","parent_mode":"none"}
-{"t":0,"agent":"ab90afc","agent_type":"general-purpose","event":"agent_stop","success":true,"duration_ms":86512}
-{"t":0,"agent":"a68f82f","agent_type":"unknown","event":"agent_stop","success":true}

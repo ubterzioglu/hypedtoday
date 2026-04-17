@@ -65,9 +65,17 @@ Deno.serve(async (req) => {
         if (action_type === 'user_suspended' && target_user_id) {
             const { error } = await supabase
                 .from('profiles')
-                .update({ role: 'user', updated_at: new Date().toISOString() })
+                .update({ is_suspended: true, updated_at: new Date().toISOString() })
                 .eq('id', target_user_id);
             if (error) return errorResponse(req, 'Failed to suspend user: ' + error.message, 500);
+        }
+
+        if (action_type === 'user_unsuspended' && target_user_id) {
+            const { error } = await supabase
+                .from('profiles')
+                .update({ is_suspended: false, updated_at: new Date().toISOString() })
+                .eq('id', target_user_id);
+            if (error) return errorResponse(req, 'Failed to unsuspend user: ' + error.message, 500);
         }
 
         if (action_type === 'request_ban_set' && target_user_id) {
@@ -179,7 +187,7 @@ Deno.serve(async (req) => {
         return successResponse(req, { success: true }, 200, rateLimitHeaders(rl));
     } catch (err) {
         const message = err instanceof Error ? err.message : 'Unknown error';
-        const status = message === 'Unauthorized' || message === 'Admin access required' ? 401 : 500;
+        const status = message === 'Unauthorized' || message === 'Admin access required' ? 401 : message === 'Account suspended' ? 403 : 500;
         return errorResponse(req, message, status);
     }
 });

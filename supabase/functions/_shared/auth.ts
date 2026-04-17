@@ -17,9 +17,13 @@ export async function requireAuth(req: Request): Promise<AuthResult> {
 
     const { data: profile } = await serviceSupabase
         .from('profiles')
-        .select('role, email')
+        .select('role, email, is_suspended')
         .eq('id', user.id)
         .single();
+
+    if (profile?.is_suspended) {
+        throw new Error('Account suspended');
+    }
 
     return {
         userId: user.id,

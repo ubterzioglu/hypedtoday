@@ -124,7 +124,7 @@ Deno.serve(async (req) => {
         return successResponse(req, { claim }, 201, rateLimitHeaders(rl));
     } catch (err) {
         const message = err instanceof Error ? err.message : 'Unknown error';
-        const status = message === 'Unauthorized' ? 401 : 500;
+        const status = message === 'Unauthorized' ? 401 : message === 'Account suspended' ? 403 : 500;
         return errorResponse(req, message, status);
     }
 });

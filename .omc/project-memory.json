@@ -223,8 +223,8 @@
     },
     {
       "path": "src\\components\\ProjectSubmissionForm.tsx",
-      "accessCount": 14,
-      "lastAccessed": 1776448418205,
+      "accessCount": 15,
+      "lastAccessed": 1776455164795,
       "type": "file"
     },
     {
@@ -241,8 +241,8 @@
     },
     {
       "path": "src\\pages\\AddProject.tsx",
-      "accessCount": 11,
-      "lastAccessed": 1776441132662,
+      "accessCount": 12,
+      "lastAccessed": 1776455158755,
       "type": "file"
     },
     {
@@ -259,14 +259,14 @@
     },
     {
       "path": "src\\App.tsx",
-      "accessCount": 6,
-      "lastAccessed": 1776439358942,
+      "accessCount": 7,
+      "lastAccessed": 1776455187596,
       "type": "file"
     },
     {
       "path": "src\\lib\\api.ts",
-      "accessCount": 5,
-      "lastAccessed": 1776414834098,
+      "accessCount": 7,
+      "lastAccessed": 1776455325389,
       "type": "file"
     },
     {
@@ -306,6 +306,12 @@
       "type": "file"
     },
     {
+      "path": "src\\lib\\supabase.ts",
+      "accessCount": 4,
+      "lastAccessed": 1776455171206,
+      "type": "file"
+    },
+    {
       "path": "vercel.json",
       "accessCount": 3,
       "lastAccessed": 1776414784981,
@@ -321,12 +327,6 @@
       "path": "src\\tests\\security-regression.test.ts",
       "accessCount": 3,
       "lastAccessed": 1776415879795,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\supabase.ts",
-      "accessCount": 3,
-      "lastAccessed": 1776439318864,
       "type": "file"
     },
     {
@@ -354,6 +354,12 @@
       "type": "file"
     },
     {
+      "path": "supabase\\functions\\_shared\\auth.ts",
+      "accessCount": 3,
+      "lastAccessed": 1776455511240,
+      "type": "file"
+    },
+    {
       "path": "src\\components\\LeaderboardItem.tsx",
       "accessCount": 2,
       "lastAccessed": 1776414329875,
@@ -378,6 +384,30 @@
       "type": "file"
     },
     {
+      "path": "supabase\\functions\\_shared\\cors.ts",
+      "accessCount": 2,
+      "lastAccessed": 1776455191774,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\auth.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1776455195063,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\functions\\submit-feedback\\index.ts",
+      "accessCount": 2,
+      "lastAccessed": 1776455363466,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\migrations\\20260415090000_profiles_and_roles.sql",
+      "accessCount": 2,
+      "lastAccessed": 1776455474407,
+      "type": "file"
+    },
+    {
       "path": "finalplan.md",
       "accessCount": 1,
       "lastAccessed": 1776413317253,
@@ -396,27 +426,9 @@
       "type": "file"
     },
     {
-      "path": "supabase\\functions\\_shared\\auth.ts",
-      "accessCount": 1,
-      "lastAccessed": 1776414770067,
-      "type": "file"
-    },
-    {
       "path": "supabase\\functions\\_shared\\response.ts",
       "accessCount": 1,
       "lastAccessed": 1776414770542,
-      "type": "file"
-    },
-    {
-      "path": "supabase\\functions\\_shared\\cors.ts",
-      "accessCount": 1,
-      "lastAccessed": 1776414770969,
-      "type": "file"
-    },
-    {
-      "path": "supabase\\functions\\submit-feedback\\index.ts",
-      "accessCount": 1,
-      "lastAccessed": 1776414781202,
       "type": "file"
     },
     {
@@ -492,21 +504,9 @@
       "type": "file"
     },
     {
-      "path": "supabase\\migrations\\20260415090000_profiles_and_roles.sql",
-      "accessCount": 1,
-      "lastAccessed": 1776425121063,
-      "type": "file"
-    },
-    {
       "path": "supabase\\migrations\\20260415091000_domain_model.sql",
       "accessCount": 1,
       "lastAccessed": 1776425121546,
-      "type": "file"
-    },
-    {
-      "path": "src\\lib\\auth.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1776425121964,
       "type": "file"
     },
     {

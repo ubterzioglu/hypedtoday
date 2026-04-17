@@ -29,7 +29,9 @@ async function ensureAuthenticatedSession(): Promise<void> {
         throw buildApiError(error.message, 'AUTH_SESSION_ERROR', 401);
     }
 
-    if (session?.access_token) {
+    const expiresAt = session?.expires_at ?? 0;
+    const isValid = session?.access_token && expiresAt * 1000 > Date.now() + 60_000;
+    if (isValid) {
         return;
     }
 

@@ -73,7 +73,7 @@ Deno.serve(async (req) => {
         }, 200, rateLimitHeaders(rl));
     } catch (err) {
         const message = err instanceof Error ? err.message : 'Unknown error';
-        const status = message === 'Unauthorized' || message === 'Admin access required' ? 401 : 500;
+        const status = message === 'Unauthorized' || message === 'Admin access required' ? 401 : message === 'Account suspended' ? 403 : 500;
         return errorResponse(req, message, status);
     }
 });

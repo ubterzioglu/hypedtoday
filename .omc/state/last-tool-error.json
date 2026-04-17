@@ -1,7 +1,0 @@
-{
-  "tool_name": "Read",
-  "tool_input_preview": "{\"file_path\":\"C:\\\\temp_private\\\\hypedtoday\\\\src\\\\pages\"}",
-  "error": "EISDIR: illegal operation on a directory, read 'C:\\temp_private\\hypedtoday\\src\\pages'",
-  "timestamp": "2026-04-17T11:25:15.865Z",
-  "retry_count": 1
-}
