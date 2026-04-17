@@ -1,35 +1,39 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { mockSupabase } from '@/test/setup';
 
-describe('getAuthHeaders', () => {
+describe('ensureAuthenticatedSession', () => {
     beforeEach(() => {
         vi.clearAllMocks();
-        vi.stubEnv('VITE_SUPABASE_ANON_KEY', 'test-anon-key');
     });
 
-    async function getAuthHeaders() {
-        let { data: { session } } = await mockSupabase.auth.getSession();
-        if (!session?.access_token) {
-            const refreshed = await mockSupabase.auth.refreshSession();
-            session = refreshed.data.session;
+    async function ensureAuthenticatedSession() {
+        const { data: { session }, error } = await mockSupabase.auth.getSession();
+        if (error) {
+            throw {
+                message: error.message,
+                code: 'AUTH_SESSION_ERROR',
+                status: 401,
+            };
         }
-        return {
-            'Content-Type': 'application/json',
-            apikey: 'test-anon-key',
-            ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
-        };
+        if (session?.access_token) {
+            return;
+        }
+
+        const { data, error: refreshError } = await mockSupabase.auth.refreshSession();
+        if (!data.session?.access_token || refreshError) {
+            throw {
+                message: 'Unauthorized',
+                code: 'UNAUTHORIZED',
+                status: 401,
+            };
+        }
     }
 
-    it('returns Authorization header when session exists', async () => {
+    it('returns when a session exists', async () => {
         mockSupabase.auth.getSession.mockResolvedValue({
             data: { session: { access_token: 'token-123' } },
         });
-        const headers = await getAuthHeaders();
-        expect(headers).toEqual({
-            'Content-Type': 'application/json',
-            apikey: 'test-anon-key',
-            Authorization: 'Bearer token-123',
-        });
+        await expect(ensureAuthenticatedSession()).resolves.toBeUndefined();
     });
 
     it('calls refreshSession when session is null', async () => {
@@ -39,55 +43,74 @@ describe('getAuthHeaders', () => {
         mockSupabase.auth.refreshSession.mockResolvedValue({
             data: { session: { access_token: 'refreshed-token' } },
         });
-        const headers = await getAuthHeaders();
+        await ensureAuthenticatedSession();
         expect(mockSupabase.auth.refreshSession).toHaveBeenCalled();
-        expect(headers.Authorization).toBe('Bearer refreshed-token');
     });
 
-    it('omits Authorization when both session and refresh fail', async () => {
+    it('throws when both session and refresh fail', async () => {
         mockSupabase.auth.getSession.mockResolvedValue({
             data: { session: null },
         });
         mockSupabase.auth.refreshSession.mockResolvedValue({
             data: { session: null },
         });
-        const headers = await getAuthHeaders();
-        expect(headers.Authorization).toBeUndefined();
-        expect(headers.apikey).toBe('test-anon-key');
+        await expect(ensureAuthenticatedSession()).rejects.toEqual({
+            message: 'Unauthorized',
+            code: 'UNAUTHORIZED',
+            status: 401,
+        });
     });
 });
 
 describe('apiCall', () => {
     beforeEach(() => {
         vi.clearAllMocks();
-        vi.stubEnv('VITE_SUPABASE_ANON_KEY', 'test-anon-key');
     });
 
     async function apiCall<T>(path: string, options: RequestInit = {}): Promise<T> {
-        const SUPABASE_ANON_KEY = 'test-anon-key';
-        let { data: { session } } = await mockSupabase.auth.getSession();
+        const { data: { session }, error: sessionError } = await mockSupabase.auth.getSession();
+        if (sessionError) {
+            throw {
+                message: sessionError.message,
+                code: 'AUTH_SESSION_ERROR',
+                status: 401,
+            };
+        }
         if (!session?.access_token) {
             const refreshed = await mockSupabase.auth.refreshSession();
-            session = refreshed.data.session;
+            if (!refreshed.data.session?.access_token) {
+                throw {
+                    message: 'Unauthorized',
+                    code: 'UNAUTHORIZED',
+                    status: 401,
+                };
+            }
         }
-        const headers: Record<string, string> = {
-            'Content-Type': 'application/json',
-            apikey: SUPABASE_ANON_KEY,
-            ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
-        };
-        const mergedHeaders = { ...headers, ...options.headers };
+        const mergedHeaders = (options.headers as Record<string, string> | undefined) ?? {};
+        const contentType = mergedHeaders['Content-Type'] ?? mergedHeaders['content-type'];
         const maybeJsonBody =
-            typeof options.body === 'string' && (mergedHeaders['Content-Type'] ?? mergedHeaders['content-type']) === 'application/json'
+            typeof options.body === 'string' && (!contentType || contentType === 'application/json')
                 ? JSON.parse(options.body)
                 : options.body;
+        const invokeHeaders = maybeJsonBody === undefined
+            ? mergedHeaders
+            : { 'Content-Type': 'application/json', ...mergedHeaders };
 
-        const { data, error } = await mockSupabase.functions.invoke(path, {
+        const { data, error, response } = await mockSupabase.functions.invoke(path, {
             method: options.method,
             body: maybeJsonBody,
-            headers: mergedHeaders,
+            headers: invokeHeaders,
         });
 
         if (error) {
+            if (response) {
+                const body = await response.json() as { error?: { message?: string; code?: string } };
+                throw {
+                    message: body.error?.message ?? error.message ?? 'Request failed',
+                    code: body.error?.code ?? 'FUNCTION_ERROR',
+                    status: response.status,
+                };
+            }
             throw {
                 message: error.message ?? 'Request failed',
                 code: 'FUNCTION_ERROR',
@@ -113,23 +136,27 @@ describe('apiCall', () => {
         expect(result).toEqual({ post: { id: '1' }, tasks: [] });
         expect(mockSupabase.functions.invoke).toHaveBeenCalledWith('create-post', {
             method: 'POST',
-            body: { linkedin_url: 'https://linkedin.com/post/1' },
-            headers: expect.objectContaining({ Authorization: 'Bearer tok' }),
+            body: JSON.parse(JSON.stringify({ linkedin_url: 'https://linkedin.com/post/1' })),
+            headers: { 'Content-Type': 'application/json' },
         });
     });
 
-    it('throws on invoke error', async () => {
+    it('throws parsed function error details', async () => {
         mockSupabase.auth.getSession.mockResolvedValue({
             data: { session: { access_token: 'tok' } },
         });
         mockSupabase.functions.invoke.mockResolvedValue({
             data: null,
             error: { message: 'Function error' },
+            response: {
+                status: 401,
+                json: vi.fn().mockResolvedValue({ error: { message: 'Unauthorized', code: 'UNAUTHORIZED' } }),
+            },
         });
         await expect(apiCall('create-post', { method: 'POST', body: JSON.stringify({}) })).rejects.toEqual({
-            message: 'Function error',
-            code: 'FUNCTION_ERROR',
-            status: 500,
+            message: 'Unauthorized',
+            code: 'UNAUTHORIZED',
+            status: 401,
         });
     });
 });
@@ -137,33 +164,32 @@ describe('apiCall', () => {
 describe('api method calls', () => {
     beforeEach(() => {
         vi.clearAllMocks();
-        vi.stubEnv('VITE_SUPABASE_ANON_KEY', 'test-anon-key');
         mockSupabase.auth.getSession.mockResolvedValue({
             data: { session: { access_token: 'tok' } },
         });
     });
 
     async function apiCall<T>(path: string, options: RequestInit = {}): Promise<T> {
-        const SUPABASE_ANON_KEY = 'test-anon-key';
-        let { data: { session } } = await mockSupabase.auth.getSession();
+        const { data: { session } } = await mockSupabase.auth.getSession();
         if (!session?.access_token) {
             const refreshed = await mockSupabase.auth.refreshSession();
-            session = refreshed.data.session;
+            if (!refreshed.data.session?.access_token) {
+                throw { message: 'Unauthorized', code: 'UNAUTHORIZED', status: 401 };
+            }
         }
-        const headers: Record<string, string> = {
-            'Content-Type': 'application/json',
-            apikey: SUPABASE_ANON_KEY,
-            ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
-        };
-        const mergedHeaders = { ...headers, ...options.headers };
+        const mergedHeaders = (options.headers as Record<string, string> | undefined) ?? {};
+        const contentType = mergedHeaders['Content-Type'] ?? mergedHeaders['content-type'];
         const maybeJsonBody =
-            typeof options.body === 'string' && (mergedHeaders['Content-Type'] ?? mergedHeaders['content-type']) === 'application/json'
+            typeof options.body === 'string' && (!contentType || contentType === 'application/json')
                 ? JSON.parse(options.body)
                 : options.body;
+        const invokeHeaders = maybeJsonBody === undefined
+            ? mergedHeaders
+            : { 'Content-Type': 'application/json', ...mergedHeaders };
         const { data, error } = await mockSupabase.functions.invoke(path, {
             method: options.method,
             body: maybeJsonBody,
-            headers: mergedHeaders,
+            headers: invokeHeaders,
         });
         if (error) {
             throw { message: error.message ?? 'Request failed', code: 'FUNCTION_ERROR', status: 500 };
@@ -186,6 +212,7 @@ describe('api method calls', () => {
         expect(mockSupabase.functions.invoke).toHaveBeenCalledWith('create-post', expect.objectContaining({
             method: 'POST',
             body: body,
+            headers: { 'Content-Type': 'application/json' },
         }));
     });
 

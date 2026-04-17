@@ -17,13 +17,18 @@ interface RequestLimits {
 }
 
 const RequestCapacityWidget = () => {
-    const { user } = useAuth();
+    const { user, session, loading: authLoading } = useAuth();
     const { t } = useTranslation();
     const [limits, setLimits] = useState<RequestLimits | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        if (!user) { setLoading(false); return; }
+        if (authLoading) return;
+        if (!user || !session?.access_token) {
+            setLoading(false);
+            return;
+        }
+
         const load = async () => {
             try {
                 const data = await api.getRequestLimits() as RequestLimits;
@@ -34,8 +39,8 @@ const RequestCapacityWidget = () => {
                 setLoading(false);
             }
         };
-        load();
-    }, [user]);
+        void load();
+    }, [authLoading, session?.access_token, user]);
 
     if (!user || loading) {
         return loading ? (

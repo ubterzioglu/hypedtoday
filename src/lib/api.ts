@@ -1,42 +1,84 @@
 import { supabase } from '@/lib/supabase';
 import type { PostComment } from '@/types';
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-async function getAuthHeaders(): Promise<Record<string, string>> {
-    let { data: { session } } = await supabase.auth.getSession();
+interface ApiError {
+    message: string;
+    code: string;
+    status: number;
+}
 
-    if (!session?.access_token) {
-        const refreshed = await supabase.auth.refreshSession();
-        session = refreshed.data.session;
+function headersToObject(headers?: HeadersInit): Record<string, string> {
+    if (!headers) return {};
+    if (headers instanceof Headers) {
+        return Object.fromEntries(headers.entries());
+    }
+    if (Array.isArray(headers)) {
+        return Object.fromEntries(headers);
+    }
+    return { ...headers };
+}
+
+function buildApiError(message: string, code = 'FUNCTION_ERROR', status = 500): ApiError {
+    return { message, code, status };
+}
+
+async function ensureAuthenticatedSession(): Promise<void> {
+    const { data: { session }, error } = await supabase.auth.getSession();
+
+    if (error) {
+        throw buildApiError(error.message, 'AUTH_SESSION_ERROR', 401);
     }
 
-    return {
-        'Content-Type': 'application/json',
-        apikey: SUPABASE_ANON_KEY,
-        ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
-    };
+    if (session?.access_token) {
+        return;
+    }
+
+    const { data, error: refreshError } = await supabase.auth.refreshSession();
+    if (!data.session?.access_token || refreshError) {
+        throw buildApiError('Unauthorized', 'UNAUTHORIZED', 401);
+    }
+}
+
+async function readFunctionError(response: Response | undefined, fallbackMessage: string): Promise<ApiError> {
+    if (!response) {
+        return buildApiError(fallbackMessage);
+    }
+
+    try {
+        const body = await response.clone().json() as { error?: { message?: string; code?: string } };
+        return buildApiError(
+            body.error?.message ?? fallbackMessage,
+            body.error?.code ?? 'FUNCTION_ERROR',
+            response.status || 500,
+        );
+    } catch {
+        return buildApiError(fallbackMessage, 'FUNCTION_ERROR', response.status || 500);
+    }
 }
 
 async function apiCall<T>(path: string, options: RequestInit = {}): Promise<T> {
-    const headers = await getAuthHeaders();
-    const mergedHeaders = { ...headers, ...options.headers };
+    await ensureAuthenticatedSession();
+
+    const mergedHeaders = headersToObject(options.headers);
+    const contentType = mergedHeaders['Content-Type'] ?? mergedHeaders['content-type'];
     const maybeJsonBody =
-        typeof options.body === 'string' && (mergedHeaders['Content-Type'] ?? mergedHeaders['content-type']) === 'application/json'
+        typeof options.body === 'string' && (!contentType || contentType === 'application/json')
             ? JSON.parse(options.body)
             : options.body;
 
-    const { data, error } = await supabase.functions.invoke(path, {
+    const invokeHeaders =
+        maybeJsonBody === undefined
+            ? mergedHeaders
+            : { 'Content-Type': 'application/json', ...mergedHeaders };
+
+    const { data, error, response } = await supabase.functions.invoke(path, {
         method: options.method,
         body: maybeJsonBody,
-        headers: mergedHeaders,
+        headers: invokeHeaders,
     });
 
     if (error) {
-        throw {
-            message: error.message ?? 'Request failed',
-            code: 'FUNCTION_ERROR',
-            status: 500,
-        };
+        throw await readFunctionError(response, error.message ?? 'Request failed');
     }
 
     return (data as { data?: T }).data as T;

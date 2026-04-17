@@ -16,9 +16,10 @@ vi.mock('react-router-dom', async () => {
 describe('AuthCallback', () => {
     beforeEach(() => {
         vi.clearAllMocks();
+        window.history.replaceState({}, '', '/auth/callback?code=test-code&next=%2Fadd-project');
     });
 
-    it('calls exchangeCodeForSession', async () => {
+    it('calls exchangeCodeForSession with the auth code', async () => {
         const { default: AuthCallback } = await import('@/pages/AuthCallback');
         await act(async () => {
             render(
@@ -29,10 +30,10 @@ describe('AuthCallback', () => {
                 </MemoryRouter>,
             );
         });
-        expect(mockSupabase.auth.exchangeCodeForSession).toHaveBeenCalled();
+        expect(mockSupabase.auth.exchangeCodeForSession).toHaveBeenCalledWith('test-code');
     });
 
-    it('navigates to / when next param is missing', async () => {
+    it('navigates to the sanitized next path', async () => {
         const { default: AuthCallback } = await import('@/pages/AuthCallback');
         await act(async () => {
             render(
@@ -44,22 +45,13 @@ describe('AuthCallback', () => {
             );
         });
         await waitFor(() => {
-            expect(mockNavigate).toHaveBeenCalledWith('/', { replace: true });
+            expect(mockNavigate).toHaveBeenCalledWith('/add-project', { replace: true });
         });
     });
 
     it('navigates to / when next is external URL (security)', async () => {
         const { default: AuthCallback } = await import('@/pages/AuthCallback');
-        Object.defineProperty(window, 'location', {
-            value: {
-                href: 'https://hyped.today/auth/callback?next=https://evil.com',
-                pathname: '/auth/callback',
-                search: '?next=https://evil.com',
-                origin: 'https://hyped.today',
-            },
-            writable: true,
-            configurable: true,
-        });
+        window.history.replaceState({}, '', '/auth/callback?next=https://evil.com');
         await act(async () => {
             render(
                 <MemoryRouter initialEntries={['/auth/callback']}>
