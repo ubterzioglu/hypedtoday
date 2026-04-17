@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { normalizeBaseUrl } from "@/lib/auth-redirect";
+import { normalizeBaseUrl, normalizePath } from "@/lib/auth-redirect";
 
 describe("normalizeBaseUrl", () => {
   it("normalizes a bare production URL", () => {
@@ -14,5 +14,16 @@ describe("normalizeBaseUrl", () => {
   it("returns undefined for invalid values", () => {
     expect(normalizeBaseUrl("not-a-url")).toBeUndefined();
     expect(normalizeBaseUrl("")).toBeUndefined();
+  });
+});
+
+describe("normalizePath", () => {
+  it("keeps safe in-app paths", () => {
+    expect(normalizePath("/add-project")).toBe("/add-project");
+  });
+
+  it("falls back to root for unsafe values", () => {
+    expect(normalizePath("https://evil.example")).toBe("/");
+    expect(normalizePath(undefined)).toBe("/");
   });
 });

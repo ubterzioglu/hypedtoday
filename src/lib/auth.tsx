@@ -17,21 +17,36 @@ interface AuthContextValue {
     user: AuthUser | null;
     session: Session | null;
     loading: boolean;
-    signInWithGoogle: () => Promise<void>;
-    signInWithGitHub: () => Promise<void>;
-    signInWithMagicLink: (email: string) => Promise<void>;
+    signInWithGoogle: (nextPath?: string) => Promise<void>;
+    signInWithGitHub: (nextPath?: string) => Promise<void>;
+    signInWithMagicLink: (email: string, nextPath?: string) => Promise<void>;
     signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
+async function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T | null> {
+    return await Promise.race([
+        promise,
+        new Promise<null>((resolve) => setTimeout(() => resolve(null), timeoutMs)),
+    ]);
+}
+
 async function fetchProfileRole(userId: string): Promise<{ role: UserRole; display_name: string | null; avatar_url: string | null } | null> {
-    const { data } = await supabase
-        .from('profiles')
-        .select('role, display_name, avatar_url')
-        .eq('id', userId)
-        .single();
-    return data;
+    try {
+        const result = await withTimeout(
+            supabase
+                .from('profiles')
+                .select('role, display_name, avatar_url')
+                .eq('id', userId)
+                .maybeSingle(),
+            5000,
+        );
+
+        return result?.data ?? null;
+    } catch {
+        return null;
+    }
 }
 
 function buildAuthUser(session: Session | null, profileData: { role: UserRole; display_name: string | null; avatar_url: string | null } | null): AuthUser | null {
@@ -81,29 +96,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return () => subscription.unsubscribe();
     }, [loadProfile]);
 
-    const signInWithGoogle = async () => {
+    const signInWithGoogle = async (nextPath = '/') => {
         await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: getAuthRedirectUrl(),
+                redirectTo: getAuthRedirectUrl(nextPath),
             },
         });
     };
 
-    const signInWithGitHub = async () => {
+    const signInWithGitHub = async (nextPath = '/') => {
         await supabase.auth.signInWithOAuth({
             provider: 'github',
             options: {
-                redirectTo: getAuthRedirectUrl(),
+                redirectTo: getAuthRedirectUrl(nextPath),
             },
         });
     };
 
-    const signInWithMagicLink = async (email: string) => {
+    const signInWithMagicLink = async (email: string, nextPath = '/') => {
         await supabase.auth.signInWithOtp({
             email,
             options: {
-                emailRedirectTo: getAuthRedirectUrl(),
+                emailRedirectTo: getAuthRedirectUrl(nextPath),
             },
         });
     };

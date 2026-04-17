@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { BrutalButton } from "@/components/ui/brutal-button";
 import { motion } from "framer-motion";
 import { Shield, Github, Mail, Loader2 } from "lucide-react";
@@ -13,12 +13,18 @@ const AdminLogin = () => {
     const [magicLinkSent, setMagicLinkSent] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
     const { signInWithGoogle, signInWithGitHub, signInWithMagicLink, user } = useAuth();
+    const nextPath = useMemo(() => {
+        const params = new URLSearchParams(location.search);
+        const next = params.get("next");
+        return next && next.startsWith("/") ? next : "/";
+    }, [location.search]);
 
-    if (user) {
-        navigate(user.role === 'admin' ? "/admin" : "/", { replace: true });
-        return null;
-    }
+    useEffect(() => {
+        if (!user) return;
+        navigate(user.role === 'admin' && nextPath === "/" ? "/admin" : nextPath, { replace: true });
+    }, [navigate, nextPath, user]);
 
     const handleMagicLink = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -28,7 +34,7 @@ const AdminLogin = () => {
         }
         setIsSubmitting(true);
         try {
-            await signInWithMagicLink(email);
+            await signInWithMagicLink(email, nextPath);
             setMagicLinkSent(true);
             toast.success("Check your email for a login link!");
         } catch {
@@ -40,7 +46,7 @@ const AdminLogin = () => {
 
     const handleGoogleSignIn = async () => {
         try {
-            await signInWithGoogle();
+            await signInWithGoogle(nextPath);
         } catch {
             toast.error("Failed to sign in with Google");
         }
@@ -48,11 +54,15 @@ const AdminLogin = () => {
 
     const handleGitHubSignIn = async () => {
         try {
-            await signInWithGitHub();
+            await signInWithGitHub(nextPath);
         } catch {
             toast.error("Failed to sign in with GitHub");
         }
     };
+
+    if (user) {
+        return null;
+    }
 
     return (
         <div className="min-h-screen bg-background flex flex-col">

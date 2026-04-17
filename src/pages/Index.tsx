@@ -30,7 +30,7 @@ const Index = () => {
                   </span>
                 </div>
                 <h1 className="font-display text-4xl md:text-6xl font-black mb-2">
-                  supporttopromote
+                  hyped.today
                 </h1>
                 <p className="text-lg text-muted-foreground">
                   Innovate. Connect. Create. Promote.
