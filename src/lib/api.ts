@@ -4,7 +4,13 @@ import type { PostComment } from '@/types';
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 
 async function getAuthHeaders(): Promise<Record<string, string>> {
-    const { data: { session } } = await supabase.auth.getSession();
+    let { data: { session } } = await supabase.auth.getSession();
+
+    if (!session?.access_token) {
+        const refreshed = await supabase.auth.refreshSession();
+        session = refreshed.data.session;
+    }
+
     return {
         'Content-Type': 'application/json',
         ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),

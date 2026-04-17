@@ -34,6 +34,19 @@ Deno.serve(async (req) => {
             supabase.from('request_limit_logs').select('id').gte('attempted_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()),
         ]);
 
+        const [flagEntries, auditEntries] = await Promise.all([
+            supabase
+                .from('admin_flags')
+                .select('id, flag_type, user_id, post_id, task_claim_id, reason, status, created_at')
+                .order('created_at', { ascending: false })
+                .limit(100),
+            supabase
+                .from('admin_actions')
+                .select('id, admin_user_id, action_type, target_user_id, target_post_id, target_claim_id, note, created_at')
+                .order('created_at', { ascending: false })
+                .limit(100),
+        ]);
+
         const allClaims = claims.data ?? [];
         const pendingCount = allClaims.filter(c => c.status === 'pending_review').length;
         const approvedCount = allClaims.filter(c => c.status === 'approved').length;
@@ -55,6 +68,8 @@ Deno.serve(async (req) => {
             total_points_distributed: totalPoints,
             open_flags: flags.count ?? 0,
             limit_rejections_today: limitLogs.data?.length ?? 0,
+            flags: flagEntries.data ?? [],
+            audit_log: auditEntries.data ?? [],
         }, 200, rateLimitHeaders(rl));
     } catch (err) {
         const message = err instanceof Error ? err.message : 'Unknown error';

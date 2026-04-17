@@ -1,4 +1,4 @@
-import { getSupabaseClient } from './supabase.ts';
+import { getSupabaseClient, getSupabaseServiceClient } from './supabase.ts';
 
 export interface AuthResult {
     userId: string;
@@ -8,13 +8,14 @@ export interface AuthResult {
 
 export async function requireAuth(req: Request): Promise<AuthResult> {
     const supabase = getSupabaseClient(req);
+    const serviceSupabase = getSupabaseServiceClient();
 
     const { data: { user }, error } = await supabase.auth.getUser();
     if (error || !user) {
         throw new Error('Unauthorized');
     }
 
-    const { data: profile } = await supabase
+    const { data: profile } = await serviceSupabase
         .from('profiles')
         .select('role, email')
         .eq('id', user.id)

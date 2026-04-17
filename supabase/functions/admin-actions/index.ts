@@ -40,6 +40,7 @@ Deno.serve(async (req) => {
             'post_hidden', 'post_archived', 'post_paused', 'post_deleted',
             'claim_override_approved', 'claim_override_rejected', 'claim_cancelled', 'claim_expired',
             'score_adjusted_plus', 'score_adjusted_minus',
+            'flag_reviewed',
             'request_limit_changed', 'request_ban_set', 'request_ban_removed',
             'global_setting_changed',
         ];
@@ -127,6 +128,22 @@ Deno.serve(async (req) => {
                 points: action_type === 'score_adjusted_plus' ? points : -points,
                 metadata_json: { admin_note: note, adjusted_by: auth.userId },
             });
+        }
+
+        if (action_type === 'flag_reviewed' && payload?.flag_id && payload?.new_status) {
+            const allowedStatuses = ['reviewed', 'ignored', 'actioned'];
+            if (!allowedStatuses.includes(String(payload.new_status))) {
+                return errorResponse(req, 'Invalid flag status', 400);
+            }
+
+            const { error } = await supabase
+                .from('admin_flags')
+                .update({
+                    status: String(payload.new_status),
+                    updated_at: new Date().toISOString(),
+                })
+                .eq('id', String(payload.flag_id));
+            if (error) return errorResponse(req, 'Failed to update flag: ' + error.message, 500);
         }
 
         if (action_type === 'global_setting_changed' && payload?.key && payload?.value) {
