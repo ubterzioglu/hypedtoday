@@ -12,7 +12,7 @@ const footerLinks = [
 
 const socialLinks = [
   { icon: Twitter, href: "https://twitter.com/supporttopromote", label: "Twitter" },
-  { icon: Linkedin, href: "https://linkedin.com/groups/16927008", label: "LinkedIn" },
+  { icon: Linkedin, href: "https://www.linkedin.com/company/hyped-today/", label: "LinkedIn" },
   { icon: Github, href: "#", label: "GitHub" },
 ];
 

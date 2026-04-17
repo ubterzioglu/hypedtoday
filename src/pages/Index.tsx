@@ -112,7 +112,7 @@ const Index = () => {
               discover amazing work from around the world.
             </p>
             <a
-              href="https://www.linkedin.com/groups/16927008/"
+              href="https://www.linkedin.com/company/hyped-today/"
               target="_blank"
               rel="noopener noreferrer"
             >
