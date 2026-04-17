@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { Loader2, Zap, AlertCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface RequestLimits {
     allowed: boolean;
@@ -17,6 +18,7 @@ interface RequestLimits {
 
 const RequestCapacityWidget = () => {
     const { user } = useAuth();
+    const { t } = useTranslation();
     const [limits, setLimits] = useState<RequestLimits | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -38,7 +40,7 @@ const RequestCapacityWidget = () => {
     if (!user || loading) {
         return loading ? (
             <div className="flex items-center gap-2 text-muted-foreground text-xs font-bold">
-                <Loader2 className="w-3 h-3 animate-spin" /> Loading capacity...
+                <Loader2 className="w-3 h-3 animate-spin" /> {t("capacity.loading")}
             </div>
         ) : null;
     }
@@ -54,7 +56,7 @@ const RequestCapacityWidget = () => {
                     ? <Zap className="w-4 h-4 text-green-600" />
                     : <AlertCircle className="w-4 h-4 text-destructive" />}
                 <span className={limits.allowed ? 'text-green-700' : 'text-destructive'}>
-                    {limits.allowed ? 'You can submit a request' : 'Request limit reached'}
+                    {limits.allowed ? t("capacity.canSubmit") : t("capacity.limitReached")}
                 </span>
             </div>
 
@@ -64,10 +66,10 @@ const RequestCapacityWidget = () => {
 
             {r && (
                 <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-muted-foreground font-medium">
-                    <span>Daily remaining: <strong className="text-foreground">{r.daily}</strong></span>
-                    <span>Weekly remaining: <strong className="text-foreground">{r.weekly}</strong></span>
-                    <span>Active posts: <strong className="text-foreground">{r.active_posts}</strong></span>
-                    <span>Pending reviews: <strong className="text-foreground">{r.pending_reviews}</strong></span>
+                    <span>{t("capacity.dailyRemaining")}: <strong className="text-foreground">{r.daily}</strong></span>
+                    <span>{t("capacity.weeklyRemaining")}: <strong className="text-foreground">{r.weekly}</strong></span>
+                    <span>{t("capacity.activePosts")}: <strong className="text-foreground">{r.active_posts}</strong></span>
+                    <span>{t("capacity.pendingReviews")}: <strong className="text-foreground">{r.pending_reviews}</strong></span>
                 </div>
             )}
         </div>

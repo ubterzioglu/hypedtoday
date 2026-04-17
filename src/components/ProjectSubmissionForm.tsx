@@ -7,6 +7,7 @@ import { BrutalButton } from "@/components/ui/brutal-button";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Loader2, Linkedin, ThumbsUp, MessageSquare, Repeat2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const postSchema = z.object({
     linkedin_url: z
@@ -25,14 +26,15 @@ const postSchema = z.object({
 
 type PostFormData = z.infer<typeof postSchema>;
 
-const TASKS = [
-    { key: "requested_like" as const, label: "Like", icon: ThumbsUp, desc: "Supporters will like this post" },
-    { key: "requested_comment" as const, label: "Comment", icon: MessageSquare, desc: "Supporters will leave a comment" },
-    { key: "requested_repost" as const, label: "Repost", icon: Repeat2, desc: "Supporters will repost it" },
-];
-
 const ProjectSubmissionForm = () => {
     const navigate = useNavigate();
+    const { t } = useTranslation();
+
+    const TASKS = [
+        { key: "requested_like" as const, label: t("form.taskLike"), icon: ThumbsUp, desc: t("form.taskLikeDesc") },
+        { key: "requested_comment" as const, label: t("form.taskComment"), icon: MessageSquare, desc: t("form.taskCommentDesc") },
+        { key: "requested_repost" as const, label: t("form.taskRepost"), icon: Repeat2, desc: t("form.taskRepostDesc") },
+    ];
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const {
@@ -65,8 +67,8 @@ const ProjectSubmissionForm = () => {
                 requested_repost: data.requested_repost,
             });
 
-            toast.success("Post submitted for support!", {
-                description: "Others can now like, comment, or repost it.",
+            toast.success(t("form.successMsg"), {
+                description: t("form.successDesc"),
             });
 
             reset();
@@ -74,8 +76,8 @@ const ProjectSubmissionForm = () => {
         } catch (error: unknown) {
             const msg = error && typeof error === "object" && "message" in error
                 ? String((error as { message: unknown }).message)
-                : "Please try again later.";
-            toast.error("Submission failed", { description: msg });
+                : t("form.errorFallback");
+            toast.error(t("form.errorTitle"), { description: msg });
         } finally {
             setIsSubmitting(false);
         }
@@ -87,11 +89,11 @@ const ProjectSubmissionForm = () => {
             {/* LinkedIn URL */}
             <div className="space-y-4">
                 <h3 className="text-xl font-bold border-b-2 border-foreground pb-2">
-                    1. LinkedIn Post URL
+                    {t("form.urlSection")}
                 </h3>
                 <div>
                     <label className="block text-sm font-bold mb-2 uppercase flex items-center gap-2">
-                        <Linkedin className="w-4 h-4" /> Post URL *
+                        <Linkedin className="w-4 h-4" /> {t("form.urlLabel")}
                     </label>
                     <input
                         {...register("linkedin_url")}
@@ -105,21 +107,21 @@ const ProjectSubmissionForm = () => {
                 </div>
 
                 <div>
-                    <label className="block text-sm font-bold mb-2 uppercase">Title (optional)</label>
+                    <label className="block text-sm font-bold mb-2 uppercase">{t("form.titleLabel")}</label>
                     <input
                         {...register("title")}
                         className="w-full px-4 py-3 bg-background border-4 border-foreground focus:outline-none focus:border-primary transition-colors"
-                        placeholder="Short title for this post..."
+                        placeholder={t("form.titlePlaceholder")}
                     />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-bold mb-2 uppercase">Description (optional)</label>
+                    <label className="block text-sm font-bold mb-2 uppercase">{t("form.descLabel")}</label>
                     <textarea
                         {...register("description")}
                         rows={3}
                         className="w-full px-4 py-3 bg-background border-4 border-foreground focus:outline-none focus:border-primary transition-colors resize-none"
-                        placeholder="What is this post about?"
+                        placeholder={t("form.descPlaceholder")}
                     />
                 </div>
             </div>
@@ -127,7 +129,7 @@ const ProjectSubmissionForm = () => {
             {/* Task Types */}
             <div className="space-y-4">
                 <h3 className="text-xl font-bold border-b-2 border-foreground pb-2">
-                    2. Support Tasks Needed *
+                    {t("form.taskSection")}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {TASKS.map(({ key, label, icon: Icon, desc }) => {
@@ -167,9 +169,9 @@ const ProjectSubmissionForm = () => {
                 disabled={isSubmitting}
             >
                 {isSubmitting ? (
-                    <><Loader2 className="w-6 h-6 mr-2 animate-spin" /> Submitting...</>
+                    <><Loader2 className="w-6 h-6 mr-2 animate-spin" /> {t("form.submitting")}</>
                 ) : (
-                    "Request Support"
+                    t("form.submit")
                 )}
             </BrutalButton>
         </form>

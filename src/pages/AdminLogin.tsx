@@ -16,7 +16,7 @@ const AdminLogin = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
-    const { signInWithGoogle, signInWithGitHub, signInWithMagicLink, user } = useAuth();
+    const { signInWithGoogle, signInWithGitHub, signInWithMagicLink, user, session, profileResolved } = useAuth();
     const nextPath = useMemo(() => {
         const params = new URLSearchParams(location.search);
         const next = params.get("next");
@@ -25,8 +25,9 @@ const AdminLogin = () => {
 
     useEffect(() => {
         if (!user) return;
+        if (session?.user && !profileResolved) return;
         navigate(user.role === 'admin' && nextPath === "/" ? "/admin" : nextPath, { replace: true });
-    }, [navigate, nextPath, user]);
+    }, [navigate, nextPath, profileResolved, session, user]);
 
     const handleMagicLink = async (e: React.FormEvent) => {
         e.preventDefault();

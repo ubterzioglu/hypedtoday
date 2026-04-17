@@ -17,6 +17,7 @@ interface AuthContextValue {
     user: AuthUser | null;
     session: Session | null;
     loading: boolean;
+    profileResolved: boolean;
     signInWithGoogle: (nextPath?: string) => Promise<void>;
     signInWithGitHub: (nextPath?: string) => Promise<void>;
     signInWithMagicLink: (email: string, nextPath?: string) => Promise<void>;
@@ -64,15 +65,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<AuthUser | null>(null);
     const [session, setSession] = useState<Session | null>(null);
     const [loading, setLoading] = useState(true);
+    const [profileResolved, setProfileResolved] = useState(false);
 
     const loadProfile = useCallback(async (currentSession: Session | null) => {
         setSession(currentSession);
         if (!currentSession?.user) {
             setUser(null);
+            setProfileResolved(true);
             return;
         }
+
+        setProfileResolved(false);
         const profileData = await fetchProfileRole(currentSession.user.id);
         setUser(buildAuthUser(currentSession, profileData));
+        setProfileResolved(Boolean(profileData));
     }, []);
 
     useEffect(() => {
@@ -128,7 +134,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, session, loading, signInWithGoogle, signInWithGitHub, signInWithMagicLink, signOut }}>
+        <AuthContext.Provider value={{ user, session, loading, profileResolved, signInWithGoogle, signInWithGitHub, signInWithMagicLink, signOut }}>
             {children}
         </AuthContext.Provider>
     );

@@ -13,7 +13,7 @@ const SOCIAL_LINKS = [
     { icon: Facebook, href: "https://www.facebook.com/supporttopromote", color: "bg-blue-600", label: "Facebook" },
     { icon: Phone, href: "https://wa.me/905302404995", color: "bg-green-500", label: "WhatsApp" },
     { icon: Linkedin, href: "http://linkedin.com/company/hyped-today", color: "bg-blue-700", label: "LinkedIn" },
-    { icon: Instagram, href: "https://instagram.com/hypedtoday", color: "bg-pink-600", label: "Instagram" },
+    { icon: Instagram, href: "https://www.instagram.com/supportopromote/", color: "bg-pink-600", label: "Instagram" },
     { icon: MapPin, href: "https://maps.google.com/?q=Istanbul", color: "bg-red-500", label: "Location" },
     { icon: Phone, href: "tel:+905302404995", color: "bg-yellow-500", label: "Call Us" },
     { icon: Mail, href: "mailto:contact@hyped.today", color: "bg-purple-600", label: "Email" },

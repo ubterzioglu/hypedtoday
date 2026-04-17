@@ -6,6 +6,7 @@ import { useAuth } from "@/lib/auth";
 import { api } from "@/lib/api";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const bgColors = ['bg-primary', 'bg-secondary', 'bg-tertiary', 'bg-accent', 'bg-highlight'];
 
@@ -19,13 +20,14 @@ interface TaskConfig {
 const ProjectCard = ({ post, index }: { post: PublicPost; index: number }) => {
     const { user } = useAuth();
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [isFlipped, setIsFlipped] = useState(false);
     const [claiming, setClaiming] = useState<TaskType | null>(null);
 
     const tasks: TaskConfig[] = [
-        { type: 'like', label: 'Like', icon: ThumbsUp, enabled: post.requested_like },
-        { type: 'comment', label: 'Comment', icon: MessageSquare, enabled: post.requested_comment },
-        { type: 'repost', label: 'Repost', icon: Repeat2, enabled: post.requested_repost },
+        { type: 'like', label: t("projectCard.taskLike"), icon: ThumbsUp, enabled: post.requested_like },
+        { type: 'comment', label: t("projectCard.taskComment"), icon: MessageSquare, enabled: post.requested_comment },
+        { type: 'repost', label: t("projectCard.taskRepost"), icon: Repeat2, enabled: post.requested_repost },
     ].filter(t => t.enabled);
 
     const handleFlip = useCallback(() => {
@@ -51,13 +53,13 @@ const ProjectCard = ({ post, index }: { post: PublicPost; index: number }) => {
             setClaiming(taskType);
             await api.claimTask({ post_id: post.id, task_type: taskType });
             toast.success(`${taskType} task claimed!`, {
-                description: "Go to LinkedIn and complete it, then mark as done.",
+                description: t("projectCard.claimedDesc"),
             });
             setIsFlipped(false);
         } catch (error: unknown) {
             const msg = error && typeof error === "object" && "message" in error
                 ? String((error as { message: unknown }).message)
-                : "Failed to claim task.";
+                : t("projectCard.claimFailed");
             toast.error(msg);
         } finally {
             setClaiming(null);
@@ -115,42 +117,40 @@ const ProjectCard = ({ post, index }: { post: PublicPost; index: number }) => {
                             </div>
                         )}
 
-                        {/* Task badges */}
                         <div className="flex flex-wrap gap-1.5">
                             {post.requested_like && (
                                 <span className="flex items-center gap-1 text-[10px] font-bold uppercase px-2 py-1 bg-blue-100 border border-blue-400 text-blue-700">
-                                    <ThumbsUp className="w-3 h-3" /> Like
+                                    <ThumbsUp className="w-3 h-3" /> {t("projectCard.taskLike")}
                                 </span>
                             )}
                             {post.requested_comment && (
                                 <span className="flex items-center gap-1 text-[10px] font-bold uppercase px-2 py-1 bg-green-100 border border-green-400 text-green-700">
-                                    <MessageSquare className="w-3 h-3" /> Comment
+                                    <MessageSquare className="w-3 h-3" /> {t("projectCard.taskComment")}
                                 </span>
                             )}
                             {post.requested_repost && (
                                 <span className="flex items-center gap-1 text-[10px] font-bold uppercase px-2 py-1 bg-purple-100 border border-purple-400 text-purple-700">
-                                    <Repeat2 className="w-3 h-3" /> Repost
+                                    <Repeat2 className="w-3 h-3" /> {t("projectCard.taskRepost")}
                                 </span>
                             )}
                         </div>
 
-                        {/* Stats */}
                         <div className="flex gap-3 text-xs text-muted-foreground font-medium">
-                            <span><span className="text-primary font-bold">{post.approved_count}</span> approved</span>
-                            <span><span className="text-secondary font-bold">{post.pending_count}</span> pending</span>
+                            <span><span className="text-primary font-bold">{post.approved_count}</span> {t("projectCard.approved")}</span>
+                            <span><span className="text-secondary font-bold">{post.pending_count}</span> {t("projectCard.pending")}</span>
                         </div>
                     </div>
 
                     <div className="absolute bottom-2 right-2 px-2 py-1 bg-black/50 text-white text-xs font-bold rounded flex items-center gap-1 backdrop-blur-sm">
-                        <RotateCw className="w-3 h-3" /> Support
+                        <RotateCw className="w-3 h-3" /> {t("projectCard.support")}
                     </div>
                 </div>
 
-                {/* BACK FACE — Claim tasks */}
+                {/* BACK FACE */}
                 <div className="flip-back bg-card border-4 border-primary flex flex-col overflow-hidden">
                     <div className="bg-primary p-3 border-b-4 border-foreground flex justify-between items-center">
                         <h3 className="font-bold text-primary-foreground uppercase tracking-wide text-sm truncate">
-                            {post.title ?? 'Support This Post'}
+                            {post.title ?? t("projectCard.supportThisPost")}
                         </h3>
                         <RotateCw className="w-4 h-4 text-primary-foreground opacity-50 flex-shrink-0" />
                     </div>
@@ -158,12 +158,12 @@ const ProjectCard = ({ post, index }: { post: PublicPost; index: number }) => {
                     <div className="p-4 flex-1 flex flex-col gap-3 justify-center">
                         {!user && (
                             <p className="text-center text-sm text-muted-foreground font-medium mb-2">
-                                Sign in to claim support tasks
+                                {t("projectCard.signInToClaim")}
                             </p>
                         )}
 
                         {tasks.length === 0 ? (
-                            <p className="text-center text-muted-foreground font-bold">No tasks available</p>
+                            <p className="text-center text-muted-foreground font-bold">{t("projectCard.noTasks")}</p>
                         ) : (
                             tasks.map(({ type, label, icon: Icon }) => (
                                 <BrutalButton
@@ -180,7 +180,7 @@ const ProjectCard = ({ post, index }: { post: PublicPost; index: number }) => {
                                     ) : (
                                         <LogIn className="w-4 h-4 mr-2" />
                                     )}
-                                    {user ? `Claim ${label}` : `Login to ${label}`}
+                                    {user ? t("projectCard.claim", { task: label }) : t("projectCard.loginTo", { task: label })}
                                 </BrutalButton>
                             ))
                         )}
