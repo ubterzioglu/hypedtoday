@@ -24,6 +24,14 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
+function getAuthRedirectUrl(): string | undefined {
+    if (typeof window === 'undefined') {
+        return undefined;
+    }
+
+    return `${window.location.origin}/`;
+}
+
 async function fetchProfileRole(userId: string): Promise<{ role: UserRole; display_name: string | null; avatar_url: string | null } | null> {
     const { data } = await supabase
         .from('profiles')
@@ -81,15 +89,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, [loadProfile]);
 
     const signInWithGoogle = async () => {
-        await supabase.auth.signInWithOAuth({ provider: 'google' });
+        await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: getAuthRedirectUrl(),
+            },
+        });
     };
 
     const signInWithGitHub = async () => {
-        await supabase.auth.signInWithOAuth({ provider: 'github' });
+        await supabase.auth.signInWithOAuth({
+            provider: 'github',
+            options: {
+                redirectTo: getAuthRedirectUrl(),
+            },
+        });
     };
 
     const signInWithMagicLink = async (email: string) => {
-        await supabase.auth.signInWithOtp({ email });
+        await supabase.auth.signInWithOtp({
+            email,
+            options: {
+                emailRedirectTo: getAuthRedirectUrl(),
+            },
+        });
     };
 
     const signOut = async () => {

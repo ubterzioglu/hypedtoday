@@ -223,26 +223,26 @@
     },
     {
       "path": "src\\pages\\AdminDashboard.tsx",
-      "accessCount": 6,
-      "lastAccessed": 1776414897975,
+      "accessCount": 7,
+      "lastAccessed": 1776425145685,
       "type": "file"
     },
     {
       "path": "",
-      "accessCount": 5,
-      "lastAccessed": 1776414785970,
+      "accessCount": 6,
+      "lastAccessed": 1776425109301,
       "type": "directory"
+    },
+    {
+      "path": "src\\pages\\AddProject.tsx",
+      "accessCount": 6,
+      "lastAccessed": 1776425144780,
+      "type": "file"
     },
     {
       "path": "src\\lib\\api.ts",
       "accessCount": 5,
       "lastAccessed": 1776414834098,
-      "type": "file"
-    },
-    {
-      "path": "src\\pages\\AddProject.tsx",
-      "accessCount": 5,
-      "lastAccessed": 1776415032840,
       "type": "file"
     },
     {
@@ -300,21 +300,21 @@
       "type": "file"
     },
     {
+      "path": "src\\pages\\Showroom.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1776425131229,
+      "type": "file"
+    },
+    {
       "path": "src\\pages\\Leaderboard.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1776414311583,
+      "accessCount": 3,
+      "lastAccessed": 1776425146027,
       "type": "file"
     },
     {
       "path": "src\\components\\LeaderboardItem.tsx",
       "accessCount": 2,
       "lastAccessed": 1776414329875,
-      "type": "file"
-    },
-    {
-      "path": "src\\pages\\Showroom.tsx",
-      "accessCount": 2,
-      "lastAccessed": 1776414348048,
       "type": "file"
     },
     {
@@ -348,6 +348,24 @@
       "type": "file"
     },
     {
+      "path": "supabase\\migrations\\20260415092000_views_and_dtos.sql",
+      "accessCount": 2,
+      "lastAccessed": 1776425130785,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\OwnerReviews.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1776425132107,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\SupporterDashboard.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1776425132383,
+      "type": "file"
+    },
+    {
       "path": "finalplan.md",
       "accessCount": 1,
       "lastAccessed": 1776413317253,
@@ -363,12 +381,6 @@
       "path": "src\\data\\mockData.ts",
       "accessCount": 1,
       "lastAccessed": 1776414160271,
-      "type": "file"
-    },
-    {
-      "path": "supabase\\migrations\\20260415092000_views_and_dtos.sql",
-      "accessCount": 1,
-      "lastAccessed": 1776414204391,
       "type": "file"
     },
     {
@@ -420,18 +432,6 @@
       "type": "file"
     },
     {
-      "path": "src\\pages\\OwnerReviews.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1776414937004,
-      "type": "file"
-    },
-    {
-      "path": "src\\pages\\SupporterDashboard.tsx",
-      "accessCount": 1,
-      "lastAccessed": 1776414972014,
-      "type": "file"
-    },
-    {
       "path": "src\\components\\RequestCapacityWidget.tsx",
       "accessCount": 1,
       "lastAccessed": 1776414981563,
@@ -477,6 +477,42 @@
       "path": "COMPLETION_STATUS.md",
       "accessCount": 1,
       "lastAccessed": 1776416679728,
+      "type": "file"
+    },
+    {
+      "path": ".0documentation\\bilgi.md",
+      "accessCount": 1,
+      "lastAccessed": 1776425114967,
+      "type": "file"
+    },
+    {
+      "path": ".0documentation\\KULLANIM_KILAVUZU.md",
+      "accessCount": 1,
+      "lastAccessed": 1776425115345,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\migrations\\20260415090000_profiles_and_roles.sql",
+      "accessCount": 1,
+      "lastAccessed": 1776425121063,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\migrations\\20260415091000_domain_model.sql",
+      "accessCount": 1,
+      "lastAccessed": 1776425121546,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\auth.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776425121964,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\migrations\\20260415093000_security_hardening.sql",
+      "accessCount": 1,
+      "lastAccessed": 1776425122325,
       "type": "file"
     }
   ],
