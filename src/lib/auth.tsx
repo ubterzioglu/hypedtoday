@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { supabase } from '@/lib/supabase';
+import { getAuthRedirectUrl } from '@/lib/auth-redirect';
 import type { User, Session } from '@supabase/supabase-js';
 
 export type UserRole = 'user' | 'admin';
@@ -23,14 +24,6 @@ interface AuthContextValue {
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
-
-function getAuthRedirectUrl(): string | undefined {
-    if (typeof window === 'undefined') {
-        return undefined;
-    }
-
-    return `${window.location.origin}/`;
-}
 
 async function fetchProfileRole(userId: string): Promise<{ role: UserRole; display_name: string | null; avatar_url: string | null } | null> {
     const { data } = await supabase
