@@ -1,7 +1,6 @@
 import { supabase } from '@/lib/supabase';
 import type { PostComment } from '@/types';
-
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 async function getAuthHeaders(): Promise<Record<string, string>> {
     let { data: { session } } = await supabase.auth.getSession();
@@ -13,24 +12,34 @@ async function getAuthHeaders(): Promise<Record<string, string>> {
 
     return {
         'Content-Type': 'application/json',
+        apikey: SUPABASE_ANON_KEY,
         ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
     };
 }
 
 async function apiCall<T>(path: string, options: RequestInit = {}): Promise<T> {
     const headers = await getAuthHeaders();
-    const res = await fetch(`${SUPABASE_URL}/functions/v1/${path}`, {
-        ...options,
-        headers: { ...headers, ...options.headers },
+    const mergedHeaders = { ...headers, ...options.headers };
+    const maybeJsonBody =
+        typeof options.body === 'string' && (mergedHeaders['Content-Type'] ?? mergedHeaders['content-type']) === 'application/json'
+            ? JSON.parse(options.body)
+            : options.body;
+
+    const { data, error } = await supabase.functions.invoke(path, {
+        method: options.method,
+        body: maybeJsonBody,
+        headers: mergedHeaders,
     });
 
-    const data = await res.json();
-
-    if (!res.ok) {
-        throw { message: data.error?.message ?? 'Request failed', code: data.error?.code, status: res.status };
+    if (error) {
+        throw {
+            message: error.message ?? 'Request failed',
+            code: 'FUNCTION_ERROR',
+            status: 500,
+        };
     }
 
-    return data.data as T;
+    return (data as { data?: T }).data as T;
 }
 
 export const api = {
