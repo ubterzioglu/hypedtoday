@@ -9,13 +9,13 @@ import { useTranslation } from "react-i18next";
 
 const SOCIAL_LINKS = [
     { icon: Twitter, href: "https://twitter.com/hypedtoday", color: "bg-sky-500", label: "X / Twitter" },
-    { icon: MessageCircle, href: "https://reddit.com/r/hypedtoday", color: "bg-orange-600", label: "Reddit" },
-    { icon: Facebook, href: "https://facebook.com/hypedtoday", color: "bg-blue-600", label: "Facebook" },
-    { icon: Phone, href: "https://wa.me/905551234567", color: "bg-green-500", label: "WhatsApp" },
-    { icon: Linkedin, href: "https://linkedin.com/company/hyped-today", color: "bg-blue-700", label: "LinkedIn" },
+    { icon: MessageCircle, href: "https://www.reddit.com/r/hypedtoday/", color: "bg-orange-600", label: "Reddit" },
+    { icon: Facebook, href: "https://www.facebook.com/supporttopromote", color: "bg-blue-600", label: "Facebook" },
+    { icon: Phone, href: "https://wa.me/905302404995", color: "bg-green-500", label: "WhatsApp" },
+    { icon: Linkedin, href: "http://linkedin.com/company/hyped-today", color: "bg-blue-700", label: "LinkedIn" },
     { icon: Instagram, href: "https://instagram.com/hypedtoday", color: "bg-pink-600", label: "Instagram" },
     { icon: MapPin, href: "https://maps.google.com/?q=Istanbul", color: "bg-red-500", label: "Location" },
-    { icon: Phone, href: "tel:+905551234567", color: "bg-yellow-500", label: "Call Us" },
+    { icon: Phone, href: "tel:+905302404995", color: "bg-yellow-500", label: "Call Us" },
     { icon: Mail, href: "mailto:contact@hyped.today", color: "bg-purple-600", label: "Email" },
 ];
 

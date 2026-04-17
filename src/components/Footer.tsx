@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 
 const socialLinks = [
   { icon: Twitter, href: "https://twitter.com/hypedtoday", label: "Twitter" },
-  { icon: Linkedin, href: "https://www.linkedin.com/company/hyped-today/", label: "LinkedIn" },
+  { icon: Linkedin, href: "http://linkedin.com/company/hyped-today", label: "LinkedIn" },
   { icon: Github, href: "#", label: "GitHub" },
 ];
 

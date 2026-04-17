@@ -45,6 +45,8 @@ const HeroBackground = ({
             src={imageSrc}
             alt="Hero background"
             className="w-full h-full object-cover"
+            loading="lazy"
+            decoding="async"
           />
         </motion.div>
       )}

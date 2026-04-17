@@ -80,7 +80,7 @@ const TopProjects = () => {
 
                         <div className="flex items-center gap-3 mb-3">
                             {supporter.avatar_url ? (
-                                <img src={supporter.avatar_url} alt={displayName} className="w-10 h-10 rounded-full border-2 border-foreground" />
+                                <img src={supporter.avatar_url} alt={displayName} className="w-10 h-10 rounded-full border-2 border-foreground" loading="lazy" decoding="async" />
                             ) : (
                                 <div className="w-10 h-10 rounded-full bg-secondary border-2 border-foreground flex items-center justify-center font-black">
                                     {initial}

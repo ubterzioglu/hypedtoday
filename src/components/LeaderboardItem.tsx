@@ -42,7 +42,7 @@ const LeaderboardItem = ({ entry, rank }: LeaderboardItemProps) => {
 
             <div className="w-12 h-12 border-2 border-foreground overflow-hidden flex-shrink-0 rounded-full bg-secondary flex items-center justify-center">
                 {entry.avatar_url ? (
-                    <img src={entry.avatar_url} alt={displayName} className="w-full h-full object-cover" />
+                    <img src={entry.avatar_url} alt={displayName} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                 ) : (
                     <span className="font-black text-sm">{initial}</span>
                 )}

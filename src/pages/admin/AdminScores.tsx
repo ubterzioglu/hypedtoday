@@ -54,7 +54,7 @@ const AdminScores = () => {
                             <div className="col-span-2 flex items-center gap-2">
                                 <span className="text-xs font-bold text-muted-foreground w-6">#{i + 1}</span>
                                 {row.avatar_url ? (
-                                    <img src={row.avatar_url} className="w-8 h-8 rounded-full border-2 border-foreground" alt="" />
+                                    <img src={row.avatar_url} className="w-8 h-8 rounded-full border-2 border-foreground" alt="" loading="lazy" decoding="async" />
                                 ) : (
                                     <div className="w-8 h-8 rounded-full bg-secondary border-2 border-foreground flex items-center justify-center font-black text-xs">
                                         {(row.display_name ?? 'A').charAt(0).toUpperCase()}

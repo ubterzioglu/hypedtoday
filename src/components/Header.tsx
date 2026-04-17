@@ -66,7 +66,7 @@ const Header = () => {
             {user ? (
               <div className="flex items-center gap-2 ml-2 pl-2 border-l-2 border-foreground">
                 {user.avatarUrl ? (
-                  <img src={user.avatarUrl} alt={user.displayName || ""} className="w-8 h-8 border-2 border-foreground object-cover" />
+                  <img src={user.avatarUrl} alt={user.displayName || ""} className="w-8 h-8 border-2 border-foreground object-cover" loading="lazy" decoding="async" />
                 ) : (
                   <div className="w-8 h-8 bg-primary border-2 border-foreground flex items-center justify-center">
                     <User className="w-4 h-4 text-primary-foreground" />
@@ -163,7 +163,7 @@ const Header = () => {
                 <>
                   <div className="flex items-center gap-3 px-4 py-3 border-2 border-foreground bg-muted">
                     {user.avatarUrl ? (
-                      <img src={user.avatarUrl} alt="" className="w-6 h-6 border border-foreground object-cover" />
+                      <img src={user.avatarUrl} alt="" className="w-6 h-6 border border-foreground object-cover" loading="lazy" decoding="async" />
                     ) : (
                       <User className="w-5 h-5" />
                     )}

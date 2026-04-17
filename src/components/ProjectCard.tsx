@@ -105,7 +105,7 @@ const ProjectCard = ({ post, index }: { post: PublicPost; index: number }) => {
                         {post.owner_display_name && (
                             <div className="flex items-center gap-2 mt-auto pt-2 border-t-2 border-muted">
                                 {post.owner_avatar_url ? (
-                                    <img src={post.owner_avatar_url} alt={post.owner_display_name} className="w-6 h-6 rounded-full border border-foreground" />
+                                    <img src={post.owner_avatar_url} alt={post.owner_display_name} className="w-6 h-6 rounded-full border border-foreground" loading="lazy" decoding="async" />
                                 ) : (
                                     <div className="w-6 h-6 rounded-full bg-secondary border border-foreground flex items-center justify-center text-xs font-bold">
                                         {post.owner_display_name.charAt(0).toUpperCase()}
