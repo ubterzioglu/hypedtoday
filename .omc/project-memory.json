@@ -1,0 +1,484 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1776413248351,
+  "projectRoot": "C:\\temp_private\\hypedtoday",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      },
+      {
+        "name": "TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "tsconfig.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "react",
+        "version": "18.3.1",
+        "category": "frontend"
+      },
+      {
+        "name": "react-dom",
+        "version": "18.3.1",
+        "category": "frontend"
+      },
+      {
+        "name": "vite",
+        "version": "5.4.19",
+        "category": "build"
+      },
+      {
+        "name": "vitest",
+        "version": "3.2.4",
+        "category": "testing"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "npm run build",
+    "testCommand": "npm test",
+    "lintCommand": "npm run lint",
+    "devCommand": "npm run dev",
+    "scripts": {
+      "dev": "vite",
+      "build": "vite build",
+      "build:dev": "vite build --mode development",
+      "lint": "eslint .",
+      "preview": "vite preview",
+      "test": "vitest run",
+      "test:watch": "vitest"
+    }
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": "type-based"
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "public",
+      "src"
+    ],
+    "gitBranches": {
+      "defaultBranch": "main",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "dist": {
+      "path": "dist",
+      "purpose": "Distribution/build output",
+      "fileCount": 3,
+      "lastAccessed": 1776413248286,
+      "keyFiles": [
+        "favicon.svg",
+        "index.html",
+        "robots.txt"
+      ]
+    },
+    "hypedtoday": {
+      "path": "hypedtoday",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1776413248287,
+      "keyFiles": []
+    },
+    "public": {
+      "path": "public",
+      "purpose": "Public files",
+      "fileCount": 2,
+      "lastAccessed": 1776413248309,
+      "keyFiles": [
+        "favicon.svg",
+        "robots.txt"
+      ]
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 4,
+      "lastAccessed": 1776413248309,
+      "keyFiles": [
+        "App.tsx",
+        "index.css",
+        "main.tsx",
+        "vite-env.d.ts"
+      ]
+    },
+    "supabase": {
+      "path": "supabase",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1776413248310,
+      "keyFiles": [
+        "config.toml"
+      ]
+    },
+    "dist\\assets": {
+      "path": "dist\\assets",
+      "purpose": "Static assets",
+      "fileCount": 9,
+      "lastAccessed": 1776413248311,
+      "keyFiles": [
+        "charts-Je0mhtY1.js",
+        "icons-DZX5LiPq.js",
+        "index-CSf0ivkU.js"
+      ]
+    },
+    "src\\assets": {
+      "path": "src\\assets",
+      "purpose": "Static assets",
+      "fileCount": 1,
+      "lastAccessed": 1776413248312,
+      "keyFiles": [
+        "hero-bg.jpg"
+      ]
+    },
+    "src\\components": {
+      "path": "src\\components",
+      "purpose": "UI components",
+      "fileCount": 13,
+      "lastAccessed": 1776413248312,
+      "keyFiles": [
+        "DashboardStats.tsx",
+        "FeaturedCarousel.tsx",
+        "FloatingShapes.tsx"
+      ]
+    },
+    "src\\data": {
+      "path": "src\\data",
+      "purpose": "Data files",
+      "fileCount": 1,
+      "lastAccessed": 1776413248312,
+      "keyFiles": [
+        "mockData.ts"
+      ]
+    },
+    "src\\lib": {
+      "path": "src\\lib",
+      "purpose": "Library code",
+      "fileCount": 4,
+      "lastAccessed": 1776413248313,
+      "keyFiles": [
+        "api.ts",
+        "auth.tsx",
+        "supabase.ts"
+      ]
+    },
+    "src\\pages": {
+      "path": "src\\pages",
+      "purpose": "Page components",
+      "fileCount": 10,
+      "lastAccessed": 1776413248314,
+      "keyFiles": [
+        "AddProject.tsx",
+        "AdminDashboard.tsx",
+        "AdminLogin.tsx"
+      ]
+    },
+    "src\\types": {
+      "path": "src\\types",
+      "purpose": "Type definitions",
+      "fileCount": 2,
+      "lastAccessed": 1776413248314,
+      "keyFiles": [
+        "dto.ts",
+        "index.ts"
+      ]
+    },
+    "supabase\\migrations": {
+      "path": "supabase\\migrations",
+      "purpose": "Database migrations",
+      "fileCount": 7,
+      "lastAccessed": 1776413248318,
+      "keyFiles": [
+        "20260125130109_storage_policy.sql",
+        "20260222_initial_schema.sql",
+        "20260414_emergency_lockdown.sql"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "PROGRESS.md",
+      "accessCount": 25,
+      "lastAccessed": 1776416637433,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\AdminDashboard.tsx",
+      "accessCount": 6,
+      "lastAccessed": 1776414897975,
+      "type": "file"
+    },
+    {
+      "path": "",
+      "accessCount": 5,
+      "lastAccessed": 1776414785970,
+      "type": "directory"
+    },
+    {
+      "path": "src\\lib\\api.ts",
+      "accessCount": 5,
+      "lastAccessed": 1776414834098,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\AddProject.tsx",
+      "accessCount": 5,
+      "lastAccessed": 1776415032840,
+      "type": "file"
+    },
+    {
+      "path": "src",
+      "accessCount": 5,
+      "lastAccessed": 1776415102286,
+      "type": "directory"
+    },
+    {
+      "path": "src\\types\\index.ts",
+      "accessCount": 4,
+      "lastAccessed": 1776414797326,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\ProjectComments.tsx",
+      "accessCount": 4,
+      "lastAccessed": 1776414839775,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\Contact.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1776414318320,
+      "type": "file"
+    },
+    {
+      "path": "vercel.json",
+      "accessCount": 3,
+      "lastAccessed": 1776414784981,
+      "type": "file"
+    },
+    {
+      "path": "nginx.conf",
+      "accessCount": 3,
+      "lastAccessed": 1776414808575,
+      "type": "file"
+    },
+    {
+      "path": "src\\App.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1776414992604,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\Header.tsx",
+      "accessCount": 3,
+      "lastAccessed": 1776415011943,
+      "type": "file"
+    },
+    {
+      "path": "src\\tests\\security-regression.test.ts",
+      "accessCount": 3,
+      "lastAccessed": 1776415879795,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\Leaderboard.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1776414311583,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\LeaderboardItem.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1776414329875,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\Showroom.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1776414348048,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\ProjectSubmissionForm.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1776414369619,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\ProjectCard.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1776414404625,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\FeaturedCarousel.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1776414412756,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\DashboardStats.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1776414427845,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\TopProjects.tsx",
+      "accessCount": 2,
+      "lastAccessed": 1776414442521,
+      "type": "file"
+    },
+    {
+      "path": "finalplan.md",
+      "accessCount": 1,
+      "lastAccessed": 1776413317253,
+      "type": "file"
+    },
+    {
+      "path": "LOCKDOWN_STATUS.md",
+      "accessCount": 1,
+      "lastAccessed": 1776413317704,
+      "type": "file"
+    },
+    {
+      "path": "src\\data\\mockData.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776414160271,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\migrations\\20260415092000_views_and_dtos.sql",
+      "accessCount": 1,
+      "lastAccessed": 1776414204391,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\functions\\_shared\\auth.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776414770067,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\functions\\_shared\\response.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776414770542,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\functions\\_shared\\cors.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776414770969,
+      "type": "file"
+    },
+    {
+      "path": "supabase\\functions\\submit-feedback\\index.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776414781202,
+      "type": "file"
+    },
+    {
+      "path": "src\\lib\\supabase.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776414792449,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\admin\\AdminScores.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776414838957,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\admin\\AdminFlags.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776414857586,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\admin\\AdminAudit.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776414874490,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\OwnerReviews.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776414937004,
+      "type": "file"
+    },
+    {
+      "path": "src\\pages\\SupporterDashboard.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776414972014,
+      "type": "file"
+    },
+    {
+      "path": "src\\components\\RequestCapacityWidget.tsx",
+      "accessCount": 1,
+      "lastAccessed": 1776414981563,
+      "type": "file"
+    },
+    {
+      "path": "vite.config.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776415146647,
+      "type": "file"
+    },
+    {
+      "path": "src\\__tests__\\setup.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776415153835,
+      "type": "file"
+    },
+    {
+      "path": "src\\test\\setup.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776415177424,
+      "type": "file"
+    },
+    {
+      "path": "src\\tests\\request-limits.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776415203409,
+      "type": "file"
+    },
+    {
+      "path": "src\\tests\\combo-detection.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776415218616,
+      "type": "file"
+    },
+    {
+      "path": "src\\tests\\dto-sanitization.test.ts",
+      "accessCount": 1,
+      "lastAccessed": 1776415246125,
+      "type": "file"
+    },
+    {
+      "path": "COMPLETION_STATUS.md",
+      "accessCount": 1,
+      "lastAccessed": 1776416679728,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}

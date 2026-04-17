@@ -1,0 +1,7 @@
+{
+  "tool_name": "Read",
+  "tool_input_preview": "{\"file_path\":\"C:\\\\temp_private\\\\hypedtoday\\\\src\\\\pages\\\\admin\\\\AdminDashboard.tsx\",\"limit\":60}",
+  "error": "File does not exist. Note: your current working directory is C:\\temp_private\\hypedtoday.",
+  "timestamp": "2026-04-17T08:33:06.214Z",
+  "retry_count": 1
+}
