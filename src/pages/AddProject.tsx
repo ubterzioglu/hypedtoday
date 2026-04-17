@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import { Rocket } from "lucide-react";
-import { BrutalButton } from "@/components/ui/brutal-button";
+import { Linkedin } from "lucide-react";
 import ProjectSubmissionForm from "@/components/ProjectSubmissionForm";
+import RequestCapacityWidget from "@/components/RequestCapacityWidget";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Link } from "react-router-dom";
@@ -16,14 +16,14 @@ const AddProject = () => {
                 <div className="container mx-auto px-4 py-10">
                     <div className="flex items-center gap-4">
                         <div className="w-16 h-16 bg-primary border-4 border-foreground flex items-center justify-center">
-                            <Rocket className="w-8 h-8" />
+                            <Linkedin className="w-8 h-8" />
                         </div>
                         <div>
                             <h1 className="text-4xl md:text-5xl font-black">
-                                Add New Project
+                                Request Support
                             </h1>
                             <p className="text-muted-foreground font-medium text-lg">
-                                Share your project with the community
+                                Submit a LinkedIn post for community support
                             </p>
                         </div>
                     </div>
@@ -38,6 +38,11 @@ const AddProject = () => {
                     transition={{ duration: 0.5 }}
                     className="max-w-2xl mx-auto"
                 >
+                    {/* Request capacity */}
+                    <div className="mb-4">
+                        <RequestCapacityWidget />
+                    </div>
+
                     {/* Form Card */}
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
@@ -56,11 +61,11 @@ const AddProject = () => {
                         className="mt-8 text-center text-sm text-muted-foreground"
                     >
                         <p>
-                            Your project will appear immediately in the{" "}
+                            Your post will be visible in the{" "}
                             <Link to="/showroom" className="text-primary font-bold hover:underline">
-                                Project Showroom
-                            </Link>
-                            .
+                                LinkedIn Feed
+                            </Link>{" "}
+                            for supporters to discover.
                         </p>
                     </motion.div>
                 </motion.div>

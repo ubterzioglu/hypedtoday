@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { supabase } from '@/lib/supabase';
 import type { User, Session } from '@supabase/supabase-js';
 
@@ -8,6 +8,8 @@ export interface AuthUser {
     id: string;
     email: string | undefined;
     role: UserRole;
+    displayName: string | null;
+    avatarUrl: string | null;
 }
 
 interface AuthContextValue {
@@ -22,12 +24,23 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-function mapUser(session: Session | null, profileRole?: UserRole | null): AuthUser | null {
+async function fetchProfileRole(userId: string): Promise<{ role: UserRole; display_name: string | null; avatar_url: string | null } | null> {
+    const { data } = await supabase
+        .from('profiles')
+        .select('role, display_name, avatar_url')
+        .eq('id', userId)
+        .single();
+    return data;
+}
+
+function buildAuthUser(session: Session | null, profileData: { role: UserRole; display_name: string | null; avatar_url: string | null } | null): AuthUser | null {
     if (!session?.user) return null;
     return {
         id: session.user.id,
         email: session.user.email,
-        role: profileRole ?? ((session.user.app_metadata?.role as UserRole) || 'user'),
+        role: profileData?.role ?? 'user',
+        displayName: profileData?.display_name ?? null,
+        avatarUrl: profileData?.avatar_url ?? null,
     };
 }
 
@@ -36,12 +49,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [session, setSession] = useState<Session | null>(null);
     const [loading, setLoading] = useState(true);
 
+    const loadProfile = useCallback(async (currentSession: Session | null) => {
+        setSession(currentSession);
+        if (!currentSession?.user) {
+            setUser(null);
+            return;
+        }
+        const profileData = await fetchProfileRole(currentSession.user.id);
+        setUser(buildAuthUser(currentSession, profileData));
+    }, []);
+
     useEffect(() => {
         const initializeAuth = async () => {
             try {
                 const { data: { session: currentSession } } = await supabase.auth.getSession();
-                setSession(currentSession);
-                setUser(mapUser(currentSession));
+                await loadProfile(currentSession);
             } catch {
                 // Supabase not configured yet or session fetch failed
             } finally {
@@ -51,13 +73,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         initializeAuth();
 
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, newSession) => {
-            setSession(newSession);
-            setUser(mapUser(newSession));
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, newSession) => {
+            await loadProfile(newSession);
         });
 
         return () => subscription.unsubscribe();
-    }, []);
+    }, [loadProfile]);
 
     const signInWithGoogle = async () => {
         await supabase.auth.signInWithOAuth({ provider: 'google' });

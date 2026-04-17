@@ -2,25 +2,62 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BrutalButton } from "@/components/ui/brutal-button";
 import { motion } from "framer-motion";
-import { Lock, Shield } from "lucide-react";
+import { Shield, Github, Mail, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { useAuth } from "@/lib/auth";
 
 const AdminLogin = () => {
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [magicLinkSent, setMagicLinkSent] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
+    const { signInWithGoogle, signInWithGitHub, signInWithMagicLink, user } = useAuth();
 
-    const handleLogin = async (e: React.FormEvent) => {
+    if (user) {
+        navigate(user.role === 'admin' ? "/admin" : "/", { replace: true });
+        return null;
+    }
+
+    const handleMagicLink = async (e: React.FormEvent) => {
         e.preventDefault();
-        toast.error("Admin login is being migrated to Supabase Auth. Please wait for the auth system update.");
+        if (!email.trim()) {
+            toast.error("Please enter your email");
+            return;
+        }
+        setIsSubmitting(true);
+        try {
+            await signInWithMagicLink(email);
+            setMagicLinkSent(true);
+            toast.success("Check your email for a login link!");
+        } catch {
+            toast.error("Failed to send magic link");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const handleGoogleSignIn = async () => {
+        try {
+            await signInWithGoogle();
+        } catch {
+            toast.error("Failed to sign in with Google");
+        }
+    };
+
+    const handleGitHubSignIn = async () => {
+        try {
+            await signInWithGitHub();
+        } catch {
+            toast.error("Failed to sign in with GitHub");
+        }
     };
 
     return (
         <div className="min-h-screen bg-background flex flex-col">
             <Header />
 
-            {/* Page Header */}
             <div className="bg-gradient-to-r from-primary/20 via-card to-secondary/20 border-b-4 border-foreground">
                 <div className="container mx-auto px-4 py-10">
                     <div className="flex items-center gap-4">
@@ -29,10 +66,10 @@ const AdminLogin = () => {
                         </div>
                         <div>
                             <h1 className="text-4xl md:text-5xl font-black uppercase">
-                                Admin Access
+                                Sign In
                             </h1>
                             <p className="text-muted-foreground font-medium text-lg">
-                                Restricted area - Authorized personnel only
+                                Sign in to manage projects and access admin features
                             </p>
                         </div>
                     </div>
@@ -46,42 +83,86 @@ const AdminLogin = () => {
                     className="w-full max-w-md"
                 >
                     <div className="bg-card border-4 border-foreground p-8 shadow-brutal">
-                        <div className="flex items-center justify-center mb-6">
-                            <div className="w-16 h-16 bg-muted border-4 border-foreground flex items-center justify-center">
-                                <Lock className="w-8 h-8 text-primary" />
-                            </div>
-                        </div>
-
-                        <h2 className="text-2xl font-bold text-center mb-2">Admin Login</h2>
+                        <h2 className="text-2xl font-bold text-center mb-2">Welcome</h2>
                         <p className="text-muted-foreground text-center mb-8 text-sm">
-                            Enter admin password to continue
+                            Choose a sign-in method to continue
                         </p>
 
-                        <form onSubmit={handleLogin} className="space-y-6">
-                            <div>
-                                <label htmlFor="password" className="block text-sm font-bold mb-2 uppercase tracking-wide">
-                                    Password
-                                </label>
-                                <input
-                                    id="password"
-                                    type="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full px-4 py-3 bg-background border-4 border-foreground font-bold text-foreground focus:outline-none focus:border-primary transition-colors"
-                                    placeholder="Enter password"
-                                    autoFocus
-                                />
-                            </div>
-
+                        <div className="space-y-4">
                             <BrutalButton
-                                type="submit"
+                                onClick={handleGoogleSignIn}
                                 variant="primary"
                                 size="lg"
-                                className="w-full"
+                                className="w-full flex items-center justify-center gap-3"
                             >
-                                Login
+                                <svg className="w-5 h-5" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/>
+                                    <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                    <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                    <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                                </svg>
+                                Continue with Google
                             </BrutalButton>
-                        </form>
+
+                            <BrutalButton
+                                onClick={handleGitHubSignIn}
+                                variant="secondary"
+                                size="lg"
+                                className="w-full flex items-center justify-center gap-3"
+                            >
+                                <Github className="w-5 h-5" />
+                                Continue with GitHub
+                            </BrutalButton>
+
+                            <div className="relative my-6">
+                                <div className="absolute inset-0 flex items-center">
+                                    <div className="w-full border-t-2 border-foreground"></div>
+                                </div>
+                                <div className="relative flex justify-center text-sm">
+                                    <span className="bg-card px-4 font-bold text-muted-foreground">OR</span>
+                                </div>
+                            </div>
+
+                            {magicLinkSent ? (
+                                <div className="text-center p-4 bg-primary/10 border-2 border-foreground">
+                                    <Mail className="w-8 h-8 mx-auto mb-2 text-primary" />
+                                    <p className="font-bold">Check your email!</p>
+                                    <p className="text-sm text-muted-foreground mt-1">
+                                        We sent a login link to <span className="font-bold">{email}</span>
+                                    </p>
+                                </div>
+                            ) : (
+                                <form onSubmit={handleMagicLink} className="space-y-4">
+                                    <div>
+                                        <label htmlFor="email" className="block text-sm font-bold mb-2 uppercase tracking-wide">
+                                            Email for Magic Link
+                                        </label>
+                                        <input
+                                            id="email"
+                                            type="email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            className="w-full px-4 py-3 bg-background border-4 border-foreground font-bold text-foreground focus:outline-none focus:border-primary transition-colors"
+                                            placeholder="you@example.com"
+                                            autoFocus
+                                        />
+                                    </div>
+                                    <BrutalButton
+                                        type="submit"
+                                        variant="secondary"
+                                        size="lg"
+                                        className="w-full flex items-center justify-center gap-2"
+                                        disabled={isSubmitting}
+                                    >
+                                        {isSubmitting ? (
+                                            <><Loader2 className="w-4 h-4 animate-spin" /> Sending...</>
+                                        ) : (
+                                            <><Mail className="w-4 h-4" /> Send Magic Link</>
+                                        )}
+                                    </BrutalButton>
+                                </form>
+                            )}
+                        </div>
                     </div>
                 </motion.div>
             </main>

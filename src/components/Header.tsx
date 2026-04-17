@@ -1,7 +1,8 @@
-import { Link, useLocation } from "react-router-dom";
-import { Rocket, Menu, X } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Rocket, Menu, X, LogOut, User } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "@/lib/auth";
 
 const navItems = [
   { label: "Home", to: "/" },
@@ -15,6 +16,13 @@ const navItems = [
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-card border-b-4 border-foreground">
@@ -25,7 +33,6 @@ const Header = () => {
       </div>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <div className="w-10 h-10 bg-primary border-2 border-foreground flex items-center justify-center">
               <Rocket className="w-6 h-6 text-primary-foreground" />
@@ -35,7 +42,6 @@ const Header = () => {
             </span>
           </Link>
 
-          {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1">
             {navItems.map((item) => (
               <Link
@@ -50,9 +56,55 @@ const Header = () => {
                 {item.label}
               </Link>
             ))}
+
+            {user ? (
+              <div className="flex items-center gap-2 ml-2 pl-2 border-l-2 border-foreground">
+                {user.avatarUrl ? (
+                  <img src={user.avatarUrl} alt={user.displayName || ""} className="w-8 h-8 border-2 border-foreground object-cover" />
+                ) : (
+                  <div className="w-8 h-8 bg-primary border-2 border-foreground flex items-center justify-center">
+                    <User className="w-4 h-4 text-primary-foreground" />
+                  </div>
+                )}
+                <span className="text-sm font-bold max-w-[120px] truncate">{user.displayName || user.email}</span>
+                <Link
+                  to="/my-claims"
+                  className="px-3 py-1 text-xs font-bold uppercase bg-secondary text-secondary-foreground border-2 border-foreground hover:bg-secondary/80"
+                >
+                  My Claims
+                </Link>
+                <Link
+                  to="/my-reviews"
+                  className="px-3 py-1 text-xs font-bold uppercase bg-accent text-accent-foreground border-2 border-foreground hover:bg-accent/80"
+                >
+                  Reviews
+                </Link>
+                {user.role === 'admin' && (
+                  <Link
+                    to="/admin"
+                    className="px-3 py-1 text-xs font-bold uppercase bg-primary text-primary-foreground border-2 border-foreground hover:bg-primary/80"
+                  >
+                    Admin
+                  </Link>
+                )}
+                <button
+                  onClick={handleSignOut}
+                  className="p-2 border-2 border-foreground hover:bg-muted transition-colors"
+                  title="Sign out"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <Link
+                to="/admin/login"
+                className="px-4 py-2 text-sm font-bold uppercase border-2 border-foreground hover:bg-muted transition-all ml-2"
+              >
+                Sign In
+              </Link>
+            )}
           </nav>
 
-          {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden w-10 h-10 bg-muted border-2 border-foreground flex items-center justify-center"
@@ -66,7 +118,6 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -90,6 +141,50 @@ const Header = () => {
                   {item.label}
                 </Link>
               ))}
+
+              {user ? (
+                <>
+                  <div className="flex items-center gap-3 px-4 py-3 border-2 border-foreground bg-muted">
+                    {user.avatarUrl ? (
+                      <img src={user.avatarUrl} alt="" className="w-6 h-6 border border-foreground object-cover" />
+                    ) : (
+                      <User className="w-5 h-5" />
+                    )}
+                    <span className="font-bold text-sm truncate">{user.displayName || user.email}</span>
+                  </div>
+                  <Link to="/my-claims" onClick={() => setMobileMenuOpen(false)}
+                    className="px-4 py-3 text-sm font-bold uppercase bg-secondary text-secondary-foreground border-2 border-foreground">
+                    My Claims
+                  </Link>
+                  <Link to="/my-reviews" onClick={() => setMobileMenuOpen(false)}
+                    className="px-4 py-3 text-sm font-bold uppercase bg-accent text-accent-foreground border-2 border-foreground">
+                    My Reviews
+                  </Link>
+                  {user.role === 'admin' && (
+                    <Link
+                      to="/admin"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="px-4 py-3 text-sm font-bold uppercase bg-primary text-primary-foreground border-2 border-foreground"
+                    >
+                      Admin Dashboard
+                    </Link>
+                  )}
+                  <button
+                    onClick={() => { setMobileMenuOpen(false); handleSignOut(); }}
+                    className="px-4 py-3 text-sm font-bold uppercase bg-destructive text-white border-2 border-foreground flex items-center gap-2"
+                  >
+                    <LogOut className="w-4 h-4" /> Sign Out
+                  </button>
+                </>
+              ) : (
+                <Link
+                  to="/admin/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-4 py-3 text-sm font-bold uppercase border-2 border-foreground hover:bg-muted"
+                >
+                  Sign In
+                </Link>
+              )}
             </nav>
           </motion.div>
         )}

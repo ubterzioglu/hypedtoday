@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BrutalButton } from "@/components/ui/brutal-button";
-import { submitFeedback } from "@/data/mockData";
+import { api } from "@/lib/api";
 import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone, MessageCircle, Twitter, Send, MailIcon } from "lucide-react";
 import { toast } from "sonner";
 import Header from "@/components/Header";
@@ -31,7 +31,7 @@ const Contact = () => {
 
         try {
             setIsSubmitting(true);
-            await submitFeedback(message);
+            await api.submitFeedback({ message });
             toast.success("Feedback sent! Thank you.");
             setMessage("");
         } catch (error) {

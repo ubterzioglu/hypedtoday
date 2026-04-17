@@ -14,6 +14,8 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import HowItWorks from "./pages/HowItWorks";
+import OwnerReviews from "./pages/OwnerReviews";
+import SupporterDashboard from "./pages/SupporterDashboard";
 
 const queryClient = new QueryClient();
 
@@ -30,11 +32,26 @@ const App = () => (
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/how-it-works" element={<HowItWorks />} />
-            <Route path="/add-project" element={<AddProject />} />
+            <Route path="/login" element={<AdminLogin />} />
             <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/add-project" element={
+              <ProtectedRoute>
+                <AddProject />
+              </ProtectedRoute>
+            } />
             <Route path="/admin" element={
               <ProtectedRoute requireAdmin>
                 <AdminDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/my-reviews" element={
+              <ProtectedRoute>
+                <OwnerReviews />
+              </ProtectedRoute>
+            } />
+            <Route path="/my-claims" element={
+              <ProtectedRoute>
+                <SupporterDashboard />
               </ProtectedRoute>
             } />
             <Route path="*" element={<NotFound />} />
