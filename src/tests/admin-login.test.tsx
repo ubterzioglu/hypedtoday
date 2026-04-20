@@ -2,6 +2,8 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import AdminLogin from '@/pages/AdminLogin';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 
 const mockSignInWithGoogle = vi.fn();
 const mockSignInWithGitHub = vi.fn();
@@ -34,8 +36,21 @@ vi.mock('react-i18next', () => ({
 }));
 
 vi.mock('framer-motion', () => ({
+    AnimatePresence: ({ children }: { children: ReactNode }) => <>{children}</>,
     motion: {
-        div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+        div: ({
+            children,
+            initial,
+            animate,
+            exit,
+            transition,
+            ...props
+        }: ComponentPropsWithoutRef<'div'> & {
+            initial?: unknown;
+            animate?: unknown;
+            exit?: unknown;
+            transition?: unknown;
+        }) => <div {...props}>{children}</div>,
     },
 }));
 
@@ -47,7 +62,6 @@ vi.mock('sonner', () => ({
 }));
 
 function renderLogin(route = '/admin/login') {
-    const AdminLogin = require('@/pages/AdminLogin').default;
     return render(
         <MemoryRouter initialEntries={[route]}>
             <Routes>
@@ -86,7 +100,7 @@ describe('AdminLogin', () => {
     });
 
     it('does not call signInWithMagicLink on empty email submit', async () => {
-        const { toast } = require('sonner');
+        const { toast } = await import('sonner');
         renderLogin();
         const submitBtn = screen.getByText('auth.sendMagicLink');
         await userEvent.click(submitBtn);

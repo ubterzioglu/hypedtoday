@@ -1,40 +1,5 @@
 import { describe, expect, it } from 'vitest';
-
-const ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-    'http://localhost:3000',
-    'https://hyped.today',
-    'https://www.hyped.today',
-];
-
-function corsHeaders(req: Request, extra?: Record<string, string>): Record<string, string> {
-    const origin = req.headers.get('Origin') ?? '';
-    const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : '';
-    return {
-        'Access-Control-Allow-Origin': allowed,
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, accept, origin',
-        'Access-Control-Max-Age': '86400',
-        ...extra,
-    };
-}
-
-function handleCors(req: Request): Response | null {
-    if (req.method === 'OPTIONS') {
-        const origin = req.headers.get('Origin') ?? '';
-        if (!ALLOWED_ORIGINS.includes(origin)) {
-            return new Response('Forbidden', { status: 403 });
-        }
-        return new Response(null, { status: 204, headers: corsHeaders(req) });
-    }
-    return null;
-}
-
-function originCheck(req: Request): boolean {
-    const origin = req.headers.get('Origin');
-    if (!origin) return true;
-    return ALLOWED_ORIGINS.includes(origin);
-}
+import { corsHeaders, handleCors, originCheck } from '../cors.ts';
 
 describe('corsHeaders', () => {
     it('sets Access-Control-Allow-Origin for allowed origin', () => {
@@ -59,6 +24,14 @@ describe('corsHeaders', () => {
         });
         const headers = corsHeaders(req, { 'X-Custom': 'value' });
         expect(headers['X-Custom']).toBe('value');
+    });
+
+    it('allows http://localhost:8080 origin (Vite dev server)', () => {
+        const req = new Request('https://hyped.today/api/test', {
+            headers: { Origin: 'http://localhost:8080' },
+        });
+        const headers = corsHeaders(req);
+        expect(headers['Access-Control-Allow-Origin']).toBe('http://localhost:8080');
     });
 });
 
@@ -91,6 +64,17 @@ describe('handleCors', () => {
         });
         expect(handleCors(req)).toBeNull();
     });
+
+    it('returns 204 for OPTIONS from http://localhost:8080', () => {
+        const req = new Request('https://hyped.today/api/test', {
+            method: 'OPTIONS',
+            headers: { Origin: 'http://localhost:8080' },
+        });
+        const res = handleCors(req);
+        expect(res).not.toBeNull();
+        expect(res!.status).toBe(204);
+        expect(res!.headers.get('Access-Control-Allow-Origin')).toBe('http://localhost:8080');
+    });
 });
 
 describe('originCheck', () => {
@@ -111,5 +95,12 @@ describe('originCheck', () => {
             headers: { Origin: 'https://evil.com' },
         });
         expect(originCheck(req)).toBe(false);
+    });
+
+    it('returns true for http://localhost:8080', () => {
+        const req = new Request('https://hyped.today/api/test', {
+            headers: { Origin: 'http://localhost:8080' },
+        });
+        expect(originCheck(req)).toBe(true);
     });
 });

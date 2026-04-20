@@ -1,37 +1,5 @@
 import { describe, expect, it } from 'vitest';
-
-const ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-    'http://localhost:3000',
-    'https://hyped.today',
-    'https://www.hyped.today',
-];
-
-function corsHeaders(req: Request, extra?: Record<string, string>): Record<string, string> {
-    const origin = req.headers.get('Origin') ?? '';
-    const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : '';
-    return {
-        'Access-Control-Allow-Origin': allowed,
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, accept, origin',
-        'Access-Control-Max-Age': '86400',
-        ...extra,
-    };
-}
-
-function successResponse(req: Request, data: unknown, status = 200, extraHeaders?: Record<string, string>): Response {
-    return new Response(JSON.stringify({ data }), {
-        status,
-        headers: { 'Content-Type': 'application/json', ...corsHeaders(req, extraHeaders) },
-    });
-}
-
-function errorResponse(req: Request, message: string, status = 400, code?: string, extraHeaders?: Record<string, string>): Response {
-    return new Response(JSON.stringify({ error: { message, code } }), {
-        status,
-        headers: { 'Content-Type': 'application/json', ...corsHeaders(req, extraHeaders) },
-    });
-}
+import { successResponse, errorResponse } from '../response.ts';
 
 describe('successResponse', () => {
     const req = new Request('https://hyped.today/api/test', {

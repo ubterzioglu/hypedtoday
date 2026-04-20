@@ -1,4 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { api } from '@/lib/api';
 import { mockSupabase } from '@/test/setup';
 
 describe('ensureAuthenticatedSession', () => {
@@ -248,5 +249,49 @@ describe('api method calls', () => {
             method: 'POST',
             body: body,
         }));
+    });
+});
+
+describe('api.createPost', () => {
+    beforeEach(() => {
+        vi.clearAllMocks();
+        mockSupabase.auth.getSession.mockResolvedValue({
+            data: {
+                session: {
+                    access_token: 'tok',
+                    expires_at: Math.floor(Date.now() / 1000) + 3600,
+                },
+            },
+        });
+    });
+
+    it('throws parsed Edge Function validation errors', async () => {
+        mockSupabase.functions.invoke.mockResolvedValue({
+            data: null,
+            error: { message: 'Edge Function returned a non-2xx status code' },
+            response: new Response(
+                JSON.stringify({
+                    error: {
+                        message: 'Invalid LinkedIn post URL. Use a LinkedIn post URL, not a profile URL.',
+                        code: 'INVALID_URL',
+                    },
+                }),
+                {
+                    status: 400,
+                    headers: { 'Content-Type': 'application/json' },
+                },
+            ),
+        });
+
+        await expect(api.createPost({
+            linkedin_url: 'https://www.linkedin.com/in/ubterzioglu/',
+            requested_like: true,
+            requested_comment: false,
+            requested_repost: false,
+        })).rejects.toEqual({
+            message: 'Invalid LinkedIn post URL. Use a LinkedIn post URL, not a profile URL.',
+            code: 'INVALID_URL',
+            status: 400,
+        });
     });
 });

@@ -100,6 +100,7 @@
     "errorFallback": "Please try again later.",
     "validUrlError": "Must be a valid URL",
     "linkedinUrlError": "Must be a LinkedIn URL",
+    "linkedinPostUrlError": "Enter a LinkedIn post URL. Profile URLs are not supported.",
     "selectTaskError": "Select at least one task type"
   },
   "capacity": {

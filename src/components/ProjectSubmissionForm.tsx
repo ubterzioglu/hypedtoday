@@ -1,19 +1,33 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { api } from "@/lib/api";
+import { isLinkedInPostUrl } from "@/lib/linkedin-url";
 import { BrutalButton } from "@/components/ui/brutal-button";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Loader2, Linkedin, ThumbsUp, MessageSquare, Repeat2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-const postSchema = z.object({
+interface PostFormData {
+    linkedin_url: string;
+    title?: string;
+    description?: string;
+    requested_like: boolean;
+    requested_comment: boolean;
+    requested_repost: boolean;
+}
+
+const buildPostSchema = (messages: {
+    validUrl: string;
+    linkedinPostUrl: string;
+    selectTask: string;
+}) => z.object({
     linkedin_url: z
         .string()
-        .url("Must be a valid URL")
-        .refine(u => u.includes("linkedin.com"), "Must be a LinkedIn URL"),
+        .url(messages.validUrl)
+        .refine(isLinkedInPostUrl, messages.linkedinPostUrl),
     title: z.string().max(200).optional().or(z.literal("")),
     description: z.string().max(1000).optional().or(z.literal("")),
     requested_like: z.boolean(),
@@ -21,14 +35,17 @@ const postSchema = z.object({
     requested_repost: z.boolean(),
 }).refine(
     d => d.requested_like || d.requested_comment || d.requested_repost,
-    { message: "Select at least one task type", path: ["requested_like"] }
+    { message: messages.selectTask, path: ["requested_like"] }
 );
-
-type PostFormData = z.infer<typeof postSchema>;
 
 const ProjectSubmissionForm = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const postSchema = useMemo(() => buildPostSchema({
+        validUrl: t("form.validUrlError"),
+        linkedinPostUrl: t("form.linkedinPostUrlError"),
+        selectTask: t("form.selectTaskError"),
+    }), [t]);
 
     const TASKS = [
         { key: "requested_like" as const, label: t("form.taskLike"), icon: ThumbsUp, desc: t("form.taskLikeDesc") },

@@ -6,7 +6,31 @@ import { checkRequestLimits } from '../_shared/request-limits.ts';
 import { checkRateLimit, getRateLimitIdentifier, rateLimitHeaders } from '../_shared/rate-limit.ts';
 import { validateMaxLength, validateUrl, collectErrors } from '../_shared/validation.ts';
 
-const LINKEDIN_URL_PATTERN = /^https?:\/\/(www\.)?linkedin\.com\/posts\//;
+const LINKEDIN_FEED_UPDATE_TYPES = new Set(['activity', 'share']);
+
+function isLinkedInPostUrl(value: string): boolean {
+    try {
+        const url = new URL(value.trim());
+        const hostname = url.hostname.toLowerCase();
+        const pathname = url.pathname;
+
+        if (url.protocol !== 'https:' && url.protocol !== 'http:') return false;
+        if (hostname !== 'linkedin.com' && hostname !== 'www.linkedin.com') return false;
+
+        if (pathname.startsWith('/posts/') && pathname.length > '/posts/'.length) {
+            return true;
+        }
+
+        if (!pathname.startsWith('/feed/update/urn:li:')) {
+            return false;
+        }
+
+        const urnParts = pathname.slice('/feed/update/urn:li:'.length).split(':');
+        return LINKEDIN_FEED_UPDATE_TYPES.has(urnParts[0]) && Boolean(urnParts[1]);
+    } catch {
+        return false;
+    }
+}
 
 Deno.serve(async (req) => {
     const cors = handleCors(req);
@@ -30,8 +54,8 @@ Deno.serve(async (req) => {
         const body = await req.json();
         const { linkedin_url, title, description, requested_like, requested_comment, requested_repost } = body;
 
-        if (!linkedin_url || !LINKEDIN_URL_PATTERN.test(linkedin_url)) {
-            return errorResponse(req, 'Invalid LinkedIn post URL. Must be a linkedin.com/posts/ URL.', 400, 'INVALID_URL');
+        if (!linkedin_url || !isLinkedInPostUrl(linkedin_url)) {
+            return errorResponse(req, 'Invalid LinkedIn post URL. Use a LinkedIn post URL, not a profile URL.', 400, 'INVALID_URL');
         }
 
         const validationError = collectErrors(

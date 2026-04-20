@@ -14,9 +14,10 @@ export default defineConfig({
     ],
   },
   resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-      "./cors.ts": path.resolve(__dirname, "./supabase/functions/_shared/cors.ts"),
-    },
+    alias: [
+      { find: "@", replacement: path.resolve(__dirname, "./src") },
+      { find: "./cors.ts", replacement: path.resolve(__dirname, "./supabase/functions/_shared/cors.ts") },
+      { find: "https://esm.sh/@supabase/supabase-js@2", replacement: path.resolve(__dirname, "./supabase/functions/_shared/__mocks__/supabase-client.ts") },
+    ],
   },
 });

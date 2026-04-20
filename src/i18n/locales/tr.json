@@ -100,6 +100,7 @@
     "errorFallback": "Lütfen daha sonra tekrar deneyin.",
     "validUrlError": "Geçerli bir URL olmalıdır",
     "linkedinUrlError": "LinkedIn URL'si olmalıdır",
+    "linkedinPostUrlError": "LinkedIn gönderi URL'si girin. Profil URL'si desteklenmez.",
     "selectTaskError": "En az bir görev türü seçin"
   },
   "capacity": {

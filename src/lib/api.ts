@@ -54,7 +54,12 @@ async function readFunctionError(response: Response | undefined, fallbackMessage
             response.status || 500,
         );
     } catch {
-        return buildApiError(fallbackMessage, 'FUNCTION_ERROR', response.status || 500);
+        try {
+            const text = await response.clone().text();
+            return buildApiError(text || fallbackMessage, 'FUNCTION_ERROR', response.status || 500);
+        } catch {
+            return buildApiError(fallbackMessage, 'FUNCTION_ERROR', response.status || 500);
+        }
     }
 }
 
@@ -80,7 +85,10 @@ async function apiCall<T>(path: string, options: RequestInit = {}): Promise<T> {
     });
 
     if (error) {
-        throw await readFunctionError(response, error.message ?? 'Request failed');
+        const errorResponse = response ?? (error instanceof Error && 'context' in error
+            ? (error.context as Response | undefined)
+            : undefined);
+        throw await readFunctionError(errorResponse, error.message ?? 'Request failed');
     }
 
     return (data as { data?: T }).data as T;
