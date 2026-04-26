@@ -50,7 +50,7 @@ const LinkedinPage = () => {
     const onSubmit = async (data: LinkedinProfileFormData) => {
         try {
             setIsSubmitting(true);
-            await api.submitLinkedinProfile({
+            await api.saveLinkedinProfile({
                 first_name: data.first_name.trim(),
                 last_name: data.last_name.trim(),
                 whatsapp_number: data.whatsapp_number.trim(),

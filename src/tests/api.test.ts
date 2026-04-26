@@ -347,6 +347,55 @@ describe('linkedin profile api methods', () => {
         });
     });
 
+    it('saveLinkedinProfile updates the authenticated profile without the edge function', async () => {
+        mockSupabase.auth.getUser.mockResolvedValue({
+            data: { user: { id: 'user-1' } },
+            error: null,
+        });
+        const single = vi.fn().mockResolvedValue({
+            data: {
+                id: 'user-1',
+                first_name: 'Ada',
+                last_name: 'Lovelace',
+                whatsapp_number: '+905551112233',
+                linkedin_url: 'https://www.linkedin.com/in/ada',
+                updated_at: '2026-04-26T12:00:00Z',
+            },
+            error: null,
+        });
+        const select = vi.fn().mockReturnValue({ single });
+        const eq = vi.fn().mockReturnValue({ select });
+        const update = vi.fn().mockReturnValue({ eq });
+        mockSupabase.from.mockReturnValue({ update });
+
+        await expect(api.saveLinkedinProfile({
+            first_name: 'Ada',
+            last_name: 'Lovelace',
+            whatsapp_number: '+905551112233',
+            linkedin_url: 'https://www.linkedin.com/in/ada',
+        })).resolves.toEqual({
+            profile: {
+                id: 'user-1',
+                first_name: 'Ada',
+                last_name: 'Lovelace',
+                whatsapp_number: '+905551112233',
+                linkedin_url: 'https://www.linkedin.com/in/ada',
+                updated_at: '2026-04-26T12:00:00Z',
+            },
+        });
+
+        expect(mockSupabase.functions.invoke).not.toHaveBeenCalled();
+        expect(mockSupabase.from).toHaveBeenCalledWith('profiles');
+        expect(update).toHaveBeenCalledWith({
+            first_name: 'Ada',
+            last_name: 'Lovelace',
+            whatsapp_number: '+905551112233',
+            linkedin_url: 'https://www.linkedin.com/in/ada',
+            display_name: 'Ada Lovelace',
+        });
+        expect(eq).toHaveBeenCalledWith('id', 'user-1');
+    });
+
     it('getLinkedinProfiles reads profiles ordered newest first', async () => {
         const order = vi.fn().mockResolvedValue({
             data: [

@@ -210,6 +210,33 @@ export const api = {
         });
     },
 
+    async saveLinkedinProfile(body: LinkedinProfileFormData) {
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
+        if (userError || !user?.id) {
+            throw new Error(userError?.message ?? 'Unauthorized');
+        }
+
+        const displayName = `${body.first_name.trim()} ${body.last_name.trim()}`.trim();
+        const { data, error } = await supabase
+            .from('profiles')
+            .update({
+                first_name: body.first_name.trim(),
+                last_name: body.last_name.trim(),
+                whatsapp_number: body.whatsapp_number.trim(),
+                linkedin_url: body.linkedin_url.trim(),
+                display_name: displayName,
+            })
+            .eq('id', user.id)
+            .select('id, first_name, last_name, whatsapp_number, linkedin_url, updated_at')
+            .single();
+
+        if (error) {
+            throw new Error('Failed to save LinkedIn profile: ' + error.message);
+        }
+
+        return { profile: data };
+    },
+
     async getLinkedinProfiles(): Promise<LinkedinProfile[]> {
         const { data, error } = await supabase
             .from('linkedin_profiles')

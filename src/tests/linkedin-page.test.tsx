@@ -5,12 +5,12 @@ import type { HTMLAttributes, ReactNode } from 'react';
 import LinkedinPage from '@/pages/Linkedin';
 
 const apiMocks = vi.hoisted(() => ({
-    submitLinkedinProfile: vi.fn(),
+    saveLinkedinProfile: vi.fn(),
 }));
 
 vi.mock('@/lib/api', () => ({
     api: {
-        submitLinkedinProfile: apiMocks.submitLinkedinProfile,
+        saveLinkedinProfile: apiMocks.saveLinkedinProfile,
     },
 }));
 
@@ -56,7 +56,7 @@ describe('LinkedinPage', () => {
         expect(await screen.findByText('linkedin.form.firstNameRequired')).toBeInTheDocument();
         expect(screen.getByText('linkedin.form.lastNameRequired')).toBeInTheDocument();
         expect(screen.getByText('linkedin.form.whatsappRequired')).toBeInTheDocument();
-        expect(apiMocks.submitLinkedinProfile).not.toHaveBeenCalled();
+        expect(apiMocks.saveLinkedinProfile).not.toHaveBeenCalled();
     });
 
     it('rejects non-LinkedIn profile URLs', async () => {
@@ -69,7 +69,7 @@ describe('LinkedinPage', () => {
         await userEvent.click(screen.getByRole('button', { name: 'linkedin.submit' }));
 
         expect(await screen.findByText('linkedin.form.linkedinProfileUrl')).toBeInTheDocument();
-        expect(apiMocks.submitLinkedinProfile).not.toHaveBeenCalled();
+        expect(apiMocks.saveLinkedinProfile).not.toHaveBeenCalled();
     });
 
     it('rejects invalid WhatsApp number formats', async () => {
@@ -82,11 +82,11 @@ describe('LinkedinPage', () => {
         await userEvent.click(screen.getByRole('button', { name: 'linkedin.submit' }));
 
         expect(await screen.findByText('linkedin.form.whatsappFormat')).toBeInTheDocument();
-        expect(apiMocks.submitLinkedinProfile).not.toHaveBeenCalled();
+        expect(apiMocks.saveLinkedinProfile).not.toHaveBeenCalled();
     });
 
     it('submits the form with WhatsApp number and clears it', async () => {
-        apiMocks.submitLinkedinProfile.mockResolvedValue({
+        apiMocks.saveLinkedinProfile.mockResolvedValue({
             profile: {
                 id: 'profile-1',
                 first_name: 'Ada',
@@ -110,7 +110,7 @@ describe('LinkedinPage', () => {
         await userEvent.click(screen.getByRole('button', { name: 'linkedin.submit' }));
 
         await waitFor(() => {
-            expect(apiMocks.submitLinkedinProfile).toHaveBeenCalledWith({
+            expect(apiMocks.saveLinkedinProfile).toHaveBeenCalledWith({
                 first_name: 'Ada',
                 last_name: 'Lovelace',
                 whatsapp_number: '+905551112233',
