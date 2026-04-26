@@ -349,7 +349,7 @@ describe('linkedin profile api methods', () => {
         });
     });
 
-    it('submitLinkedinProfile falls back to authenticated direct insert when the edge function is missing', async () => {
+    it('submitLinkedinProfile falls back to direct insert without requiring auth when the edge function is missing', async () => {
         mockSupabase.functions.invoke.mockResolvedValue({
             data: null,
             error: new Error('Failed to send a request to the Edge Function'),
@@ -394,6 +394,7 @@ describe('linkedin profile api methods', () => {
             whatsapp_number: '+905551112233',
             linkedin_url: 'https://www.linkedin.com/in/ada',
         });
+        expect(mockSupabase.auth.getSession).not.toHaveBeenCalled();
     });
 
     it('saveLinkedinProfile updates the authenticated profile without the edge function', async () => {
