@@ -4,6 +4,7 @@
     "explore": "Keşfet",
     "addProject": "Proje Ekle",
     "linkedin": "LinkedIn",
+    "linkStatus": "Link Durumu",
     "leaderboard": "Sıralama",
     "howItWorks": "Nasıl Çalışır",
     "contact": "İletişim"
@@ -169,6 +170,21 @@
       "validUrl": "Geçerli bir URL girin",
       "linkedinProfileUrl": "LinkedIn profil linki linkedin.com/in/... formatında olmalıdır",
       "maxLength": "Bu alan çok uzun"
+    }
+  },
+  "linkStatus": {
+    "title": "Link Durumu",
+    "subtitle": "Kayıtlı kullanıcıları ve LinkedIn durumlarını görüntüle.",
+    "refresh": "Yenile",
+    "loading": "Kullanıcılar yükleniyor...",
+    "emptyTitle": "Henüz kullanıcı yok",
+    "emptyDesc": "Kullanıcılar LinkedIn profili eklediğinde burada görünür.",
+    "loadError": "Kullanıcılar yüklenemedi.",
+    "openProfile": "Profili Aç",
+    "status": {
+      "pending": "Onay bekliyor",
+      "approved": "Onaylı",
+      "rejected": "Reddedildi"
     }
   },
   "howItWorks": {

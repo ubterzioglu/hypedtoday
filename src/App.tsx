@@ -19,6 +19,7 @@ import SupporterDashboard from "./pages/SupporterDashboard";
 import AuthCallback from "./pages/AuthCallback";
 import LinkedinPage from "./pages/Linkedin";
 import AdminAccessDenied from "./pages/AdminAccessDenied";
+import LinkStatusPage from "./pages/LinkStatus";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,11 @@ const App = () => (
             <Route path="/linkedin" element={
               <ProtectedRoute>
                 <LinkedinPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/linkstatus" element={
+              <ProtectedRoute>
+                <LinkStatusPage />
               </ProtectedRoute>
             } />
             <Route path="/login" element={<AdminLogin />} />

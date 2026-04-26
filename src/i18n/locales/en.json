@@ -4,6 +4,7 @@
     "explore": "Explore",
     "addProject": "Add Project",
     "linkedin": "LinkedIn",
+    "linkStatus": "Link Status",
     "leaderboard": "Leaderboard",
     "howItWorks": "How It Works",
     "contact": "Contact"
@@ -169,6 +170,21 @@
       "validUrl": "Enter a valid URL",
       "linkedinProfileUrl": "LinkedIn profile link must use linkedin.com/in/... format",
       "maxLength": "This field is too long"
+    }
+  },
+  "linkStatus": {
+    "title": "Link Status",
+    "subtitle": "View registered users and their LinkedIn status.",
+    "refresh": "Refresh",
+    "loading": "Loading users...",
+    "emptyTitle": "No users yet",
+    "emptyDesc": "Users will appear here after adding a LinkedIn profile.",
+    "loadError": "Users could not be loaded.",
+    "openProfile": "Open Profile",
+    "status": {
+      "pending": "Pending approval",
+      "approved": "Approved",
+      "rejected": "Rejected"
     }
   },
   "howItWorks": {
