@@ -1,215 +1,76 @@
 import { motion } from "framer-motion";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import DashboardStats from "@/components/DashboardStats";
-import QuickActions from "@/components/QuickActions";
-import TopProjects from "@/components/TopProjects";
-import { ArrowRight, Sparkles, Users, TrendingUp, Trophy, Zap } from "lucide-react";
-import { Link } from "react-router-dom";
-import { BrutalButton } from "@/components/ui/brutal-button";
-import { useTranslation } from "react-i18next";
-
-const faqItems = [
-  { q: "seo.faq1Q", a: "seo.faq1A" },
-  { q: "seo.faq2Q", a: "seo.faq2A" },
-  { q: "seo.faq3Q", a: "seo.faq3A" },
-  { q: "seo.faq4Q", a: "seo.faq4A" },
-  { q: "seo.faq5Q", a: "seo.faq5A" },
-];
-
-const features = [
-  { title: "seo.feature1Title", desc: "seo.feature1Desc", icon: Users, color: "bg-primary/10 border-primary text-primary" },
-  { title: "seo.feature2Title", desc: "seo.feature2Desc", icon: TrendingUp, color: "bg-secondary/10 border-secondary text-secondary" },
-  { title: "seo.feature3Title", desc: "seo.feature3Desc", icon: Zap, color: "bg-accent/10 border-accent text-accent" },
-  { title: "seo.feature4Title", desc: "seo.feature4Desc", icon: Trophy, color: "bg-highlight/10 border-highlight text-highlight" },
-];
+import { Construction, Rocket, TimerReset } from "lucide-react";
 
 const Index = () => {
-  const { t } = useTranslation();
-
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Header />
+    <main className="min-h-screen bg-background text-foreground overflow-hidden">
+      <div className="min-h-screen px-4 py-8 flex items-center justify-center relative">
+        <div className="absolute inset-0 opacity-[0.06] pointer-events-none">
+          <div className="h-full w-full bg-[linear-gradient(90deg,currentColor_1px,transparent_1px),linear-gradient(currentColor_1px,transparent_1px)] bg-[size:44px_44px]" />
+        </div>
 
-      <main className="flex-1 container mx-auto px-4 py-8">
         <motion.section
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className="relative w-full max-w-4xl border-4 border-foreground bg-card shadow-brutal"
         >
-          <div className="bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 border-4 border-foreground p-6 md:p-10">
-            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-              <div>
-                <div className="flex items-center gap-2 mb-2">
-                  <Sparkles className="w-5 h-5 text-primary" />
-                  <span className="text-sm font-bold uppercase text-primary">
-                    {t("home.welcomeTo")}
-                  </span>
+          <div className="grid md:grid-cols-[1fr_280px]">
+            <div className="p-7 md:p-12">
+              <div className="inline-flex items-center gap-2 border-2 border-foreground bg-primary px-3 py-2 font-black text-primary-foreground uppercase text-sm mb-8">
+                <Construction className="w-4 h-4" />
+                Yapım Aşamasında
+              </div>
+
+              <h1 className="font-display text-5xl md:text-7xl font-black leading-none mb-6">
+                hyped.today
+              </h1>
+
+              <p className="text-2xl md:text-3xl font-black leading-tight mb-4">
+                Projemiz yenileniyor.
+              </p>
+
+              <p className="text-base md:text-lg text-muted-foreground max-w-2xl leading-relaxed">
+                Hyped.today şu anda yayından geçici olarak kaldırıldı. Daha net,
+                daha güvenli ve daha kullanışlı bir sürümle tekrar hayata geçeceğiz.
+              </p>
+
+              <div className="mt-10 grid sm:grid-cols-2 gap-4">
+                <div className="border-2 border-foreground p-4 bg-background">
+                  <TimerReset className="w-6 h-6 text-primary mb-3" />
+                  <p className="font-black uppercase text-sm mb-1">Durum</p>
+                  <p className="text-sm text-muted-foreground">Kapalı beta hazırlığı</p>
                 </div>
-                <h1 className="font-display text-4xl md:text-6xl font-black mb-2">
-                  hyped.today
-                  <span className="sr-only"> – {t("seo.heroSubtitle")}</span>
-                </h1>
-                <p className="text-lg text-muted-foreground">
-                  {t("home.tagline")}
+                <div className="border-2 border-foreground p-4 bg-background">
+                  <Rocket className="w-6 h-6 text-secondary mb-3" />
+                  <p className="font-black uppercase text-sm mb-1">Sıradaki Adım</p>
+                  <p className="text-sm text-muted-foreground">Yeni ürün deneyimi</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="border-t-4 md:border-t-0 md:border-l-4 border-foreground bg-primary p-7 md:p-8 flex flex-col justify-between min-h-[260px]">
+              <div>
+                <div className="w-16 h-16 border-4 border-foreground bg-background flex items-center justify-center shadow-brutal-sm mb-6">
+                  <Rocket className="w-8 h-8" />
+                </div>
+                <p className="font-black uppercase text-primary-foreground text-3xl leading-none">
+                  Soon.
+                  <br />
+                  Better.
+                  <br />
+                  Focused.
                 </p>
               </div>
-              <Link to="/add-project">
-                <BrutalButton variant="primary" size="lg" className="px-8">
-                  {t("home.addYourProject")}
-                  <ArrowRight className="w-5 h-5 ml-2" />
-                </BrutalButton>
-              </Link>
+
+              <div className="mt-8 border-2 border-foreground bg-background px-4 py-3">
+                <p className="text-xs font-black uppercase tracking-wide">hyped.today</p>
+                <p className="text-xs text-muted-foreground mt-1">Geri döneceğiz.</p>
+              </div>
             </div>
           </div>
         </motion.section>
-
-        <motion.section
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.1 }}
-          className="mb-8"
-        >
-          <h2 className="text-lg font-bold uppercase mb-4 flex items-center gap-2">
-            <span className="w-2 h-2 bg-primary" />
-            {t("home.platformStats")}
-          </h2>
-          <DashboardStats />
-        </motion.section>
-
-        <motion.section
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="mb-8"
-        >
-          <h2 className="text-lg font-bold uppercase mb-4 flex items-center gap-2">
-            <span className="w-2 h-2 bg-secondary" />
-            {t("home.quickActions")}
-          </h2>
-          <QuickActions />
-        </motion.section>
-
-        <motion.section
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="mb-8"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold uppercase flex items-center gap-2">
-              <span className="w-2 h-2 bg-accent" />
-              {t("home.topProjects")}
-            </h2>
-            <Link
-              to="/leaderboard"
-              className="text-sm font-bold text-primary hover:underline flex items-center gap-1"
-            >
-              {t("home.viewAll")} <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-          <TopProjects />
-        </motion.section>
-
-        <motion.section
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="mb-12"
-        >
-          <div className="bg-primary border-4 border-foreground p-8 text-center">
-            <h2 className="text-2xl md:text-3xl font-black text-primary-foreground mb-4">
-              {t("home.joinTitle")}
-            </h2>
-            <p className="text-primary-foreground/80 mb-6 max-w-2xl mx-auto">
-              {t("home.joinDesc")}
-            </p>
-            <a
-              href="http://linkedin.com/company/hyped-today"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <BrutalButton variant="secondary" size="lg" className="px-12">
-                {t("home.joinLinkedIn")}
-              </BrutalButton>
-            </a>
-          </div>
-        </motion.section>
-
-        <section className="mb-12 max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-black mb-6">{t("seo.whatIsTitle")}</h2>
-          <div className="space-y-4 text-muted-foreground leading-relaxed">
-            <p dangerouslySetInnerHTML={{ __html: t("seo.whatIsP1") }} />
-            <p dangerouslySetInnerHTML={{ __html: t("seo.whatIsP2") }} />
-            <p dangerouslySetInnerHTML={{ __html: t("seo.whatIsP3") }} />
-          </div>
-        </section>
-
-        <section className="mb-12 max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-black mb-6">{t("seo.howTitle")}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            {[
-              { title: "seo.howStep1Title", desc: "seo.howStep1Desc" },
-              { title: "seo.howStep2Title", desc: "seo.howStep2Desc" },
-              { title: "seo.howStep3Title", desc: "seo.howStep3Desc" },
-            ].map((step, i) => (
-              <div key={i} className="bg-card border-3 border-foreground p-6">
-                <h3 className="font-bold text-lg mb-2">{t(step.title)}</h3>
-                <p className="text-sm text-muted-foreground">{t(step.desc)}</p>
-              </div>
-            ))}
-          </div>
-          <h3 className="font-bold mb-3">{t("seo.howListTitle")}</h3>
-          <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-            <li>{t("seo.howListItem1")}</li>
-            <li>{t("seo.howListItem2")}</li>
-            <li>{t("seo.howListItem3")}</li>
-            <li>{t("seo.howListItem4")}</li>
-          </ul>
-        </section>
-
-        <section className="mb-12 max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-black mb-6">{t("seo.featuresTitle")}</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {features.map((feature, i) => (
-              <div key={i} className={`border-3 p-6 ${feature.color}`}>
-                <feature.icon className="w-8 h-8 mb-3" />
-                <h3 className="font-bold text-lg mb-2">{t(feature.title)}</h3>
-                <p className="text-sm text-muted-foreground">{t(feature.desc)}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="mb-12 max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-black mb-6">{t("seo.whoTitle")}</h2>
-          <div className="space-y-4 text-muted-foreground leading-relaxed">
-            <p dangerouslySetInnerHTML={{ __html: t("seo.whoP1") }} />
-            <p dangerouslySetInnerHTML={{ __html: t("seo.whoP2") }} />
-            <p dangerouslySetInnerHTML={{ __html: t("seo.whoP3") }} />
-          </div>
-        </section>
-
-        <section className="mb-12 max-w-4xl mx-auto">
-          <h2 className="text-2xl md:text-3xl font-black mb-6">{t("seo.faqTitle")}</h2>
-          <div className="space-y-3">
-            {faqItems.map((item, i) => (
-              <details key={i} className="group bg-card border-2 border-foreground">
-                <summary className="cursor-pointer p-4 font-bold flex items-center justify-between hover:bg-muted/50 transition-colors list-none">
-                  <span>{t(item.q)}</span>
-                  <span className="text-primary transition-transform group-open:rotate-45 text-xl leading-none">+</span>
-                </summary>
-                <div className="px-4 pb-4 text-muted-foreground">
-                  {t(item.a)}
-                </div>
-              </details>
-            ))}
-          </div>
-        </section>
-      </main>
-
-      <Footer />
-    </div>
+      </div>
+    </main>
   );
 };
 

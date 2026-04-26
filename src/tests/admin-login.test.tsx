@@ -28,6 +28,14 @@ vi.mock('@/lib/auth', () => ({
     }),
 }));
 
+vi.mock('@/components/Header', () => ({
+    default: () => <header data-testid="site-header" />,
+}));
+
+vi.mock('@/components/Footer', () => ({
+    default: () => <footer data-testid="site-footer" />,
+}));
+
 vi.mock('react-i18next', () => ({
     useTranslation: () => ({
         t: (key: string) => key,
@@ -81,6 +89,15 @@ describe('AdminLogin', () => {
         expect(screen.getByText('auth.google')).toBeInTheDocument();
         expect(screen.getByText('auth.github')).toBeInTheDocument();
         expect(screen.getByText('auth.sendMagicLink')).toBeInTheDocument();
+    });
+
+    it('renders a bare auth page for the LinkedIn gate', () => {
+        renderLogin('/admin/login?next=/linkedin');
+        expect(screen.getByText('auth.google')).toBeInTheDocument();
+        expect(screen.getByText('auth.github')).toBeInTheDocument();
+        expect(screen.queryByTestId('site-header')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('site-footer')).not.toBeInTheDocument();
+        expect(screen.queryByText('auth.title')).not.toBeInTheDocument();
     });
 
     it('resolves nextPath from URL params', async () => {
