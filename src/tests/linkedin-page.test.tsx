@@ -5,18 +5,22 @@ import type { HTMLAttributes, ReactNode } from 'react';
 import LinkedinPage from '@/pages/Linkedin';
 
 const apiMocks = vi.hoisted(() => ({
-    saveLinkedinProfile: vi.fn(),
+    getLinkedinProfiles: vi.fn(),
+    submitLinkedinProfile: vi.fn(),
 }));
 
 vi.mock('@/lib/api', () => ({
     api: {
-        saveLinkedinProfile: apiMocks.saveLinkedinProfile,
+        getLinkedinProfiles: apiMocks.getLinkedinProfiles,
+        submitLinkedinProfile: apiMocks.submitLinkedinProfile,
     },
 }));
 
+const stableT = (key: string) => key;
+
 vi.mock('react-i18next', () => ({
     useTranslation: () => ({
-        t: (key: string) => key,
+        t: stableT,
     }),
 }));
 
@@ -38,6 +42,7 @@ vi.mock('sonner', () => ({
 describe('LinkedinPage', () => {
     beforeEach(() => {
         vi.clearAllMocks();
+        apiMocks.getLinkedinProfiles.mockResolvedValue([]);
         window.localStorage.clear();
     });
 
@@ -46,6 +51,7 @@ describe('LinkedinPage', () => {
 
         expect(screen.getByText('linkedin.formTitle')).toBeInTheDocument();
         expect(screen.getByLabelText('linkedin.whatsappNumber')).toBeInTheDocument();
+        expect(await screen.findByText('linkedin.emptyTitle')).toBeInTheDocument();
     });
 
     it('renders validation errors and does not submit an empty form', async () => {
@@ -56,7 +62,7 @@ describe('LinkedinPage', () => {
         expect(await screen.findByText('linkedin.form.firstNameRequired')).toBeInTheDocument();
         expect(screen.getByText('linkedin.form.lastNameRequired')).toBeInTheDocument();
         expect(screen.getByText('linkedin.form.whatsappRequired')).toBeInTheDocument();
-        expect(apiMocks.saveLinkedinProfile).not.toHaveBeenCalled();
+        expect(apiMocks.submitLinkedinProfile).not.toHaveBeenCalled();
     });
 
     it('rejects non-LinkedIn profile URLs', async () => {
@@ -69,7 +75,7 @@ describe('LinkedinPage', () => {
         await userEvent.click(screen.getByRole('button', { name: 'linkedin.submit' }));
 
         expect(await screen.findByText('linkedin.form.linkedinProfileUrl')).toBeInTheDocument();
-        expect(apiMocks.saveLinkedinProfile).not.toHaveBeenCalled();
+        expect(apiMocks.submitLinkedinProfile).not.toHaveBeenCalled();
     });
 
     it('rejects invalid WhatsApp number formats', async () => {
@@ -82,11 +88,29 @@ describe('LinkedinPage', () => {
         await userEvent.click(screen.getByRole('button', { name: 'linkedin.submit' }));
 
         expect(await screen.findByText('linkedin.form.whatsappFormat')).toBeInTheDocument();
-        expect(apiMocks.saveLinkedinProfile).not.toHaveBeenCalled();
+        expect(apiMocks.submitLinkedinProfile).not.toHaveBeenCalled();
     });
 
-    it('submits the form with WhatsApp number and clears it', async () => {
-        apiMocks.saveLinkedinProfile.mockResolvedValue({
+    it('loads saved profiles', async () => {
+        apiMocks.getLinkedinProfiles.mockResolvedValue([
+            {
+                id: 'profile-1',
+                first_name: 'Ada',
+                last_name: 'Lovelace',
+                whatsapp_number: '+905551112233',
+                linkedin_url: 'https://www.linkedin.com/in/ada',
+                created_at: '2026-04-26T10:00:00Z',
+            },
+        ]);
+
+        render(<LinkedinPage />);
+
+        expect(await screen.findByText('Ada Lovelace')).toBeInTheDocument();
+        expect(screen.getByText('+905551112233')).toBeInTheDocument();
+    });
+
+    it('submits the form with WhatsApp number, adds it to the list, and clears it', async () => {
+        apiMocks.submitLinkedinProfile.mockResolvedValue({
             profile: {
                 id: 'profile-1',
                 first_name: 'Ada',
@@ -110,23 +134,25 @@ describe('LinkedinPage', () => {
         await userEvent.click(screen.getByRole('button', { name: 'linkedin.submit' }));
 
         await waitFor(() => {
-            expect(apiMocks.saveLinkedinProfile).toHaveBeenCalledWith({
+            expect(apiMocks.submitLinkedinProfile).toHaveBeenCalledWith({
                 first_name: 'Ada',
                 last_name: 'Lovelace',
                 whatsapp_number: '+905551112233',
                 linkedin_url: 'https://www.linkedin.com/in/ada',
             });
         });
+        expect(await screen.findByText('Ada Lovelace')).toBeInTheDocument();
         expect(firstName.value).toBe('');
         expect(lastName.value).toBe('');
         expect(whatsappNumber.value).toBe('');
         expect(profileUrl.value).toBe('');
     });
 
-    it('does not render the profile list or support rules', async () => {
+    it('renders the empty profile list', async () => {
         render(<LinkedinPage />);
 
         expect(screen.queryByText('Destek Kuralları')).not.toBeInTheDocument();
-        expect(screen.queryByText('linkedin.listTitle')).not.toBeInTheDocument();
+        expect(screen.getByText('linkedin.listTitle')).toBeInTheDocument();
+        expect(await screen.findByText('linkedin.emptyTitle')).toBeInTheDocument();
     });
 });

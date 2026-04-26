@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Linkedin, Loader2, MessageCircle, UserPlus } from "lucide-react";
+import { ExternalLink, Linkedin, Loader2, MessageCircle, RefreshCw, UserPlus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { BrutalButton } from "@/components/ui/brutal-button";
 import { api } from "@/lib/api";
-import type { LinkedinProfileFormData } from "@/types";
+import type { LinkedinProfile, LinkedinProfileFormData } from "@/types";
 
 const WHATSAPP_NUMBER_PATTERN = /^\+[1-9]\d{7,14}$/;
 
@@ -31,6 +31,8 @@ const linkedinProfileSchema = z.object({
 const LinkedinPage = () => {
     const { t } = useTranslation();
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isLoadingProfiles, setIsLoadingProfiles] = useState(true);
+    const [profiles, setProfiles] = useState<LinkedinProfile[]>([]);
 
     const {
         register,
@@ -47,15 +49,31 @@ const LinkedinPage = () => {
         },
     });
 
+    const loadProfiles = useCallback(async () => {
+        try {
+            setIsLoadingProfiles(true);
+            setProfiles(await api.getLinkedinProfiles());
+        } catch {
+            toast.error(t("linkedin.loadError"));
+        } finally {
+            setIsLoadingProfiles(false);
+        }
+    }, [t]);
+
+    useEffect(() => {
+        void loadProfiles();
+    }, [loadProfiles]);
+
     const onSubmit = async (data: LinkedinProfileFormData) => {
         try {
             setIsSubmitting(true);
-            await api.saveLinkedinProfile({
+            const result = await api.submitLinkedinProfile({
                 first_name: data.first_name.trim(),
                 last_name: data.last_name.trim(),
                 whatsapp_number: data.whatsapp_number.trim(),
                 linkedin_url: data.linkedin_url.trim(),
             });
+            setProfiles((current) => [result.profile, ...current]);
             reset();
             toast.success(t("linkedin.successTitle"), { description: t("linkedin.successDesc") });
         } catch (error: unknown) {
@@ -69,11 +87,12 @@ const LinkedinPage = () => {
     };
 
     return (
-        <main className="min-h-screen bg-background px-4 py-10 flex items-center justify-center">
+        <main className="min-h-screen bg-background px-4 py-10">
+            <div className="mx-auto grid w-full max-w-6xl gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(360px,420px)]">
             <motion.section
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-card border-4 border-foreground p-6 md:p-8 shadow-brutal w-full max-w-2xl"
+                className="bg-card border-4 border-foreground p-6 md:p-8 shadow-brutal w-full"
             >
                 <div className="flex items-center gap-3 mb-6">
                     <UserPlus className="w-6 h-6 text-primary" />
@@ -158,6 +177,59 @@ const LinkedinPage = () => {
                     </BrutalButton>
                 </form>
             </motion.section>
+            <section className="bg-card border-4 border-foreground p-6 md:p-8 shadow-brutal w-full">
+                <div className="mb-6 flex items-center justify-between gap-4">
+                    <h2 className="text-2xl font-black">{t("linkedin.listTitle")}</h2>
+                    <BrutalButton
+                        type="button"
+                        variant="secondary"
+                        size="sm"
+                        onClick={loadProfiles}
+                        disabled={isLoadingProfiles}
+                        aria-label={t("linkedin.refresh")}
+                    >
+                        <RefreshCw className={`h-4 w-4 ${isLoadingProfiles ? "animate-spin" : ""}`} />
+                    </BrutalButton>
+                </div>
+
+                {isLoadingProfiles ? (
+                    <div className="border-4 border-dashed border-foreground/40 p-5 text-sm font-bold">
+                        {t("linkedin.loading")}
+                    </div>
+                ) : profiles.length === 0 ? (
+                    <div className="border-4 border-dashed border-foreground/40 p-5">
+                        <p className="font-black">{t("linkedin.emptyTitle")}</p>
+                        <p className="mt-1 text-sm text-muted-foreground">{t("linkedin.emptyDesc")}</p>
+                    </div>
+                ) : (
+                    <ul className="space-y-3">
+                        {profiles.map((profile) => (
+                            <li key={profile.id} className="border-4 border-foreground bg-background p-4">
+                                <div className="flex items-start justify-between gap-3">
+                                    <div className="min-w-0">
+                                        <p className="truncate text-lg font-black">
+                                            {profile.first_name} {profile.last_name}
+                                        </p>
+                                        <p className="truncate text-sm font-bold text-muted-foreground">
+                                            {profile.whatsapp_number}
+                                        </p>
+                                    </div>
+                                    <a
+                                        href={profile.linkedin_url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={t("linkedin.openProfile")}
+                                        className="inline-flex h-10 w-10 shrink-0 items-center justify-center border-4 border-foreground bg-primary text-primary-foreground shadow-brutal-sm transition-transform hover:-translate-y-0.5"
+                                    >
+                                        <ExternalLink className="h-4 w-4" />
+                                    </a>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </section>
+            </div>
         </main>
     );
 };
