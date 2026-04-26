@@ -347,6 +347,51 @@ describe('linkedin profile api methods', () => {
         });
     });
 
+    it('submitLinkedinProfile falls back to authenticated direct insert when the edge function is missing', async () => {
+        mockSupabase.functions.invoke.mockResolvedValue({
+            data: null,
+            error: new Error('Failed to send a request to the Edge Function'),
+        });
+        const single = vi.fn().mockResolvedValue({
+            data: {
+                id: 'profile-1',
+                first_name: 'Ada',
+                last_name: 'Lovelace',
+                whatsapp_number: '+905551112233',
+                linkedin_url: 'https://www.linkedin.com/in/ada',
+                created_at: '2026-04-26T10:00:00Z',
+            },
+            error: null,
+        });
+        const select = vi.fn().mockReturnValue({ single });
+        const insert = vi.fn().mockReturnValue({ select });
+        mockSupabase.from.mockReturnValue({ insert });
+
+        await expect(api.submitLinkedinProfile({
+            first_name: 'Ada',
+            last_name: 'Lovelace',
+            whatsapp_number: '+905551112233',
+            linkedin_url: 'https://www.linkedin.com/in/ada',
+        })).resolves.toEqual({
+            profile: {
+                id: 'profile-1',
+                first_name: 'Ada',
+                last_name: 'Lovelace',
+                whatsapp_number: '+905551112233',
+                linkedin_url: 'https://www.linkedin.com/in/ada',
+                created_at: '2026-04-26T10:00:00Z',
+            },
+        });
+
+        expect(mockSupabase.from).toHaveBeenCalledWith('linkedin_profiles');
+        expect(insert).toHaveBeenCalledWith({
+            first_name: 'Ada',
+            last_name: 'Lovelace',
+            whatsapp_number: '+905551112233',
+            linkedin_url: 'https://www.linkedin.com/in/ada',
+        });
+    });
+
     it('saveLinkedinProfile updates the authenticated profile without the edge function', async () => {
         mockSupabase.auth.getUser.mockResolvedValue({
             data: { user: { id: 'user-1' } },

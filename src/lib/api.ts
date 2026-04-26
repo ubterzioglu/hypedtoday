@@ -120,6 +120,32 @@ async function publicFunctionCall<T>(path: string, options: RequestInit = {}): P
     return (data as { data?: T }).data as T;
 }
 
+function shouldFallbackToDirectLinkedinInsert(error: unknown): boolean {
+    if (!error || typeof error !== 'object') return false;
+    const apiError = error as Partial<ApiError>;
+    const message = typeof apiError.message === 'string' ? apiError.message : '';
+    return apiError.status === 404 || message.toLowerCase().includes('failed to send a request to the edge function');
+}
+
+async function insertLinkedinProfileDirectly(body: LinkedinProfileFormData): Promise<{ profile: LinkedinProfile }> {
+    const { data, error } = await supabase
+        .from('linkedin_profiles')
+        .insert({
+            first_name: body.first_name.trim(),
+            last_name: body.last_name.trim(),
+            whatsapp_number: body.whatsapp_number.trim(),
+            linkedin_url: body.linkedin_url.trim(),
+        })
+        .select('id, first_name, last_name, whatsapp_number, linkedin_url, created_at')
+        .single();
+
+    if (error) {
+        throw new Error('Failed to save LinkedIn profile: ' + error.message);
+    }
+
+    return { profile: data as LinkedinProfile };
+}
+
 export const api = {
     async createPost(body: {
         linkedin_url: string;
@@ -204,10 +230,17 @@ export const api = {
     },
 
     async submitLinkedinProfile(body: LinkedinProfileFormData) {
-        return publicFunctionCall<{ profile: LinkedinProfile }>('submit-linkedin-profile', {
-            method: 'POST',
-            body: JSON.stringify(body),
-        });
+        try {
+            return await publicFunctionCall<{ profile: LinkedinProfile }>('submit-linkedin-profile', {
+                method: 'POST',
+                body: JSON.stringify(body),
+            });
+        } catch (error) {
+            if (!shouldFallbackToDirectLinkedinInsert(error)) {
+                throw error;
+            }
+            return insertLinkedinProfileDirectly(body);
+        }
     },
 
     async saveLinkedinProfile(body: LinkedinProfileFormData) {
