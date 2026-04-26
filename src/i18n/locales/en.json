@@ -3,6 +3,7 @@
     "home": "Home",
     "explore": "Explore",
     "addProject": "Add Project",
+    "linkedin": "LinkedIn",
     "leaderboard": "Leaderboard",
     "howItWorks": "How It Works",
     "contact": "Contact"
@@ -137,6 +138,35 @@
     "title": "Request Support",
     "subtitle": "Submit a LinkedIn post for community support",
     "linkedinFeedLink": "LinkedIn Feed"
+  },
+  "linkedin": {
+    "subtitle": "Add your profile so the community can find you and start real engagement support.",
+    "formTitle": "Save Profile",
+    "firstName": "First name *",
+    "lastName": "Last name *",
+    "profileUrl": "LinkedIn Profile Link *",
+    "firstNamePlaceholder": "First name",
+    "lastNamePlaceholder": "Last name",
+    "submit": "Save Profile",
+    "submitting": "Saving...",
+    "successTitle": "Profile saved!",
+    "successDesc": "The profile now appears in the list below.",
+    "submitError": "Profile could not be saved",
+    "submitErrorDesc": "Please try again later.",
+    "loadError": "Profiles could not be loaded.",
+    "listTitle": "Saved Profiles",
+    "refresh": "Refresh",
+    "loading": "Loading profiles...",
+    "emptyTitle": "No profiles yet",
+    "emptyDesc": "You can add the first LinkedIn profile.",
+    "openProfile": "Open Profile",
+    "form": {
+      "firstNameRequired": "First name is required",
+      "lastNameRequired": "Last name is required",
+      "validUrl": "Enter a valid URL",
+      "linkedinProfileUrl": "LinkedIn profile link must use linkedin.com/in/... format",
+      "maxLength": "This field is too long"
+    }
   },
   "howItWorks": {
     "title": "How It Works",

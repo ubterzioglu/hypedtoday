@@ -295,3 +295,82 @@ describe('api.createPost', () => {
         });
     });
 });
+
+describe('linkedin profile api methods', () => {
+    beforeEach(() => {
+        vi.clearAllMocks();
+    });
+
+    it('submitLinkedinProfile invokes the public edge function without requiring auth', async () => {
+        mockSupabase.functions.invoke.mockResolvedValue({
+            data: {
+                data: {
+                    profile: {
+                        id: 'profile-1',
+                        first_name: 'Ada',
+                        last_name: 'Lovelace',
+                        linkedin_url: 'https://www.linkedin.com/in/ada',
+                        created_at: '2026-04-26T10:00:00Z',
+                    },
+                },
+            },
+            error: null,
+        });
+
+        await expect(api.submitLinkedinProfile({
+            first_name: 'Ada',
+            last_name: 'Lovelace',
+            linkedin_url: 'https://www.linkedin.com/in/ada',
+        })).resolves.toEqual({
+            profile: {
+                id: 'profile-1',
+                first_name: 'Ada',
+                last_name: 'Lovelace',
+                linkedin_url: 'https://www.linkedin.com/in/ada',
+                created_at: '2026-04-26T10:00:00Z',
+            },
+        });
+
+        expect(mockSupabase.auth.getSession).not.toHaveBeenCalled();
+        expect(mockSupabase.functions.invoke).toHaveBeenCalledWith('submit-linkedin-profile', {
+            method: 'POST',
+            body: {
+                first_name: 'Ada',
+                last_name: 'Lovelace',
+                linkedin_url: 'https://www.linkedin.com/in/ada',
+            },
+            headers: { 'Content-Type': 'application/json' },
+        });
+    });
+
+    it('getLinkedinProfiles reads profiles ordered newest first', async () => {
+        const order = vi.fn().mockResolvedValue({
+            data: [
+                {
+                    id: 'profile-2',
+                    first_name: 'Grace',
+                    last_name: 'Hopper',
+                    linkedin_url: 'https://www.linkedin.com/in/grace',
+                    created_at: '2026-04-26T11:00:00Z',
+                },
+            ],
+            error: null,
+        });
+        const select = vi.fn().mockReturnValue({ order });
+        mockSupabase.from.mockReturnValue({ select });
+
+        await expect(api.getLinkedinProfiles()).resolves.toEqual([
+            {
+                id: 'profile-2',
+                first_name: 'Grace',
+                last_name: 'Hopper',
+                linkedin_url: 'https://www.linkedin.com/in/grace',
+                created_at: '2026-04-26T11:00:00Z',
+            },
+        ]);
+
+        expect(mockSupabase.from).toHaveBeenCalledWith('linkedin_profiles');
+        expect(select).toHaveBeenCalledWith('id, first_name, last_name, linkedin_url, created_at');
+        expect(order).toHaveBeenCalledWith('created_at', { ascending: false });
+    });
+});

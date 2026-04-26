@@ -204,6 +204,20 @@ export interface PostComment {
     approved_at: string;
 }
 
+export interface LinkedinProfile {
+    id: string;
+    first_name: string;
+    last_name: string;
+    linkedin_url: string;
+    created_at: string;
+}
+
+export interface LinkedinProfileFormData {
+    first_name: string;
+    last_name: string;
+    linkedin_url: string;
+}
+
 export interface LeaderboardEntry {
     user_id: string;
     display_name: string | null;

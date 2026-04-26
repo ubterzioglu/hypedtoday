@@ -3,6 +3,7 @@
     "home": "Ana Sayfa",
     "explore": "Keşfet",
     "addProject": "Proje Ekle",
+    "linkedin": "LinkedIn",
     "leaderboard": "Sıralama",
     "howItWorks": "Nasıl Çalışır",
     "contact": "İletişim"
@@ -137,6 +138,35 @@
     "title": "Destek İste",
     "subtitle": "Topluluk desteği için bir LinkedIn gönderisi gönder",
     "linkedinFeedLink": "LinkedIn Akışı"
+  },
+  "linkedin": {
+    "subtitle": "Profilini ekle, topluluk seni bulsun ve gerçek etkileşim desteği başlasın.",
+    "formTitle": "Profil Kaydet",
+    "firstName": "İsim *",
+    "lastName": "Soyisim *",
+    "profileUrl": "LinkedIn Profil Linki *",
+    "firstNamePlaceholder": "İsim",
+    "lastNamePlaceholder": "Soyisim",
+    "submit": "Profili Kaydet",
+    "submitting": "Kaydediliyor...",
+    "successTitle": "Profil kaydedildi!",
+    "successDesc": "Profil alttaki listede görünüyor.",
+    "submitError": "Profil kaydedilemedi",
+    "submitErrorDesc": "Lütfen daha sonra tekrar deneyin.",
+    "loadError": "Profiller yüklenemedi.",
+    "listTitle": "Kayıtlı Profiller",
+    "refresh": "Yenile",
+    "loading": "Profiller yükleniyor...",
+    "emptyTitle": "Henüz profil yok",
+    "emptyDesc": "İlk LinkedIn profilini sen ekleyebilirsin.",
+    "openProfile": "Profili Aç",
+    "form": {
+      "firstNameRequired": "İsim zorunludur",
+      "lastNameRequired": "Soyisim zorunludur",
+      "validUrl": "Geçerli bir URL girin",
+      "linkedinProfileUrl": "LinkedIn profil linki linkedin.com/in/... formatında olmalıdır",
+      "maxLength": "Bu alan çok uzun"
+    }
   },
   "howItWorks": {
     "title": "Nasıl Çalışır",

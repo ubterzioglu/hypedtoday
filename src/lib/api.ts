@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase';
-import type { PostComment } from '@/types';
+import type { LinkedinProfile, LinkedinProfileFormData, PostComment } from '@/types';
 
 interface ApiError {
     message: string;
@@ -94,6 +94,32 @@ async function apiCall<T>(path: string, options: RequestInit = {}): Promise<T> {
     return (data as { data?: T }).data as T;
 }
 
+async function publicFunctionCall<T>(path: string, options: RequestInit = {}): Promise<T> {
+    const mergedHeaders = headersToObject(options.headers);
+    const contentType = mergedHeaders['Content-Type'] ?? mergedHeaders['content-type'];
+    const maybeJsonBody =
+        typeof options.body === 'string' && (!contentType || contentType === 'application/json')
+            ? JSON.parse(options.body)
+            : options.body;
+
+    const invokeHeaders =
+        maybeJsonBody === undefined
+            ? mergedHeaders
+            : { 'Content-Type': 'application/json', ...mergedHeaders };
+
+    const { data, error, response } = await supabase.functions.invoke(path, {
+        method: options.method,
+        body: maybeJsonBody,
+        headers: invokeHeaders,
+    });
+
+    if (error) {
+        throw await readFunctionError(response, error.message ?? 'Request failed');
+    }
+
+    return (data as { data?: T }).data as T;
+}
+
 export const api = {
     async createPost(body: {
         linkedin_url: string;
@@ -175,6 +201,26 @@ export const api = {
             method: 'POST',
             body: JSON.stringify(body),
         });
+    },
+
+    async submitLinkedinProfile(body: LinkedinProfileFormData) {
+        return publicFunctionCall<{ profile: LinkedinProfile }>('submit-linkedin-profile', {
+            method: 'POST',
+            body: JSON.stringify(body),
+        });
+    },
+
+    async getLinkedinProfiles(): Promise<LinkedinProfile[]> {
+        const { data, error } = await supabase
+            .from('linkedin_profiles')
+            .select('id, first_name, last_name, linkedin_url, created_at')
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            throw new Error('Failed to load LinkedIn profiles: ' + error.message);
+        }
+
+        return (data ?? []) as LinkedinProfile[];
     },
 
     async getPostComments(postId: string): Promise<PostComment[]> {
