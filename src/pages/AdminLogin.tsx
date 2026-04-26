@@ -2,21 +2,33 @@ import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BrutalButton } from "@/components/ui/brutal-button";
 import { motion } from "framer-motion";
-import { Shield, Github, Mail, Loader2 } from "lucide-react";
+import { Shield, Github, Mail, Loader2, UserPlus } from "lucide-react";
 import { toast } from "sonner";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/lib/auth";
 import { useTranslation } from "react-i18next";
 
+const WHATSAPP_NUMBER_PATTERN = /^\+[1-9]\d{7,14}$/;
+const LINKEDIN_PROFILE_PATTERN = /^https?:\/\/([a-z]{2,3}\.)?(www\.)?linkedin\.com\/in\/[^/?#]+\/?/i;
+
 const AdminLogin = () => {
     const { t } = useTranslation();
     const [email, setEmail] = useState("");
+    const [signupForm, setSignupForm] = useState({
+        email: "",
+        password: "",
+        first_name: "",
+        last_name: "",
+        whatsapp_number: "",
+        linkedin_url: "",
+    });
     const [magicLinkSent, setMagicLinkSent] = useState(false);
+    const [signupSent, setSignupSent] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
-    const { signInWithGoogle, signInWithGitHub, signInWithMagicLink, user, session, profileResolved } = useAuth();
+    const { signInWithGoogle, signInWithGitHub, signInWithMagicLink, signUpWithLinkedinProfile, user, session, profileResolved } = useAuth();
     const nextPath = useMemo(() => {
         const params = new URLSearchParams(location.search);
         const next = params.get("next");
@@ -64,6 +76,54 @@ const AdminLogin = () => {
         }
     };
 
+    const handleSignupChange = (field: keyof typeof signupForm, value: string) => {
+        setSignupForm((current) => ({ ...current, [field]: value }));
+    };
+
+    const handleLinkedinSignup = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const payload = {
+            email: signupForm.email.trim(),
+            password: signupForm.password,
+            first_name: signupForm.first_name.trim(),
+            last_name: signupForm.last_name.trim(),
+            whatsapp_number: signupForm.whatsapp_number.trim(),
+            linkedin_url: signupForm.linkedin_url.trim(),
+        };
+
+        if (!payload.email || !payload.password || !payload.first_name || !payload.last_name || !payload.whatsapp_number || !payload.linkedin_url) {
+            toast.error(t("auth.errorSignupRequired"));
+            return;
+        }
+
+        if (payload.password.length < 6) {
+            toast.error(t("auth.errorPassword"));
+            return;
+        }
+
+        if (!WHATSAPP_NUMBER_PATTERN.test(payload.whatsapp_number)) {
+            toast.error(t("auth.errorWhatsapp"));
+            return;
+        }
+
+        if (!LINKEDIN_PROFILE_PATTERN.test(payload.linkedin_url)) {
+            toast.error(t("auth.errorLinkedin"));
+            return;
+        }
+
+        setIsSubmitting(true);
+        try {
+            await signUpWithLinkedinProfile(payload, nextPath);
+            setSignupSent(true);
+            toast.success(t("auth.successSignup"));
+        } catch {
+            toast.error(t("auth.errorSignup"));
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     if (user) {
         return null;
     }
@@ -72,12 +132,14 @@ const AdminLogin = () => {
         <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="w-full max-w-md"
+            className={isBareAuth ? "w-full max-w-2xl" : "w-full max-w-md"}
         >
             <div className="bg-card border-4 border-foreground p-8 shadow-brutal">
-                <h1 className="text-2xl font-bold text-center mb-2">{t("auth.welcome")}</h1>
+                <h1 className="text-2xl font-bold text-center mb-2">
+                    {isBareAuth ? t("auth.linkedinSignupTitle") : t("auth.welcome")}
+                </h1>
                 <p className="text-muted-foreground text-center mb-8 text-sm">
-                    {t("auth.chooseMethod")}
+                    {isBareAuth ? t("auth.linkedinSignupSubtitle") : t("auth.chooseMethod")}
                 </p>
 
                 <div className="space-y-4">
@@ -115,7 +177,110 @@ const AdminLogin = () => {
                         </div>
                     </div>
 
-                    {magicLinkSent ? (
+                    {isBareAuth ? (
+                        signupSent ? (
+                            <div className="text-center p-4 bg-primary/10 border-2 border-foreground">
+                                <Mail className="w-8 h-8 mx-auto mb-2 text-primary" />
+                                <p className="font-bold">{t("auth.checkEmail")}</p>
+                                <p className="text-sm text-muted-foreground mt-1">
+                                    {t("auth.signupSent")} <span className="font-bold">{signupForm.email}</span>
+                                </p>
+                            </div>
+                        ) : (
+                            <form onSubmit={handleLinkedinSignup} className="grid sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label htmlFor="signup_first_name" className="block text-sm font-bold mb-2 uppercase tracking-wide">
+                                        {t("auth.firstName")}
+                                    </label>
+                                    <input
+                                        id="signup_first_name"
+                                        value={signupForm.first_name}
+                                        onChange={(e) => handleSignupChange("first_name", e.target.value)}
+                                        className="w-full px-4 py-3 bg-background border-4 border-foreground font-bold text-foreground focus:outline-none focus:border-primary transition-colors"
+                                        placeholder={t("auth.firstNamePlaceholder")}
+                                        autoFocus
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="signup_last_name" className="block text-sm font-bold mb-2 uppercase tracking-wide">
+                                        {t("auth.lastName")}
+                                    </label>
+                                    <input
+                                        id="signup_last_name"
+                                        value={signupForm.last_name}
+                                        onChange={(e) => handleSignupChange("last_name", e.target.value)}
+                                        className="w-full px-4 py-3 bg-background border-4 border-foreground font-bold text-foreground focus:outline-none focus:border-primary transition-colors"
+                                        placeholder={t("auth.lastNamePlaceholder")}
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="signup_email" className="block text-sm font-bold mb-2 uppercase tracking-wide">
+                                        {t("auth.signupEmailLabel")}
+                                    </label>
+                                    <input
+                                        id="signup_email"
+                                        type="email"
+                                        value={signupForm.email}
+                                        onChange={(e) => handleSignupChange("email", e.target.value)}
+                                        className="w-full px-4 py-3 bg-background border-4 border-foreground font-bold text-foreground focus:outline-none focus:border-primary transition-colors"
+                                        placeholder="you@example.com"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="signup_password" className="block text-sm font-bold mb-2 uppercase tracking-wide">
+                                        {t("auth.passwordLabel")}
+                                    </label>
+                                    <input
+                                        id="signup_password"
+                                        type="password"
+                                        value={signupForm.password}
+                                        onChange={(e) => handleSignupChange("password", e.target.value)}
+                                        className="w-full px-4 py-3 bg-background border-4 border-foreground font-bold text-foreground focus:outline-none focus:border-primary transition-colors"
+                                        placeholder={t("auth.passwordPlaceholder")}
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="signup_whatsapp" className="block text-sm font-bold mb-2 uppercase tracking-wide">
+                                        {t("auth.whatsappNumber")}
+                                    </label>
+                                    <input
+                                        id="signup_whatsapp"
+                                        type="tel"
+                                        value={signupForm.whatsapp_number}
+                                        onChange={(e) => handleSignupChange("whatsapp_number", e.target.value)}
+                                        className="w-full px-4 py-3 bg-background border-4 border-foreground font-bold text-foreground focus:outline-none focus:border-primary transition-colors"
+                                        placeholder="+905551112233"
+                                    />
+                                </div>
+                                <div>
+                                    <label htmlFor="signup_linkedin" className="block text-sm font-bold mb-2 uppercase tracking-wide">
+                                        {t("auth.linkedinUrl")}
+                                    </label>
+                                    <input
+                                        id="signup_linkedin"
+                                        type="url"
+                                        value={signupForm.linkedin_url}
+                                        onChange={(e) => handleSignupChange("linkedin_url", e.target.value)}
+                                        className="w-full px-4 py-3 bg-background border-4 border-foreground font-bold text-foreground focus:outline-none focus:border-primary transition-colors"
+                                        placeholder="https://www.linkedin.com/in/..."
+                                    />
+                                </div>
+                                <BrutalButton
+                                    type="submit"
+                                    variant="secondary"
+                                    size="lg"
+                                    className="sm:col-span-2 w-full flex items-center justify-center gap-2"
+                                    disabled={isSubmitting}
+                                >
+                                    {isSubmitting ? (
+                                        <><Loader2 className="w-4 h-4 animate-spin" /> {t("auth.sending")}</>
+                                    ) : (
+                                        <><UserPlus className="w-4 h-4" /> {t("auth.createAccount")}</>
+                                    )}
+                                </BrutalButton>
+                            </form>
+                        )
+                    ) : magicLinkSent ? (
                         <div className="text-center p-4 bg-primary/10 border-2 border-foreground">
                             <Mail className="w-8 h-8 mx-auto mb-2 text-primary" />
                             <p className="font-bold">{t("auth.checkEmail")}</p>

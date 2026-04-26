@@ -8,6 +8,7 @@ const mockSupabase = {
         onAuthStateChange: vi.fn().mockReturnValue({ data: { subscription: { unsubscribe: vi.fn() } } }),
         signInWithOAuth: vi.fn(),
         signInWithOtp: vi.fn(),
+        signUp: vi.fn(),
         signOut: vi.fn(),
         exchangeCodeForSession: vi.fn().mockResolvedValue({ data: { session: null } }),
         getUser: vi.fn().mockResolvedValue({ data: { user: null }, error: null }),

@@ -2,6 +2,10 @@
 CREATE TABLE IF NOT EXISTS profiles (
     id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
     email TEXT NOT NULL,
+    first_name TEXT,
+    last_name TEXT,
+    whatsapp_number TEXT,
+    linkedin_url TEXT,
     display_name TEXT,
     avatar_url TEXT,
     role TEXT NOT NULL DEFAULT 'user' CHECK (role IN ('user', 'admin')),
@@ -42,10 +46,14 @@ CREATE POLICY "Admins can update all profiles" ON profiles
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
 BEGIN
-    INSERT INTO public.profiles (id, email, display_name, avatar_url)
+    INSERT INTO public.profiles (id, email, first_name, last_name, whatsapp_number, linkedin_url, display_name, avatar_url)
     VALUES (
         NEW.id,
         NEW.email,
+        NEW.raw_user_meta_data->>'first_name',
+        NEW.raw_user_meta_data->>'last_name',
+        NEW.raw_user_meta_data->>'whatsapp_number',
+        NEW.raw_user_meta_data->>'linkedin_url',
         COALESCE(NEW.raw_user_meta_data->>'full_name', NEW.raw_user_meta_data->>'name', split_part(NEW.email, '@', 1)),
         COALESCE(NEW.raw_user_meta_data->>'avatar_url', NEW.raw_user_meta_data->>'picture')
     );

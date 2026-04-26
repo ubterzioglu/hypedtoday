@@ -171,6 +171,10 @@ export type UserRole = 'user' | 'admin';
 export interface Profile {
     id: string;
     email: string;
+    first_name: string | null;
+    last_name: string | null;
+    whatsapp_number: string | null;
+    linkedin_url: string | null;
     display_name: string | null;
     avatar_url: string | null;
     role: UserRole;

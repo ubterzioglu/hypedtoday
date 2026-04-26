@@ -8,6 +8,7 @@ import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 const mockSignInWithGoogle = vi.fn();
 const mockSignInWithGitHub = vi.fn();
 const mockSignInWithMagicLink = vi.fn();
+const mockSignUpWithLinkedinProfile = vi.fn();
 
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom');
@@ -22,6 +23,7 @@ vi.mock('@/lib/auth', () => ({
         signInWithGoogle: mockSignInWithGoogle,
         signInWithGitHub: mockSignInWithGitHub,
         signInWithMagicLink: mockSignInWithMagicLink,
+        signUpWithLinkedinProfile: mockSignUpWithLinkedinProfile,
         user: null,
         session: null,
         profileResolved: true,
@@ -95,9 +97,33 @@ describe('AdminLogin', () => {
         renderLogin('/admin/login?next=/linkedin');
         expect(screen.getByText('auth.google')).toBeInTheDocument();
         expect(screen.getByText('auth.github')).toBeInTheDocument();
+        expect(screen.getByText('auth.createAccount')).toBeInTheDocument();
+        expect(screen.getByLabelText('auth.firstName')).toBeInTheDocument();
+        expect(screen.getByLabelText('auth.linkedinUrl')).toBeInTheDocument();
         expect(screen.queryByTestId('site-header')).not.toBeInTheDocument();
         expect(screen.queryByTestId('site-footer')).not.toBeInTheDocument();
         expect(screen.queryByText('auth.title')).not.toBeInTheDocument();
+    });
+
+    it('creates a Supabase membership with LinkedIn profile fields on the bare gate', async () => {
+        renderLogin('/admin/login?next=/linkedin');
+
+        await userEvent.type(screen.getByLabelText('auth.firstName'), 'Ada');
+        await userEvent.type(screen.getByLabelText('auth.lastName'), 'Lovelace');
+        await userEvent.type(screen.getByLabelText('auth.signupEmailLabel'), 'ada@example.com');
+        await userEvent.type(screen.getByLabelText('auth.passwordLabel'), 'secret123');
+        await userEvent.type(screen.getByLabelText('auth.whatsappNumber'), '+905551112233');
+        await userEvent.type(screen.getByLabelText('auth.linkedinUrl'), 'https://www.linkedin.com/in/ada');
+        await userEvent.click(screen.getByText('auth.createAccount'));
+
+        expect(mockSignUpWithLinkedinProfile).toHaveBeenCalledWith({
+            email: 'ada@example.com',
+            password: 'secret123',
+            first_name: 'Ada',
+            last_name: 'Lovelace',
+            whatsapp_number: '+905551112233',
+            linkedin_url: 'https://www.linkedin.com/in/ada',
+        }, '/linkedin');
     });
 
     it('resolves nextPath from URL params', async () => {

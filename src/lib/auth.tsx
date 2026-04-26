@@ -13,6 +13,15 @@ export interface AuthUser {
     avatarUrl: string | null;
 }
 
+export interface LinkedinSignupData {
+    email: string;
+    password: string;
+    first_name: string;
+    last_name: string;
+    whatsapp_number: string;
+    linkedin_url: string;
+}
+
 interface AuthContextValue {
     user: AuthUser | null;
     session: Session | null;
@@ -21,12 +30,13 @@ interface AuthContextValue {
     signInWithGoogle: (nextPath?: string) => Promise<void>;
     signInWithGitHub: (nextPath?: string) => Promise<void>;
     signInWithMagicLink: (email: string, nextPath?: string) => Promise<void>;
+    signUpWithLinkedinProfile: (data: LinkedinSignupData, nextPath?: string) => Promise<void>;
     signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-async function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T | null> {
+async function withTimeout<T>(promise: PromiseLike<T>, timeoutMs: number): Promise<T | null> {
     return await Promise.race([
         promise,
         new Promise<null>((resolve) => setTimeout(() => resolve(null), timeoutMs)),
@@ -129,12 +139,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         });
     };
 
+    const signUpWithLinkedinProfile = async (data: LinkedinSignupData, nextPath = '/') => {
+        const fullName = `${data.first_name} ${data.last_name}`.trim();
+        const { error } = await supabase.auth.signUp({
+            email: data.email,
+            password: data.password,
+            options: {
+                emailRedirectTo: getAuthRedirectUrl(nextPath),
+                data: {
+                    first_name: data.first_name,
+                    last_name: data.last_name,
+                    full_name: fullName,
+                    display_name: fullName,
+                    whatsapp_number: data.whatsapp_number,
+                    linkedin_url: data.linkedin_url,
+                },
+            },
+        });
+
+        if (error) {
+            throw error;
+        }
+    };
+
     const signOut = async () => {
         await supabase.auth.signOut();
     };
 
     return (
-        <AuthContext.Provider value={{ user, session, loading, profileResolved, signInWithGoogle, signInWithGitHub, signInWithMagicLink, signOut }}>
+        <AuthContext.Provider value={{ user, session, loading, profileResolved, signInWithGoogle, signInWithGitHub, signInWithMagicLink, signUpWithLinkedinProfile, signOut }}>
             {children}
         </AuthContext.Provider>
     );
