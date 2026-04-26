@@ -145,8 +145,14 @@
     "firstName": "İsim *",
     "lastName": "Soyisim *",
     "profileUrl": "LinkedIn Profil Linki *",
+    "whatsappNumber": "WhatsApp Numarası *",
     "firstNamePlaceholder": "İsim",
     "lastNamePlaceholder": "Soyisim",
+    "passwordTitle": "Sayfa Girişi",
+    "passwordLabel": "Şifre *",
+    "passwordPlaceholder": "Şifreyi gir",
+    "passwordSubmit": "Giriş Yap",
+    "passwordError": "Şifre hatalı",
     "submit": "Profili Kaydet",
     "submitting": "Kaydediliyor...",
     "successTitle": "Profil kaydedildi!",
@@ -163,6 +169,8 @@
     "form": {
       "firstNameRequired": "İsim zorunludur",
       "lastNameRequired": "Soyisim zorunludur",
+      "whatsappRequired": "WhatsApp numarası zorunludur",
+      "whatsappFormat": "WhatsApp numarası +905551112233 formatında olmalıdır",
       "validUrl": "Geçerli bir URL girin",
       "linkedinProfileUrl": "LinkedIn profil linki linkedin.com/in/... formatında olmalıdır",
       "maxLength": "Bu alan çok uzun"

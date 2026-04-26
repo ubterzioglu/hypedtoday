@@ -145,8 +145,14 @@
     "firstName": "First name *",
     "lastName": "Last name *",
     "profileUrl": "LinkedIn Profile Link *",
+    "whatsappNumber": "WhatsApp Number *",
     "firstNamePlaceholder": "First name",
     "lastNamePlaceholder": "Last name",
+    "passwordTitle": "Page Access",
+    "passwordLabel": "Password *",
+    "passwordPlaceholder": "Enter password",
+    "passwordSubmit": "Enter",
+    "passwordError": "Incorrect password",
     "submit": "Save Profile",
     "submitting": "Saving...",
     "successTitle": "Profile saved!",
@@ -163,6 +169,8 @@
     "form": {
       "firstNameRequired": "First name is required",
       "lastNameRequired": "Last name is required",
+      "whatsappRequired": "WhatsApp number is required",
+      "whatsappFormat": "WhatsApp number must use +905551112233 format",
       "validUrl": "Enter a valid URL",
       "linkedinProfileUrl": "LinkedIn profile link must use linkedin.com/in/... format",
       "maxLength": "This field is too long"

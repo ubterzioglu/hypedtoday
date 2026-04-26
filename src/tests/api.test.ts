@@ -309,6 +309,7 @@ describe('linkedin profile api methods', () => {
                         id: 'profile-1',
                         first_name: 'Ada',
                         last_name: 'Lovelace',
+                        whatsapp_number: '+905551112233',
                         linkedin_url: 'https://www.linkedin.com/in/ada',
                         created_at: '2026-04-26T10:00:00Z',
                     },
@@ -320,12 +321,14 @@ describe('linkedin profile api methods', () => {
         await expect(api.submitLinkedinProfile({
             first_name: 'Ada',
             last_name: 'Lovelace',
+            whatsapp_number: '+905551112233',
             linkedin_url: 'https://www.linkedin.com/in/ada',
         })).resolves.toEqual({
             profile: {
                 id: 'profile-1',
                 first_name: 'Ada',
                 last_name: 'Lovelace',
+                whatsapp_number: '+905551112233',
                 linkedin_url: 'https://www.linkedin.com/in/ada',
                 created_at: '2026-04-26T10:00:00Z',
             },
@@ -337,6 +340,7 @@ describe('linkedin profile api methods', () => {
             body: {
                 first_name: 'Ada',
                 last_name: 'Lovelace',
+                whatsapp_number: '+905551112233',
                 linkedin_url: 'https://www.linkedin.com/in/ada',
             },
             headers: { 'Content-Type': 'application/json' },
@@ -350,6 +354,7 @@ describe('linkedin profile api methods', () => {
                     id: 'profile-2',
                     first_name: 'Grace',
                     last_name: 'Hopper',
+                    whatsapp_number: '+905559998877',
                     linkedin_url: 'https://www.linkedin.com/in/grace',
                     created_at: '2026-04-26T11:00:00Z',
                 },
@@ -364,13 +369,14 @@ describe('linkedin profile api methods', () => {
                 id: 'profile-2',
                 first_name: 'Grace',
                 last_name: 'Hopper',
+                whatsapp_number: '+905559998877',
                 linkedin_url: 'https://www.linkedin.com/in/grace',
                 created_at: '2026-04-26T11:00:00Z',
             },
         ]);
 
         expect(mockSupabase.from).toHaveBeenCalledWith('linkedin_profiles');
-        expect(select).toHaveBeenCalledWith('id, first_name, last_name, linkedin_url, created_at');
+        expect(select).toHaveBeenCalledWith('id, first_name, last_name, whatsapp_number, linkedin_url, created_at');
         expect(order).toHaveBeenCalledWith('created_at', { ascending: false });
     });
 });

@@ -213,7 +213,7 @@ export const api = {
     async getLinkedinProfiles(): Promise<LinkedinProfile[]> {
         const { data, error } = await supabase
             .from('linkedin_profiles')
-            .select('id, first_name, last_name, linkedin_url, created_at')
+            .select('id, first_name, last_name, whatsapp_number, linkedin_url, created_at')
             .order('created_at', { ascending: false });
 
         if (error) {

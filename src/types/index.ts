@@ -208,6 +208,7 @@ export interface LinkedinProfile {
     id: string;
     first_name: string;
     last_name: string;
+    whatsapp_number: string | null;
     linkedin_url: string;
     created_at: string;
 }
@@ -215,6 +216,7 @@ export interface LinkedinProfile {
 export interface LinkedinProfileFormData {
     first_name: string;
     last_name: string;
+    whatsapp_number: string;
     linkedin_url: string;
 }
 
