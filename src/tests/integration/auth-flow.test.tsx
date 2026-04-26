@@ -4,6 +4,7 @@ import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from '@/lib/auth';
 import { mockSupabase } from '@/test/setup';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import AdminAccessDenied from '@/pages/AdminAccessDenied';
 
 vi.mock('react-i18next', () => ({
     useTranslation: () => ({
@@ -24,6 +25,7 @@ function renderWithAuth(ui: React.ReactElement, { route = '/protected' } = {}) {
                         </ProtectedRoute>
                     } />
                     <Route path="/admin/login" element={<div data-testid="login-page">Login</div>} />
+                    <Route path="/admin/no-access" element={<AdminAccessDenied />} />
                     <Route path="/" element={<div data-testid="home-page">Home</div>} />
                 </Routes>
             </AuthProvider>
@@ -87,7 +89,7 @@ describe('AuthProvider + ProtectedRoute integration', () => {
         });
     });
 
-    it('redirects non-admin away from admin route', async () => {
+    it('shows access denied page for non-admin on admin route', async () => {
         const userId = 'normal-user-id';
         mockSupabase.auth.getSession.mockResolvedValue({
             data: { session: { user: { id: userId }, access_token: 'user-tok' } },
@@ -112,8 +114,9 @@ describe('AuthProvider + ProtectedRoute integration', () => {
         );
 
         await waitFor(() => {
-            expect(screen.getByTestId('home-page')).toBeTruthy();
+            expect(screen.getByRole('heading', { name: /admin yetkiniz yok/i })).toBeTruthy();
         });
+        expect(screen.getByRole('link', { name: /linkedin sayfasına git/i })).toHaveAttribute('href', '/linkedin');
     });
 
     it('handles onAuthStateChange callback', async () => {

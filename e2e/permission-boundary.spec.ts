@@ -28,7 +28,9 @@ test.describe('Permission boundaries', () => {
     test('normal user cannot access /admin', async ({ normalPage }) => {
         await normalPage.goto('/admin');
         await normalPage.waitForLoadState('networkidle');
-        expect(normalPage.url()).not.toContain('/admin');
+        expect(normalPage.url()).toContain('/admin/no-access');
+        await expect(normalPage.getByRole('heading', { name: /admin yetkiniz yok/i })).toBeVisible();
+        await expect(normalPage.getByRole('link', { name: /linkedin sayfasına git/i })).toHaveAttribute('href', '/linkedin');
     });
 
     test('admin user can access /add-project', async ({ adminPage }) => {

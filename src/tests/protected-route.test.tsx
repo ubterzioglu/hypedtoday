@@ -2,6 +2,7 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import AdminAccessDenied from '@/pages/AdminAccessDenied';
 
 const mockUseAuth = vi.fn();
 
@@ -20,6 +21,7 @@ function renderWithRouter(ui: React.ReactElement, { route = '/protected' } = {})
             <Routes>
                 <Route path="/protected" element={ui} />
                 <Route path="/admin/login" element={<LoginPageProbe />} />
+                <Route path="/admin/no-access" element={<AdminAccessDenied />} />
                 <Route path="/" element={<div data-testid="home-page" />} />
             </Routes>
         </MemoryRouter>,
@@ -109,7 +111,7 @@ describe('ProtectedRoute', () => {
         expect(screen.getByTestId('child')).toBeInTheDocument();
     });
 
-    it('redirects to / when requireAdmin and user is not admin', () => {
+    it('shows admin access denied page when requireAdmin and user is not admin', () => {
         mockUseAuth.mockReturnValue({
             user: { id: '1', email: 'user@test.com', role: 'user' },
             session: { user: { id: '1' } },
@@ -121,6 +123,7 @@ describe('ProtectedRoute', () => {
                 <div data-testid="child" />
             </ProtectedRoute>,
         );
-        expect(screen.getByTestId('home-page')).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: /admin yetkiniz yok/i })).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: /linkedin sayfasına git/i })).toHaveAttribute('href', '/linkedin');
     });
 });

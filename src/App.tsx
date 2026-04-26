@@ -18,6 +18,7 @@ import OwnerReviews from "./pages/OwnerReviews";
 import SupporterDashboard from "./pages/SupporterDashboard";
 import AuthCallback from "./pages/AuthCallback";
 import LinkedinPage from "./pages/Linkedin";
+import AdminAccessDenied from "./pages/AdminAccessDenied";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ const App = () => (
             } />
             <Route path="/login" element={<AdminLogin />} />
             <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/no-access" element={<AdminAccessDenied />} />
             <Route path="/add-project" element={
               <ProtectedRoute>
                 <AddProject />
