@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
 import ProtectedRoute from '@/components/ProtectedRoute';
 
 const mockUseAuth = vi.fn();
@@ -9,12 +9,17 @@ vi.mock('@/lib/auth', () => ({
     useAuth: () => mockUseAuth(),
 }));
 
+const LoginPageProbe = () => {
+    const location = useLocation();
+    return <div data-testid="login-page">{location.search}</div>;
+};
+
 function renderWithRouter(ui: React.ReactElement, { route = '/protected' } = {}) {
     return render(
         <MemoryRouter initialEntries={[route]}>
             <Routes>
                 <Route path="/protected" element={ui} />
-                <Route path="/admin/login" element={<div data-testid="login-page" />} />
+                <Route path="/admin/login" element={<LoginPageProbe />} />
                 <Route path="/" element={<div data-testid="home-page" />} />
             </Routes>
         </MemoryRouter>,
@@ -55,7 +60,7 @@ describe('ProtectedRoute', () => {
             </ProtectedRoute>,
             { route: '/protected' },
         );
-        expect(screen.getByTestId('login-page')).toBeInTheDocument();
+        expect(screen.getByTestId('login-page')).toHaveTextContent('?next=%2Fprotected');
     });
 
     it('renders children when user exists and requireAdmin is false', () => {

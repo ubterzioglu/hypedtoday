@@ -14,14 +14,6 @@ vi.mock('@/lib/api', () => ({
     },
 }));
 
-vi.mock('@/components/Header', () => ({
-    default: () => <header data-testid="header" />,
-}));
-
-vi.mock('@/components/Footer', () => ({
-    default: () => <footer data-testid="footer" />,
-}));
-
 vi.mock('react-i18next', () => ({
     useTranslation: () => ({
         t: (key: string) => key,
@@ -43,32 +35,14 @@ vi.mock('sonner', () => ({
     },
 }));
 
-async function unlockPage() {
-    await userEvent.type(screen.getByLabelText('linkedin.passwordLabel'), 'spindora*2026');
-    await userEvent.click(screen.getByRole('button', { name: 'linkedin.passwordSubmit' }));
-}
-
 describe('LinkedinPage', () => {
     beforeEach(() => {
         vi.clearAllMocks();
-        vi.stubEnv('VITE_LINKEDIN_PAGE_PASSWORD', 'spindora*2026');
         window.localStorage.clear();
     });
 
-    it('keeps the form hidden when the password is wrong', async () => {
+    it('shows the profile form when the route is rendered', async () => {
         render(<LinkedinPage />);
-
-        await userEvent.type(screen.getByLabelText('linkedin.passwordLabel'), 'wrong-password');
-        await userEvent.click(screen.getByRole('button', { name: 'linkedin.passwordSubmit' }));
-
-        expect(screen.getByText('linkedin.passwordError')).toBeInTheDocument();
-        expect(screen.queryByText('linkedin.formTitle')).not.toBeInTheDocument();
-    });
-
-    it('shows the form when the password is correct', async () => {
-        render(<LinkedinPage />);
-
-        await unlockPage();
 
         expect(screen.getByText('linkedin.formTitle')).toBeInTheDocument();
         expect(screen.getByLabelText('linkedin.whatsappNumber')).toBeInTheDocument();
@@ -76,7 +50,6 @@ describe('LinkedinPage', () => {
 
     it('renders validation errors and does not submit an empty form', async () => {
         render(<LinkedinPage />);
-        await unlockPage();
 
         await userEvent.click(screen.getByRole('button', { name: 'linkedin.submit' }));
 
@@ -88,7 +61,6 @@ describe('LinkedinPage', () => {
 
     it('rejects non-LinkedIn profile URLs', async () => {
         render(<LinkedinPage />);
-        await unlockPage();
 
         await userEvent.type(screen.getByLabelText('linkedin.firstName'), 'Ada');
         await userEvent.type(screen.getByLabelText('linkedin.lastName'), 'Lovelace');
@@ -102,7 +74,6 @@ describe('LinkedinPage', () => {
 
     it('rejects invalid WhatsApp number formats', async () => {
         render(<LinkedinPage />);
-        await unlockPage();
 
         await userEvent.type(screen.getByLabelText('linkedin.firstName'), 'Ada');
         await userEvent.type(screen.getByLabelText('linkedin.lastName'), 'Lovelace');
@@ -126,7 +97,6 @@ describe('LinkedinPage', () => {
             },
         });
         render(<LinkedinPage />);
-        await unlockPage();
 
         const firstName = screen.getByLabelText('linkedin.firstName') as HTMLInputElement;
         const lastName = screen.getByLabelText('linkedin.lastName') as HTMLInputElement;
@@ -155,7 +125,6 @@ describe('LinkedinPage', () => {
 
     it('does not render the profile list or support rules', async () => {
         render(<LinkedinPage />);
-        await unlockPage();
 
         expect(screen.queryByText('Destek Kuralları')).not.toBeInTheDocument();
         expect(screen.queryByText('linkedin.listTitle')).not.toBeInTheDocument();

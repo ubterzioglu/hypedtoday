@@ -34,7 +34,11 @@ const App = () => (
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/how-it-works" element={<HowItWorks />} />
-            <Route path="/linkedin" element={<LinkedinPage />} />
+            <Route path="/linkedin" element={
+              <ProtectedRoute>
+                <LinkedinPage />
+              </ProtectedRoute>
+            } />
             <Route path="/login" element={<AdminLogin />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/add-project" element={
