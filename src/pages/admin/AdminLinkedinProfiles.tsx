@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CheckCircle2, ExternalLink, Loader2, RefreshCw, XCircle } from "lucide-react";
+import { CheckCircle2, ExternalLink, Loader2, MessageCircle, RefreshCw, XCircle } from "lucide-react";
 import { toast } from "sonner";
 import { BrutalButton } from "@/components/ui/brutal-button";
 import { supabase } from "@/lib/supabase";
@@ -20,11 +20,19 @@ const statusLabels: Record<ApprovalStatus, string> = {
     rejected: "Reddedildi",
 };
 
-function maskWhatsappNumber(value: string | null): string {
-    if (!value) return "";
+function normalizeWhatsappHref(value: string | null): string | null {
+    if (!value) return null;
     const trimmed = value.trim();
-    if (trimmed.length <= 8) return trimmed;
-    return `${trimmed.slice(0, 4)}****${trimmed.slice(-4)}`;
+
+    if (/^05\d{9}$/.test(trimmed)) {
+        return `https://wa.me/9${trimmed}`;
+    }
+
+    if (/^\+[1-9]\d{7,14}$/.test(trimmed)) {
+        return `https://wa.me/${trimmed.slice(1)}`;
+    }
+
+    return null;
 }
 
 const AdminLinkedinProfiles = () => {
@@ -102,7 +110,19 @@ const AdminLinkedinProfiles = () => {
                                     {statusLabels[profile.approval_status]}
                                 </span>
                             </div>
-                            <p className="text-xs font-bold text-muted-foreground">{maskWhatsappNumber(profile.whatsapp_number)}</p>
+                            {normalizeWhatsappHref(profile.whatsapp_number) ? (
+                                <a
+                                    href={`${normalizeWhatsappHref(profile.whatsapp_number)}?text=${encodeURIComponent(`Merhaba ${profile.first_name}, hyped.today LinkedIn kaydiniz icin size ulasiyorum.`)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="mt-1 inline-flex items-center gap-1 text-xs font-bold text-green-700 underline"
+                                >
+                                    <MessageCircle className="h-3 w-3 shrink-0" />
+                                    <span>{profile.whatsapp_number}</span>
+                                </a>
+                            ) : (
+                                <p className="mt-1 text-xs font-bold text-muted-foreground">{profile.whatsapp_number ?? "-"}</p>
+                            )}
                             <a
                                 href={profile.linkedin_url}
                                 target="_blank"

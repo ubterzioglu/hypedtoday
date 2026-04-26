@@ -20,6 +20,7 @@ import AuthCallback from "./pages/AuthCallback";
 import LinkedinPage from "./pages/Linkedin";
 import AdminAccessDenied from "./pages/AdminAccessDenied";
 import LinkStatusPage from "./pages/LinkStatus";
+import AdminLinkedinPage from "./pages/AdminLinkedinPage";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,11 @@ const App = () => (
             <Route path="/admin" element={
               <ProtectedRoute requireAdmin>
                 <AdminDashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/adminlink" element={
+              <ProtectedRoute requireAdmin>
+                <AdminLinkedinPage />
               </ProtectedRoute>
             } />
             <Route path="/my-reviews" element={
