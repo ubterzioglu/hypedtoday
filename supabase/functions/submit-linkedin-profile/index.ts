@@ -65,6 +65,7 @@ Deno.serve(async (req) => {
                 last_name: lastName,
                 whatsapp_number: whatsappNumber,
                 linkedin_url: linkedinUrl,
+                approval_status: 'pending',
             })
             .select()
             .single();

@@ -214,7 +214,9 @@ export interface LinkedinProfile {
     last_name: string;
     whatsapp_number: string | null;
     linkedin_url: string;
+    approval_status: 'pending' | 'approved' | 'rejected';
     created_at: string;
+    reviewed_at?: string | null;
 }
 
 export interface LinkedinProfileFormData {

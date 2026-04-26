@@ -128,15 +128,15 @@ function shouldFallbackToDirectLinkedinInsert(error: unknown): boolean {
 }
 
 async function insertLinkedinProfileDirectly(body: LinkedinProfileFormData): Promise<{ profile: LinkedinProfile }> {
-    const { data, error } = await supabase
-        .from('linkedin_profiles')
-        .insert({
-            first_name: body.first_name.trim(),
-            last_name: body.last_name.trim(),
-            whatsapp_number: body.whatsapp_number.trim(),
-            linkedin_url: body.linkedin_url.trim(),
-        })
-        .select('id, first_name, last_name, whatsapp_number, linkedin_url, created_at')
+        const { data, error } = await supabase
+            .from('linkedin_profiles')
+            .insert({
+                first_name: body.first_name.trim(),
+                last_name: body.last_name.trim(),
+                whatsapp_number: body.whatsapp_number.trim(),
+                linkedin_url: body.linkedin_url.trim(),
+            })
+        .select('id, first_name, last_name, whatsapp_number, linkedin_url, approval_status, created_at')
         .single();
 
     if (error) {
@@ -273,7 +273,7 @@ export const api = {
     async getLinkedinProfiles(): Promise<LinkedinProfile[]> {
         const { data, error } = await supabase
             .from('linkedin_profiles')
-            .select('id, first_name, last_name, whatsapp_number, linkedin_url, created_at')
+            .select('id, first_name, last_name, whatsapp_number, linkedin_url, approval_status, created_at')
             .order('created_at', { ascending: false });
 
         if (error) {

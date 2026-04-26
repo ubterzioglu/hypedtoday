@@ -99,6 +99,7 @@ describe('LinkedinPage', () => {
                 last_name: 'Lovelace',
                 whatsapp_number: '+905551112233',
                 linkedin_url: 'https://www.linkedin.com/in/ada',
+                approval_status: 'approved',
                 created_at: '2026-04-26T10:00:00Z',
             },
         ]);
@@ -106,7 +107,9 @@ describe('LinkedinPage', () => {
         render(<LinkedinPage />);
 
         expect(await screen.findByText('Ada Lovelace')).toBeInTheDocument();
-        expect(screen.getByText('+905551112233')).toBeInTheDocument();
+        expect(screen.getByText('+905****2233')).toBeInTheDocument();
+        expect(screen.getByText('linkedin.com/in/ada')).toBeInTheDocument();
+        expect(screen.getByText('Onaylı kullanıcı')).toBeInTheDocument();
     });
 
     it('submits the form with WhatsApp number, adds it to the list, and clears it', async () => {
@@ -117,6 +120,7 @@ describe('LinkedinPage', () => {
                 last_name: 'Lovelace',
                 whatsapp_number: '+905551112233',
                 linkedin_url: 'https://www.linkedin.com/in/ada',
+                approval_status: 'pending',
                 created_at: '2026-04-26T10:00:00Z',
             },
         });
@@ -142,6 +146,9 @@ describe('LinkedinPage', () => {
             });
         });
         expect(await screen.findByText('Ada Lovelace')).toBeInTheDocument();
+        expect(screen.getByText('+905****2233')).toBeInTheDocument();
+        expect(screen.getByText('linkedin.com/in/ada')).toBeInTheDocument();
+        expect(screen.getByText('Onay bekleniyor')).toBeInTheDocument();
         expect(firstName.value).toBe('');
         expect(lastName.value).toBe('');
         expect(whatsappNumber.value).toBe('');

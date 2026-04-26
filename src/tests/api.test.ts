@@ -311,6 +311,7 @@ describe('linkedin profile api methods', () => {
                         last_name: 'Lovelace',
                         whatsapp_number: '+905551112233',
                         linkedin_url: 'https://www.linkedin.com/in/ada',
+                        approval_status: 'pending',
                         created_at: '2026-04-26T10:00:00Z',
                     },
                 },
@@ -330,6 +331,7 @@ describe('linkedin profile api methods', () => {
                 last_name: 'Lovelace',
                 whatsapp_number: '+905551112233',
                 linkedin_url: 'https://www.linkedin.com/in/ada',
+                approval_status: 'pending',
                 created_at: '2026-04-26T10:00:00Z',
             },
         });
@@ -359,6 +361,7 @@ describe('linkedin profile api methods', () => {
                 last_name: 'Lovelace',
                 whatsapp_number: '+905551112233',
                 linkedin_url: 'https://www.linkedin.com/in/ada',
+                approval_status: 'pending',
                 created_at: '2026-04-26T10:00:00Z',
             },
             error: null,
@@ -379,6 +382,7 @@ describe('linkedin profile api methods', () => {
                 last_name: 'Lovelace',
                 whatsapp_number: '+905551112233',
                 linkedin_url: 'https://www.linkedin.com/in/ada',
+                approval_status: 'pending',
                 created_at: '2026-04-26T10:00:00Z',
             },
         });
@@ -450,6 +454,7 @@ describe('linkedin profile api methods', () => {
                     last_name: 'Hopper',
                     whatsapp_number: '+905559998877',
                     linkedin_url: 'https://www.linkedin.com/in/grace',
+                    approval_status: 'approved',
                     created_at: '2026-04-26T11:00:00Z',
                 },
             ],
@@ -465,12 +470,13 @@ describe('linkedin profile api methods', () => {
                 last_name: 'Hopper',
                 whatsapp_number: '+905559998877',
                 linkedin_url: 'https://www.linkedin.com/in/grace',
+                approval_status: 'approved',
                 created_at: '2026-04-26T11:00:00Z',
             },
         ]);
 
         expect(mockSupabase.from).toHaveBeenCalledWith('linkedin_profiles');
-        expect(select).toHaveBeenCalledWith('id, first_name, last_name, whatsapp_number, linkedin_url, created_at');
+        expect(select).toHaveBeenCalledWith('id, first_name, last_name, whatsapp_number, linkedin_url, approval_status, created_at');
         expect(order).toHaveBeenCalledWith('created_at', { ascending: false });
     });
 });

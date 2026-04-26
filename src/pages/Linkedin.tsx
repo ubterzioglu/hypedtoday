@@ -28,6 +28,28 @@ const linkedinProfileSchema = z.object({
         .regex(/^https?:\/\/([a-z]{2,3}\.)?(www\.)?linkedin\.com\/in\/[^/?#]+\/?/i, "linkedin.form.linkedinProfileUrl"),
 });
 
+function maskWhatsappNumber(value: string | null): string {
+    if (!value) return "";
+    const trimmed = value.trim();
+    if (trimmed.length <= 8) return trimmed;
+    return `${trimmed.slice(0, 4)}****${trimmed.slice(-4)}`;
+}
+
+function formatLinkedinProfile(value: string): string {
+    try {
+        const url = new URL(value);
+        return `${url.hostname.replace(/^www\./, "")}${url.pathname.replace(/\/$/, "")}`;
+    } catch {
+        return value;
+    }
+}
+
+function getApprovalLabel(status: LinkedinProfile["approval_status"]): string {
+    if (status === "approved") return "Onaylı kullanıcı";
+    if (status === "rejected") return "Reddedildi";
+    return "Onay bekleniyor";
+}
+
 const LinkedinPage = () => {
     const { t } = useTranslation();
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -87,27 +109,27 @@ const LinkedinPage = () => {
     };
 
     return (
-        <main className="min-h-screen bg-background px-4 py-10">
-            <div className="mx-auto grid w-full max-w-6xl gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(360px,420px)]">
+        <main className="min-h-screen bg-background px-4 py-8">
+            <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
             <motion.section
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-card border-4 border-foreground p-6 md:p-8 shadow-brutal w-full"
+                className="bg-card border-4 border-foreground p-5 md:p-6 shadow-brutal w-full"
             >
-                <div className="flex items-center gap-3 mb-6">
+                <div className="flex items-center gap-3 mb-5">
                     <UserPlus className="w-6 h-6 text-primary" />
                     <h1 className="text-2xl font-black">{t("linkedin.formTitle")}</h1>
                 </div>
 
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-                    <div>
+                <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 md:grid-cols-2">
+                    <div className="min-w-0">
                         <label htmlFor="first_name" className="block text-sm font-bold mb-2 uppercase">
                             {t("linkedin.firstName")}
                         </label>
                         <input
                             id="first_name"
                             {...register("first_name")}
-                            className="w-full px-4 py-3 bg-background border-4 border-foreground focus:outline-none focus:border-primary transition-colors"
+                            className="w-full px-4 py-2.5 bg-background border-4 border-foreground focus:outline-none focus:border-primary transition-colors"
                             placeholder={t("linkedin.firstNamePlaceholder")}
                         />
                         {errors.first_name && (
@@ -115,14 +137,14 @@ const LinkedinPage = () => {
                         )}
                     </div>
 
-                    <div>
+                    <div className="min-w-0">
                         <label htmlFor="last_name" className="block text-sm font-bold mb-2 uppercase">
                             {t("linkedin.lastName")}
                         </label>
                         <input
                             id="last_name"
                             {...register("last_name")}
-                            className="w-full px-4 py-3 bg-background border-4 border-foreground focus:outline-none focus:border-primary transition-colors"
+                            className="w-full px-4 py-2.5 bg-background border-4 border-foreground focus:outline-none focus:border-primary transition-colors"
                             placeholder={t("linkedin.lastNamePlaceholder")}
                         />
                         {errors.last_name && (
@@ -130,7 +152,7 @@ const LinkedinPage = () => {
                         )}
                     </div>
 
-                    <div>
+                    <div className="min-w-0">
                         <label htmlFor="whatsapp_number" className="block text-sm font-bold mb-2 uppercase flex items-center gap-2">
                             <MessageCircle className="w-4 h-4" /> {t("linkedin.whatsappNumber")}
                         </label>
@@ -138,7 +160,7 @@ const LinkedinPage = () => {
                             id="whatsapp_number"
                             type="tel"
                             {...register("whatsapp_number")}
-                            className="w-full px-4 py-3 bg-background border-4 border-foreground focus:outline-none focus:border-primary transition-colors"
+                            className="w-full px-4 py-2.5 bg-background border-4 border-foreground focus:outline-none focus:border-primary transition-colors"
                             placeholder="+905551112233"
                         />
                         {errors.whatsapp_number && (
@@ -146,7 +168,7 @@ const LinkedinPage = () => {
                         )}
                     </div>
 
-                    <div>
+                    <div className="min-w-0">
                         <label htmlFor="linkedin_url" className="block text-sm font-bold mb-2 uppercase flex items-center gap-2">
                             <Linkedin className="w-4 h-4" /> {t("linkedin.profileUrl")}
                         </label>
@@ -154,7 +176,7 @@ const LinkedinPage = () => {
                             id="linkedin_url"
                             type="url"
                             {...register("linkedin_url")}
-                            className="w-full px-4 py-3 bg-background border-4 border-foreground focus:outline-none focus:border-primary transition-colors"
+                            className="w-full px-4 py-2.5 bg-background border-4 border-foreground focus:outline-none focus:border-primary transition-colors"
                             placeholder="https://www.linkedin.com/in/..."
                         />
                         {errors.linkedin_url && (
@@ -166,7 +188,7 @@ const LinkedinPage = () => {
                         type="submit"
                         variant="primary"
                         size="lg"
-                        className="w-full"
+                        className="w-full md:col-span-2"
                         disabled={isSubmitting}
                     >
                         {isSubmitting ? (
@@ -177,7 +199,7 @@ const LinkedinPage = () => {
                     </BrutalButton>
                 </form>
             </motion.section>
-            <section className="bg-card border-4 border-foreground p-6 md:p-8 shadow-brutal w-full">
+            <section className="bg-card border-4 border-foreground p-5 md:p-6 shadow-brutal w-full">
                 <div className="mb-6 flex items-center justify-between gap-4">
                     <h2 className="text-2xl font-black">{t("linkedin.listTitle")}</h2>
                     <BrutalButton
@@ -202,16 +224,28 @@ const LinkedinPage = () => {
                         <p className="mt-1 text-sm text-muted-foreground">{t("linkedin.emptyDesc")}</p>
                     </div>
                 ) : (
-                    <ul className="space-y-3">
+                    <ul className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
                         {profiles.map((profile) => (
                             <li key={profile.id} className="border-4 border-foreground bg-background p-4">
-                                <div className="flex items-start justify-between gap-3">
-                                    <div className="min-w-0">
+                                <div className="flex items-center justify-between gap-3">
+                                    <div className="min-w-0 space-y-1">
                                         <p className="truncate text-lg font-black">
                                             {profile.first_name} {profile.last_name}
                                         </p>
                                         <p className="truncate text-sm font-bold text-muted-foreground">
-                                            {profile.whatsapp_number}
+                                            {maskWhatsappNumber(profile.whatsapp_number)}
+                                        </p>
+                                        <p className="truncate text-sm font-bold text-primary">
+                                            {formatLinkedinProfile(profile.linkedin_url)}
+                                        </p>
+                                        <p className={`inline-flex border-2 border-foreground px-2 py-0.5 text-xs font-black uppercase ${
+                                            profile.approval_status === "approved"
+                                                ? "bg-primary text-primary-foreground"
+                                                : profile.approval_status === "rejected"
+                                                    ? "bg-destructive text-destructive-foreground"
+                                                    : "bg-secondary text-secondary-foreground"
+                                        }`}>
+                                            {getApprovalLabel(profile.approval_status)}
                                         </p>
                                     </div>
                                     <a

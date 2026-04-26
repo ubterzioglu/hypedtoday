@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { api } from "@/lib/api";
 import { BrutalButton } from "@/components/ui/brutal-button";
-import { Loader2, Users, FileText, CheckSquare, AlertTriangle, Activity, Settings, Shield, LogOut } from "lucide-react";
+import { Loader2, Users, FileText, CheckSquare, AlertTriangle, Activity, Settings, Shield, LogOut, Linkedin } from "lucide-react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import AdminUsers from "./admin/AdminUsers";
@@ -11,6 +11,7 @@ import AdminSettings from "./admin/AdminSettings";
 import AdminScores from "./admin/AdminScores";
 import AdminFlags from "./admin/AdminFlags";
 import AdminAudit from "./admin/AdminAudit";
+import AdminLinkedinProfiles from "./admin/AdminLinkedinProfiles";
 import { useAuth } from "@/lib/auth";
 
 interface DashboardStats {
@@ -27,7 +28,7 @@ interface DashboardStats {
     limit_rejections_today: number;
 }
 
-type AdminTab = 'dashboard' | 'users' | 'posts' | 'claims' | 'scores' | 'flags' | 'audit' | 'settings';
+type AdminTab = 'dashboard' | 'linkedin' | 'users' | 'posts' | 'claims' | 'scores' | 'flags' | 'audit' | 'settings';
 
 const AdminDashboard = () => {
     const { user, signOut } = useAuth();
@@ -59,6 +60,7 @@ const AdminDashboard = () => {
 
     const tabs: { key: AdminTab; label: string; icon: React.ReactNode }[] = [
         { key: 'dashboard', label: 'Dashboard', icon: <Activity className="w-4 h-4" /> },
+        { key: 'linkedin', label: 'LinkedIn', icon: <Linkedin className="w-4 h-4" /> },
         { key: 'users', label: 'Users', icon: <Users className="w-4 h-4" /> },
         { key: 'posts', label: 'Posts', icon: <FileText className="w-4 h-4" /> },
         { key: 'claims', label: 'Claims', icon: <CheckSquare className="w-4 h-4" /> },
@@ -132,6 +134,7 @@ const AdminDashboard = () => {
                         </div>
                     ) : null
                 )}
+                {activeTab === 'linkedin' && <AdminLinkedinProfiles />}
                 {activeTab === 'users' && <AdminUsers />}
                 {activeTab === 'posts' && <AdminPosts />}
                 {activeTab === 'claims' && <AdminClaims />}
