@@ -1,6 +1,10 @@
 {
     "rewrites": [
         {
+            "source": "/linkedin",
+            "destination": "/linkedin.html"
+        },
+        {
             "source": "/(.*)",
             "destination": "/index.html"
         }
