@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 import { useAuth } from "@/lib/auth";
 import { useTranslation } from "react-i18next";
 
-const WHATSAPP_NUMBER_PATTERN = /^\+[1-9]\d{7,14}$/;
+const WHATSAPP_NUMBER_PATTERN = /^(05\d{9}|\+[1-9]\d{7,14})$/;
 const LINKEDIN_PROFILE_PATTERN = /^https?:\/\/([a-z]{2,3}\.)?(www\.)?linkedin\.com\/in\/[^/?#]+\/?/i;
 
 const AdminLogin = () => {
@@ -249,7 +249,7 @@ const AdminLogin = () => {
                                         value={signupForm.whatsapp_number}
                                         onChange={(e) => handleSignupChange("whatsapp_number", e.target.value)}
                                         className="w-full px-4 py-3 bg-background border-4 border-foreground font-bold text-foreground focus:outline-none focus:border-primary transition-colors"
-                                        placeholder="+905551112233"
+                                        placeholder="05302404995 veya +491234567890"
                                     />
                                 </div>
                                 <div>

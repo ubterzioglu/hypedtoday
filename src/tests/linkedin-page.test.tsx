@@ -91,6 +91,37 @@ describe('LinkedinPage', () => {
         expect(apiMocks.submitLinkedinProfile).not.toHaveBeenCalled();
     });
 
+    it('accepts Turkish mobile numbers starting with 05', async () => {
+        apiMocks.submitLinkedinProfile.mockResolvedValue({
+            profile: {
+                id: 'profile-1',
+                first_name: 'Ada',
+                last_name: 'Lovelace',
+                whatsapp_number: '05302404995',
+                linkedin_url: 'https://www.linkedin.com/in/ada',
+                approval_status: 'pending',
+                created_at: '2026-04-26T10:00:00Z',
+            },
+        });
+
+        render(<LinkedinPage />);
+
+        await userEvent.type(screen.getByLabelText('linkedin.firstName'), 'Ada');
+        await userEvent.type(screen.getByLabelText('linkedin.lastName'), 'Lovelace');
+        await userEvent.type(screen.getByLabelText('linkedin.whatsappNumber'), '05302404995');
+        await userEvent.type(screen.getByLabelText('linkedin.profileUrl'), 'https://www.linkedin.com/in/ada');
+        await userEvent.click(screen.getByRole('button', { name: 'linkedin.submit' }));
+
+        await waitFor(() => {
+            expect(apiMocks.submitLinkedinProfile).toHaveBeenCalledWith({
+                first_name: 'Ada',
+                last_name: 'Lovelace',
+                whatsapp_number: '05302404995',
+                linkedin_url: 'https://www.linkedin.com/in/ada',
+            });
+        });
+    });
+
     it('loads saved profiles', async () => {
         apiMocks.getLinkedinProfiles.mockResolvedValue([
             {

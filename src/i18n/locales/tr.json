@@ -166,7 +166,7 @@
       "firstNameRequired": "İsim zorunludur",
       "lastNameRequired": "Soyisim zorunludur",
       "whatsappRequired": "WhatsApp numarası zorunludur",
-      "whatsappFormat": "WhatsApp numarası +905551112233 formatında olmalıdır",
+      "whatsappFormat": "WhatsApp numarası Türk hatları için 05xxxxxxxxx, diğer hatlar için +ülkeKodu formatında olmalıdır",
       "validUrl": "Geçerli bir URL girin",
       "linkedinProfileUrl": "LinkedIn profil linki linkedin.com/in/... formatında olmalıdır",
       "maxLength": "Bu alan çok uzun"
@@ -244,7 +244,7 @@
     "errorEmail": "Lütfen e-posta adresinizi girin",
     "errorSignupRequired": "Lütfen tüm üyelik alanlarını doldurun",
     "errorPassword": "Şifre en az 6 karakter olmalıdır",
-    "errorWhatsapp": "WhatsApp numarası +905551112233 formatında olmalıdır",
+    "errorWhatsapp": "WhatsApp numarası Türk hatları için 05xxxxxxxxx, diğer hatlar için +ülkeKodu formatında olmalıdır",
     "errorLinkedin": "LinkedIn profil linki linkedin.com/in/... formatında olmalıdır",
     "errorSignup": "Üyelik oluşturulamadı",
     "errorGoogle": "Google ile giriş başarısız",

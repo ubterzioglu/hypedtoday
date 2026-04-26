@@ -166,7 +166,7 @@
       "firstNameRequired": "First name is required",
       "lastNameRequired": "Last name is required",
       "whatsappRequired": "WhatsApp number is required",
-      "whatsappFormat": "WhatsApp number must use +905551112233 format",
+      "whatsappFormat": "WhatsApp number must use 05xxxxxxxxx for Turkish mobile numbers or +countrycode format",
       "validUrl": "Enter a valid URL",
       "linkedinProfileUrl": "LinkedIn profile link must use linkedin.com/in/... format",
       "maxLength": "This field is too long"
@@ -244,7 +244,7 @@
     "errorEmail": "Please enter your email",
     "errorSignupRequired": "Please fill in every signup field",
     "errorPassword": "Password must be at least 6 characters",
-    "errorWhatsapp": "WhatsApp number must use +905551112233 format",
+    "errorWhatsapp": "WhatsApp number must use 05xxxxxxxxx for Turkish mobile numbers or +countrycode format",
     "errorLinkedin": "LinkedIn profile link must use linkedin.com/in/... format",
     "errorSignup": "Failed to create account",
     "errorGoogle": "Failed to sign in with Google",

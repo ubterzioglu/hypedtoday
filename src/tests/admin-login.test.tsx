@@ -112,7 +112,7 @@ describe('AdminLogin', () => {
         await userEvent.type(screen.getByLabelText('auth.lastName'), 'Lovelace');
         await userEvent.type(screen.getByLabelText('auth.signupEmailLabel'), 'ada@example.com');
         await userEvent.type(screen.getByLabelText('auth.passwordLabel'), 'secret123');
-        await userEvent.type(screen.getByLabelText('auth.whatsappNumber'), '+905551112233');
+        await userEvent.type(screen.getByLabelText('auth.whatsappNumber'), '05302404995');
         await userEvent.type(screen.getByLabelText('auth.linkedinUrl'), 'https://www.linkedin.com/in/ada');
         await userEvent.click(screen.getByText('auth.createAccount'));
 
@@ -121,7 +121,7 @@ describe('AdminLogin', () => {
             password: 'secret123',
             first_name: 'Ada',
             last_name: 'Lovelace',
-            whatsapp_number: '+905551112233',
+            whatsapp_number: '05302404995',
             linkedin_url: 'https://www.linkedin.com/in/ada',
         }, '/linkedin');
     });

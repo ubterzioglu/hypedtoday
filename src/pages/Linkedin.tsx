@@ -10,7 +10,7 @@ import { BrutalButton } from "@/components/ui/brutal-button";
 import { api } from "@/lib/api";
 import type { LinkedinProfile, LinkedinProfileFormData } from "@/types";
 
-const WHATSAPP_NUMBER_PATTERN = /^\+[1-9]\d{7,14}$/;
+const WHATSAPP_NUMBER_PATTERN = /^(05\d{9}|\+[1-9]\d{7,14})$/;
 const LINKEDIN_WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/LkUAfhwhQJd0cxOOLGX2Az";
 
 const infoSections = [
@@ -239,7 +239,7 @@ const LinkedinPage = () => {
                             type="tel"
                             {...register("whatsapp_number")}
                             className="w-full px-4 py-2.5 bg-background border-4 border-foreground focus:outline-none focus:border-primary transition-colors"
-                            placeholder="+905551112233"
+                            placeholder="05302404995 veya +491234567890"
                         />
                         {errors.whatsapp_number && (
                             <p className="mt-1 text-sm text-destructive font-bold">{t(errors.whatsapp_number.message ?? "")}</p>

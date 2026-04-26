@@ -5,7 +5,7 @@ import { checkRateLimit, getRateLimitIdentifier, rateLimitHeaders } from '../_sh
 import { validateRequired, validateMaxLength, validateUrl, collectErrors } from '../_shared/validation.ts';
 
 const LINKEDIN_PROFILE_PATTERN = /^https?:\/\/([a-z]{2,3}\.)?(www\.)?linkedin\.com\/in\/[^/?#]+\/?/i;
-const WHATSAPP_NUMBER_PATTERN = /^\+[1-9]\d{7,14}$/;
+const WHATSAPP_NUMBER_PATTERN = /^(05\d{9}|\+[1-9]\d{7,14})$/;
 
 function cleanText(value: unknown): string {
     return typeof value === 'string' ? value.trim() : '';
@@ -54,7 +54,7 @@ Deno.serve(async (req) => {
         }
 
         if (!WHATSAPP_NUMBER_PATTERN.test(whatsappNumber)) {
-            return errorResponse(req, 'WhatsApp number must be in international format, for example +905551112233.', 400, 'INVALID_WHATSAPP_NUMBER');
+            return errorResponse(req, 'WhatsApp number must use 05xxxxxxxxx for Turkish mobile numbers or +countrycode format such as +491234567890.', 400, 'INVALID_WHATSAPP_NUMBER');
         }
 
         const supabase = getSupabaseServiceClient();
