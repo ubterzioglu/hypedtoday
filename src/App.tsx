@@ -38,11 +38,7 @@ const App = () => (
             <Route path="/contact" element={<Contact />} />
             <Route path="/how-it-works" element={<HowItWorks />} />
             <Route path="/linkedin" element={<LinkedinPage />} />
-            <Route path="/linkstatus" element={
-              <ProtectedRoute>
-                <LinkStatusPage />
-              </ProtectedRoute>
-            } />
+            <Route path="/linkstatus" element={<LinkStatusPage />} />
             <Route path="/login" element={<AdminLogin />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/no-access" element={<AdminAccessDenied />} />
