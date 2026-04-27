@@ -63,6 +63,17 @@ const AdminLinkedinProfiles = () => {
     }, []);
 
     const setApprovalStatus = async (profileId: string, approvalStatus: ApprovalStatus) => {
+        const reviewedAt = new Date().toISOString();
+        const previousProfile = profiles.find(p => p.id === profileId);
+
+        setProfiles(prev =>
+            prev.map(p =>
+                p.id === profileId
+                    ? { ...p, approval_status: approvalStatus, reviewed_at: reviewedAt }
+                    : p,
+            ),
+        );
+
         try {
             setUpdatingId(profileId);
             const { error } = await supabase
@@ -70,14 +81,20 @@ const AdminLinkedinProfiles = () => {
                 .update({
                     approval_status: approvalStatus,
                     reviewed_by: user?.id ?? null,
-                    reviewed_at: new Date().toISOString(),
+                    reviewed_at: reviewedAt,
                 })
                 .eq("id", profileId);
 
             if (error) throw error;
             toast.success(`Kayıt ${statusLabels[approvalStatus].toLowerCase()}`);
-            await loadProfiles();
         } catch (err: unknown) {
+            if (previousProfile) {
+                setProfiles(prev =>
+                    prev.map(p =>
+                        p.id === profileId ? { ...p, approval_status: previousProfile.approval_status, reviewed_at: previousProfile.reviewed_at } : p,
+                    ),
+                );
+            }
             toast.error((err as { message?: string })?.message ?? "Kayıt güncellenemedi");
         } finally {
             setUpdatingId(null);

@@ -1,10 +1,12 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import AdminLinkedinProfiles from '@/pages/admin/AdminLinkedinProfiles';
 import type { ReactNode } from 'react';
 
 const selectMock = vi.fn();
 const orderMock = vi.fn();
+const updateMock = vi.fn();
+const eqMock = vi.fn();
 
 vi.mock('@/lib/auth', () => ({
     useAuth: () => ({
@@ -16,6 +18,7 @@ vi.mock('@/lib/supabase', () => ({
     supabase: {
         from: vi.fn(() => ({
             select: selectMock,
+            update: updateMock,
         })),
     },
 }));
@@ -64,6 +67,10 @@ describe('AdminLinkedinProfiles', () => {
         selectMock.mockReturnValue({
             order: orderMock,
         });
+        updateMock.mockReturnValue({
+            eq: eqMock,
+        });
+        eqMock.mockResolvedValue({ error: null });
     });
 
     it('renders raw phone numbers and creates whatsapp links for local TR and international numbers', async () => {
@@ -81,5 +88,48 @@ describe('AdminLinkedinProfiles', () => {
             'href',
             expect.stringContaining('https://wa.me/491234567890?text='),
         );
+    });
+
+    it('optimistically updates approval_status on approve without refetching', async () => {
+        render(<AdminLinkedinProfiles />);
+
+        await waitFor(() => {
+            expect(screen.getByText('Ada Lovelace')).toBeInTheDocument();
+        });
+
+        expect(screen.getByText('Onay bekliyor')).toBeInTheDocument();
+
+        const approveButtons = screen.getAllByRole('button', { name: /onayla/i });
+        fireEvent.click(approveButtons[0]);
+
+        await waitFor(() => {
+            expect(screen.queryByText('Onay bekliyor')).not.toBeInTheDocument();
+        });
+
+        expect(updateMock).toHaveBeenCalledWith(
+            expect.objectContaining({ approval_status: 'approved' }),
+        );
+        expect(selectMock).toHaveBeenCalledTimes(1);
+    });
+
+    it('rolls back optimistic update on error', async () => {
+        eqMock.mockResolvedValue({ error: { message: 'RLS denied' } });
+
+        render(<AdminLinkedinProfiles />);
+
+        await waitFor(() => {
+            expect(screen.getByText('Ada Lovelace')).toBeInTheDocument();
+        });
+
+        const approveButtons = screen.getAllByRole('button', { name: /onayla/i });
+        fireEvent.click(approveButtons[0]);
+
+        await waitFor(() => {
+            expect(screen.getByText('Onay bekliyor')).toBeInTheDocument();
+        });
+
+        const { toast } = await import('sonner');
+        expect(toast.error).toHaveBeenCalled();
+        expect(selectMock).toHaveBeenCalledTimes(1);
     });
 });
