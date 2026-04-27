@@ -13,9 +13,9 @@ const Footer = () => {
 
   const footerLinks = [
     { label: t("nav.home"), to: "/" },
-    { label: t("nav.explore"), to: "/showroom" },
-    { label: t("nav.addProject"), to: "/add-project" },
-    { label: t("nav.leaderboard"), to: "/leaderboard" },
+    { label: t("nav.dashboard"), to: "/dashboard" },
+    { label: t("nav.linkedin"), to: "/linkedin" },
+    { label: t("nav.linkStatus"), to: "/linkstatus" },
     { label: t("nav.howItWorks"), to: "/how-it-works" },
     { label: t("nav.contact"), to: "/contact" },
   ];

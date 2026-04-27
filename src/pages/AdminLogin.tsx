@@ -32,14 +32,14 @@ const AdminLogin = () => {
     const nextPath = useMemo(() => {
         const params = new URLSearchParams(location.search);
         const next = params.get("next");
-        return next && next.startsWith("/") ? next : "/";
+        return next && next.startsWith("/") ? next : "/dashboard";
     }, [location.search]);
     const isBareAuth = nextPath === "/linkedin";
 
     useEffect(() => {
         if (!user) return;
         if (session?.user && !profileResolved) return;
-        navigate(user.role === 'admin' && nextPath === "/" ? "/admin" : nextPath, { replace: true });
+        navigate(user.role === 'admin' && nextPath === "/dashboard" ? "/admin" : nextPath, { replace: true });
     }, [navigate, nextPath, profileResolved, session, user]);
 
     const handleMagicLink = async (e: React.FormEvent) => {

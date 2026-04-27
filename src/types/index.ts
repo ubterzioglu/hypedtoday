@@ -34,7 +34,7 @@ export interface ProjectFormData {
     contact_email: string;
 }
 
-export type PostStatus = 'active' | 'paused' | 'archived' | 'hidden_by_admin' | 'deleted';
+export type PostStatus = 'active' | 'paused' | 'archived' | 'hidden_by_admin' | 'deleted' | 'open' | 'closed';
 
 export interface LinkedInPost {
     id: string;
@@ -271,4 +271,61 @@ export interface RequestLimitCheckResult {
         active_posts: number;
         pending_reviews: number;
     };
+}
+
+export type TrackingStatus = 'pending' | 'liked' | 'not_yet' | 'skipped';
+
+export interface PostLikeTracking {
+    tracking_id: string;
+    member_user_id: string;
+    member_name: string;
+    member_linkedin_url: string | null;
+    status: TrackingStatus;
+    marked_at: string | null;
+    note: string | null;
+}
+
+export interface TrackedPost {
+    id: string;
+    owner_user_id: string;
+    linkedin_url: string;
+    published_at: string;
+    note: string | null;
+    status: 'open' | 'closed' | 'archived';
+    created_at: string;
+    tracking: PostLikeTracking[];
+    counts: {
+        pending: number;
+        liked: number;
+        not_yet: number;
+        skipped: number;
+    };
+}
+
+export interface DashboardTask {
+    tracking_id: string;
+    post_id: string;
+    status: TrackingStatus;
+    marked_at: string | null;
+    note: string | null;
+    linkedin_url: string;
+    published_at: string;
+    post_note: string | null;
+    owner_user_id: string;
+    owner_name: string;
+    owner_linkedin_url: string | null;
+    created_at: string;
+}
+
+export interface DashboardSummary {
+    open_posts: number;
+    my_pending_actions: number;
+    my_posts_liked: number;
+    approved_members: number;
+}
+
+export interface DashboardPayload {
+    summary: DashboardSummary;
+    my_posts: TrackedPost[];
+    my_tasks: DashboardTask[];
 }

@@ -21,6 +21,7 @@ import LinkedinPage from "./pages/Linkedin";
 import AdminAccessDenied from "./pages/AdminAccessDenied";
 import LinkStatusPage from "./pages/LinkStatus";
 import AdminLinkedinPage from "./pages/AdminLinkedinPage";
+import Dashboard from "./pages/Dashboard";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,11 @@ const App = () => (
             <Route path="/how-it-works" element={<HowItWorks />} />
             <Route path="/linkedin" element={<LinkedinPage />} />
             <Route path="/linkstatus" element={<LinkStatusPage />} />
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
             <Route path="/login" element={<AdminLogin />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/no-access" element={<AdminAccessDenied />} />

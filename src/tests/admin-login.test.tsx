@@ -139,7 +139,7 @@ describe('AdminLogin', () => {
         await userEvent.type(input, 'test@example.com');
         const submitBtn = screen.getByText('auth.sendMagicLink');
         await userEvent.click(submitBtn);
-        expect(mockSignInWithMagicLink).toHaveBeenCalledWith('test@example.com', '/');
+        expect(mockSignInWithMagicLink).toHaveBeenCalledWith('test@example.com', '/dashboard');
     });
 
     it('does not call signInWithMagicLink on empty email submit', async () => {

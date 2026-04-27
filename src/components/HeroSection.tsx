@@ -1,6 +1,6 @@
 import { motion, type Variants } from "framer-motion";
 import { BrutalButton } from "@/components/ui/brutal-button";
-import { Rocket, Compass, Vote, Trophy, HelpCircle, Mail } from "lucide-react";
+import { Rocket, Linkedin, ListChecks, Users, HelpCircle, Mail } from "lucide-react";
 import HeroBackground, { type BackgroundType } from "./HeroBackground";
 import heroBg from "@/assets/hero-bg.jpg";
 import { Link } from "react-router-dom";
@@ -100,53 +100,53 @@ const HeroSection = () => {
           variants={containerVariants}
         >
           <motion.div variants={buttonVariants}>
-            <Link to="/add-project">
+            <Link to="/dashboard">
               <BrutalButton
                 variant="primary"
                 size="lg"
                 className="w-full flex-col h-auto py-4 gap-1"
               >
                 <Rocket className="w-6 h-6" />
-                <span className="text-xs md:text-sm">Add Project</span>
+                <span className="text-xs md:text-sm">Dashboard</span>
               </BrutalButton>
             </Link>
           </motion.div>
 
           <motion.div variants={buttonVariants}>
-            <Link to="/showroom">
+            <Link to="/linkedin">
               <BrutalButton
                 variant="secondary"
                 size="lg"
                 className="w-full flex-col h-auto py-4 gap-1"
               >
-                <Compass className="w-6 h-6" />
-                <span className="text-xs md:text-sm">Explore</span>
+                <Linkedin className="w-6 h-6" />
+                <span className="text-xs md:text-sm">LinkedIn</span>
               </BrutalButton>
             </Link>
           </motion.div>
 
           <motion.div variants={buttonVariants}>
-            <Link to="/showroom">
+            <Link to="/linkstatus">
               <BrutalButton
                 variant="tertiary"
                 size="lg"
                 className="w-full flex-col h-auto py-4 gap-1"
               >
-                <Vote className="w-6 h-6" />
-                <span className="text-xs md:text-sm">Vote</span>
+                <Users className="w-6 h-6" />
+                <span className="text-xs md:text-sm">Link Status</span>
               </BrutalButton>
             </Link>
           </motion.div>
 
           <motion.div variants={buttonVariants}>
-            <Link to="/leaderboard">
+            <Link to="/how-it-works">
               <BrutalButton
                 variant="accent"
                 size="lg"
                 className="w-full flex-col h-auto py-4 gap-1"
               >
-                <Trophy className="w-6 h-6" />
-                <span className="text-xs md:text-sm">Leaderboard</span>
+                <ListChecks className="w-6 h-6" />
+                <span className="text-xs md:text-sm">How It Works</span>
               </BrutalButton>
             </Link>
           </motion.div>

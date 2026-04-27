@@ -481,3 +481,55 @@ describe('linkedin profile api methods', () => {
         expect(order).toHaveBeenCalledWith('created_at', { ascending: false });
     });
 });
+
+describe('dashboard api methods', () => {
+    beforeEach(() => {
+        vi.clearAllMocks();
+        mockSupabase.auth.getSession.mockResolvedValue({
+            data: {
+                session: {
+                    access_token: 'tok',
+                    expires_at: Math.floor(Date.now() / 1000) + 3600,
+                },
+            },
+        });
+    });
+
+    it('getDashboardData invokes the dashboard-data function', async () => {
+        mockSupabase.functions.invoke.mockResolvedValue({
+            data: { data: { summary: {}, my_posts: [], my_tasks: [] } },
+            error: null,
+        });
+
+        await api.getDashboardData();
+
+        expect(mockSupabase.functions.invoke).toHaveBeenCalledWith('dashboard-data', {
+            method: undefined,
+            body: undefined,
+            headers: {},
+        });
+    });
+
+    it('createTrackedPost sends the expected payload', async () => {
+        mockSupabase.functions.invoke.mockResolvedValue({
+            data: { data: { post: { id: 'post-1' } } },
+            error: null,
+        });
+
+        await api.createTrackedPost({
+            linkedin_url: 'https://www.linkedin.com/posts/example',
+            published_at: '2026-04-27T12:00:00Z',
+            note: 'Launch',
+        });
+
+        expect(mockSupabase.functions.invoke).toHaveBeenCalledWith('create-tracked-post', {
+            method: 'POST',
+            body: {
+                linkedin_url: 'https://www.linkedin.com/posts/example',
+                published_at: '2026-04-27T12:00:00Z',
+                note: 'Launch',
+            },
+            headers: { 'Content-Type': 'application/json' },
+        });
+    });
+});

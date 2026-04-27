@@ -1,6 +1,7 @@
 {
   "nav": {
     "home": "Home",
+    "dashboard": "Dashboard",
     "explore": "Explore",
     "addProject": "Add Project",
     "linkedin": "LinkedIn",
@@ -13,6 +14,7 @@
     "banner": "We are in beta. If you encounter unexpected issues, please contact us.",
     "signIn": "Sign In",
     "signOut": "Sign Out",
+    "dashboard": "Dashboard",
     "myClaims": "My Claims",
     "myReviews": "Reviews",
     "admin": "Admin",
@@ -46,6 +48,12 @@
     "joinUs": "Join us! 🚀"
   },
   "quickActions": {
+    "dashboard": "Dashboard",
+    "dashboardDesc": "Manage post tracking",
+    "linkStatus": "Link Status",
+    "linkStatusDesc": "Review members",
+    "linkedin": "LinkedIn",
+    "linkedinDesc": "Profile and rules",
     "addProject": "Add Project",
     "addProjectDesc": "Showcase your work",
     "explore": "Explore",

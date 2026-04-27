@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase';
-import type { LinkedinProfile, LinkedinProfileFormData, PostComment } from '@/types';
+import type { DashboardPayload, LinkedinProfile, LinkedinProfileFormData, PostComment, TrackingStatus, TrackedPost } from '@/types';
 
 interface ApiError {
     message: string;
@@ -147,6 +147,31 @@ async function insertLinkedinProfileDirectly(body: LinkedinProfileFormData): Pro
 }
 
 export const api = {
+    async getDashboardData() {
+        return apiCall<DashboardPayload>('dashboard-data');
+    },
+
+    async createTrackedPost(body: { linkedin_url: string; published_at: string; note?: string }) {
+        return apiCall<{ post: TrackedPost }>('create-tracked-post', {
+            method: 'POST',
+            body: JSON.stringify(body),
+        });
+    },
+
+    async updateTrackingStatus(body: { tracking_id: string; status: Exclude<TrackingStatus, 'pending'>; note?: string }) {
+        return apiCall<{ tracking: unknown }>('update-tracking-status', {
+            method: 'POST',
+            body: JSON.stringify(body),
+        });
+    },
+
+    async closeTrackedPost(body: { post_id: string }) {
+        return apiCall<{ post: TrackedPost }>('close-tracked-post', {
+            method: 'POST',
+            body: JSON.stringify(body),
+        });
+    },
+
     async createPost(body: {
         linkedin_url: string;
         title?: string;

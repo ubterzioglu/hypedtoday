@@ -11,13 +11,27 @@ export default function AuthCallback() {
     const completeAuth = async () => {
       const url = new URL(window.location.href);
       const next = url.searchParams.get('next');
-      const nextPath = next && next.startsWith('/') ? next : '/';
+      const nextPath = next && next.startsWith('/') ? next : '/dashboard';
+      let redirectPath = nextPath;
       const code = url.searchParams.get('code');
 
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session && code) {
           await supabase.auth.exchangeCodeForSession(code);
+        }
+
+        const { data: { session: resolvedSession } } = await supabase.auth.getSession();
+        if (resolvedSession?.user?.id && nextPath === '/dashboard') {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('role')
+            .eq('id', resolvedSession.user.id)
+            .maybeSingle();
+
+          if (profile?.role === 'admin') {
+            redirectPath = '/admin';
+          }
         }
       } finally {
         url.searchParams.delete('code');
@@ -27,7 +41,7 @@ export default function AuthCallback() {
         window.history.replaceState({}, document.title, `${url.pathname}${url.search}`);
 
         if (active) {
-          navigate(nextPath, { replace: true });
+          navigate(redirectPath, { replace: true });
         }
       }
     };

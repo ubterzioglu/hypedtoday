@@ -14,11 +14,9 @@ const Header = () => {
 
   const navItems = [
     { label: t("nav.home"), to: "/" },
-    { label: t("nav.explore"), to: "/showroom" },
-    { label: t("nav.addProject"), to: "/add-project" },
+    { label: t("nav.dashboard"), to: "/dashboard" },
     { label: t("nav.linkedin"), to: "/linkedin" },
     { label: t("nav.linkStatus"), to: "/linkstatus" },
-    { label: t("nav.leaderboard"), to: "/leaderboard" },
     { label: t("nav.howItWorks"), to: "/how-it-works" },
     { label: t("nav.contact"), to: "/contact" },
   ];
@@ -76,16 +74,10 @@ const Header = () => {
                 )}
                 <span className="text-sm font-bold max-w-[120px] truncate">{user.displayName || user.email}</span>
                 <Link
-                  to="/my-claims"
+                  to="/dashboard"
                   className="px-3 py-1 text-xs font-bold uppercase bg-secondary text-secondary-foreground border-2 border-foreground hover:bg-secondary/80"
                 >
-                  {t("header.myClaims")}
-                </Link>
-                <Link
-                  to="/my-reviews"
-                  className="px-3 py-1 text-xs font-bold uppercase bg-accent text-accent-foreground border-2 border-foreground hover:bg-accent/80"
-                >
-                  {t("header.myReviews")}
+                  {t("header.dashboard")}
                 </Link>
                 {user.role === "admin" && (
                   <Link
@@ -171,13 +163,9 @@ const Header = () => {
                     )}
                     <span className="font-bold text-sm truncate">{user.displayName || user.email}</span>
                   </div>
-                  <Link to="/my-claims" onClick={() => setMobileMenuOpen(false)}
+                  <Link to="/dashboard" onClick={() => setMobileMenuOpen(false)}
                     className="px-4 py-3 text-sm font-bold uppercase bg-secondary text-secondary-foreground border-2 border-foreground">
-                    {t("header.myClaims")}
-                  </Link>
-                  <Link to="/my-reviews" onClick={() => setMobileMenuOpen(false)}
-                    className="px-4 py-3 text-sm font-bold uppercase bg-accent text-accent-foreground border-2 border-foreground">
-                    {t("header.myReviews")}
+                    {t("header.dashboard")}
                   </Link>
                   {user.role === "admin" && (
                     <Link

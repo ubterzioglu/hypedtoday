@@ -1,6 +1,7 @@
 {
   "nav": {
     "home": "Ana Sayfa",
+    "dashboard": "Dashboard",
     "explore": "Keşfet",
     "addProject": "Proje Ekle",
     "linkedin": "LinkedIn",
@@ -13,6 +14,7 @@
     "banner": "Test yayınındayız. Beklenmedik hatalarla karşılaşırsan bizimle iletişime geç.",
     "signIn": "Giriş Yap",
     "signOut": "Çıkış Yap",
+    "dashboard": "Dashboard",
     "myClaims": "Görevlerim",
     "myReviews": "İncelemelerim",
     "admin": "Yönetim",
@@ -46,6 +48,12 @@
     "joinUs": "Katıl! 🚀"
   },
   "quickActions": {
+    "dashboard": "Dashboard",
+    "dashboardDesc": "Post takibini yonet",
+    "linkStatus": "Link Durumu",
+    "linkStatusDesc": "Uyeleri incele",
+    "linkedin": "LinkedIn",
+    "linkedinDesc": "Profil ve kurallar",
     "addProject": "Proje Ekle",
     "addProjectDesc": "Çalışmanı sergile",
     "explore": "Keşfet",
