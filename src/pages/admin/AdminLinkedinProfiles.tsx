@@ -7,6 +7,8 @@ import { useAuth } from "@/lib/auth";
 import type { LinkedinProfile } from "@/types";
 
 type ApprovalStatus = LinkedinProfile["approval_status"];
+type StatusFilter = ApprovalStatus | "all";
+const PAGE_SIZE = 50;
 
 const statusStyles: Record<ApprovalStatus, string> = {
     pending: "bg-secondary text-secondary-foreground",
@@ -19,6 +21,13 @@ const statusLabels: Record<ApprovalStatus, string> = {
     approved: "Onaylı",
     rejected: "Reddedildi",
 };
+
+const filterOptions: Array<{ value: StatusFilter; label: string }> = [
+    { value: "pending", label: "Bekleyenler" },
+    { value: "approved", label: "Onaylananlar" },
+    { value: "rejected", label: "Reddedilenler" },
+    { value: "all", label: "Tumu" },
+];
 
 function normalizeWhatsappHref(value: string | null): string | null {
     if (!value) return null;
@@ -39,40 +48,68 @@ const AdminLinkedinProfiles = () => {
     const { user } = useAuth();
     const [profiles, setProfiles] = useState<LinkedinProfile[]>([]);
     const [loading, setLoading] = useState(true);
+    const [loadingMore, setLoadingMore] = useState(false);
     const [updatingId, setUpdatingId] = useState<string | null>(null);
+    const [statusFilter, setStatusFilter] = useState<StatusFilter>("pending");
+    const [hasMore, setHasMore] = useState(false);
 
-    const loadProfiles = async () => {
+    const loadProfiles = async (options?: { append?: boolean; nextFilter?: StatusFilter }) => {
+        const append = options?.append ?? false;
+        const activeFilter = options?.nextFilter ?? statusFilter;
+        const start = append ? profiles.length : 0;
+
         try {
-            setLoading(true);
-            const { data, error } = await supabase
+            if (append) {
+                setLoadingMore(true);
+            } else {
+                setLoading(true);
+            }
+
+            let query = supabase
                 .from("linkedin_profiles")
                 .select("id, first_name, last_name, whatsapp_number, linkedin_url, approval_status, created_at, reviewed_at")
                 .order("created_at", { ascending: false });
 
+            if (activeFilter !== "all") {
+                query = query.eq("approval_status", activeFilter);
+            }
+
+            const { data, error } = await query
+                .range(start, start + PAGE_SIZE - 1);
+
             if (error) throw error;
-            setProfiles((data ?? []) as LinkedinProfile[]);
+            const nextPage = (data ?? []) as LinkedinProfile[];
+            setHasMore(nextPage.length === PAGE_SIZE);
+            setProfiles((current) => append ? [...current, ...nextPage] : nextPage);
         } catch {
             toast.error("LinkedIn kayıtları yüklenemedi");
         } finally {
             setLoading(false);
+            setLoadingMore(false);
         }
     };
 
     useEffect(() => {
         void loadProfiles();
-    }, []);
+    }, [statusFilter]);
 
     const setApprovalStatus = async (profileId: string, approvalStatus: ApprovalStatus) => {
         const reviewedAt = new Date().toISOString();
         const previousProfile = profiles.find(p => p.id === profileId);
 
-        setProfiles(prev =>
-            prev.map(p =>
+        setProfiles(prev => {
+            const nextProfiles = prev.map(p =>
                 p.id === profileId
                     ? { ...p, approval_status: approvalStatus, reviewed_at: reviewedAt }
                     : p,
-            ),
-        );
+            );
+
+            if (statusFilter === "all" || statusFilter === approvalStatus) {
+                return nextProfiles;
+            }
+
+            return nextProfiles.filter((profile) => profile.id !== profileId);
+        });
 
         try {
             setUpdatingId(profileId);
@@ -90,9 +127,7 @@ const AdminLinkedinProfiles = () => {
         } catch (err: unknown) {
             if (previousProfile) {
                 setProfiles(prev =>
-                    prev.map(p =>
-                        p.id === profileId ? { ...p, approval_status: previousProfile.approval_status, reviewed_at: previousProfile.reviewed_at } : p,
-                    ),
+                    [previousProfile, ...prev.filter(p => p.id !== profileId)],
                 );
             }
             toast.error((err as { message?: string })?.message ?? "Kayıt güncellenemedi");
@@ -110,11 +145,32 @@ const AdminLinkedinProfiles = () => {
             <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div>
                     <h2 className="text-xl font-bold uppercase">LinkedIn Kayıt Onayı ({profiles.length})</h2>
-                    <p className="text-sm font-bold text-muted-foreground">Yeni kayıtları onayla veya reddet.</p>
+                    <p className="text-sm font-bold text-muted-foreground">Yeni kayıtları onayla veya reddet. Varsayılan görünüm sadece bekleyen kayıtları listeler.</p>
                 </div>
-                <BrutalButton variant="secondary" size="sm" onClick={loadProfiles}>
-                    <RefreshCw className="w-4 h-4 mr-1" /> Yenile
-                </BrutalButton>
+                <div className="flex flex-wrap items-center gap-2">
+                    <label className="text-xs font-black uppercase" htmlFor="linkedin-status-filter">
+                        Durum
+                    </label>
+                    <select
+                        id="linkedin-status-filter"
+                        className="border-2 border-foreground bg-background px-3 py-2 text-sm font-bold"
+                        value={statusFilter}
+                        onChange={(event) => {
+                            setProfiles([]);
+                            setHasMore(false);
+                            setStatusFilter(event.target.value as StatusFilter);
+                        }}
+                    >
+                        {filterOptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                                {option.label}
+                            </option>
+                        ))}
+                    </select>
+                    <BrutalButton variant="secondary" size="sm" onClick={() => void loadProfiles({ nextFilter: statusFilter })}>
+                        <RefreshCw className="w-4 h-4 mr-1" /> Yenile
+                    </BrutalButton>
+                </div>
             </div>
 
             <div className="grid gap-3">
@@ -177,10 +233,27 @@ const AdminLinkedinProfiles = () => {
                 ))}
                 {profiles.length === 0 && (
                     <div className="border-4 border-dashed border-foreground/40 p-6">
-                        <p className="font-black">Henüz LinkedIn kaydı yok.</p>
+                        <p className="font-black">Bu filtre icin LinkedIn kaydı yok.</p>
                     </div>
                 )}
             </div>
+
+            {hasMore && (
+                <div className="flex justify-center">
+                    <BrutalButton
+                        variant="secondary"
+                        size="sm"
+                        disabled={loadingMore}
+                        onClick={() => void loadProfiles({ append: true, nextFilter: statusFilter })}
+                    >
+                        {loadingMore ? (
+                            <><Loader2 className="w-4 h-4 mr-1 animate-spin" /> Yukleniyor</>
+                        ) : (
+                            "Daha Fazla Yukle"
+                        )}
+                    </BrutalButton>
+                </div>
+            )}
         </div>
     );
 };

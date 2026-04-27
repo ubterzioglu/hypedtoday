@@ -35,6 +35,68 @@ interface AuthContextValue {
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+const PROFILE_CACHE_TTL_MS = 5 * 60 * 1000;
+
+interface CachedProfileRole {
+    userId: string;
+    role: UserRole;
+    display_name: string | null;
+    avatar_url: string | null;
+    cached_at: number;
+}
+
+function readCachedProfileRole(userId: string): CachedProfileRole | null {
+    if (typeof window === 'undefined') return null;
+
+    try {
+        const raw = window.sessionStorage.getItem('auth-profile-role-cache');
+        if (!raw) return null;
+
+        const parsed = JSON.parse(raw) as CachedProfileRole;
+        const isExpired = Date.now() - parsed.cached_at > PROFILE_CACHE_TTL_MS;
+        if (parsed.userId !== userId || isExpired) {
+            window.sessionStorage.removeItem('auth-profile-role-cache');
+            return null;
+        }
+
+        return parsed;
+    } catch {
+        return null;
+    }
+}
+
+function writeCachedProfileRole(userId: string, profileData: { role: UserRole; display_name: string | null; avatar_url: string | null } | null): void {
+    if (typeof window === 'undefined') return;
+
+    try {
+        if (!profileData) {
+            window.sessionStorage.removeItem('auth-profile-role-cache');
+            return;
+        }
+
+        const payload: CachedProfileRole = {
+            userId,
+            role: profileData.role,
+            display_name: profileData.display_name,
+            avatar_url: profileData.avatar_url,
+            cached_at: Date.now(),
+        };
+
+        window.sessionStorage.setItem('auth-profile-role-cache', JSON.stringify(payload));
+    } catch {
+        // Ignore storage failures and fall back to live fetches.
+    }
+}
+
+function clearCachedProfileRole(): void {
+    if (typeof window === 'undefined') return;
+
+    try {
+        window.sessionStorage.removeItem('auth-profile-role-cache');
+    } catch {
+        // Ignore storage failures.
+    }
+}
 
 async function withTimeout<T>(promise: PromiseLike<T>, timeoutMs: number): Promise<T | null> {
     return await Promise.race([
@@ -82,13 +144,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (!currentSession?.user) {
             setUser(null);
             setProfileResolved(true);
+            clearCachedProfileRole();
             return;
         }
 
-        setProfileResolved(false);
+        const cachedProfile = readCachedProfileRole(currentSession.user.id);
+        if (cachedProfile) {
+            setUser(buildAuthUser(currentSession, cachedProfile));
+            setProfileResolved(true);
+        } else {
+            setProfileResolved(false);
+        }
+
         const profileData = await fetchProfileRole(currentSession.user.id);
-        setUser(buildAuthUser(currentSession, profileData));
-        setProfileResolved(Boolean(profileData));
+        if (profileData) {
+            writeCachedProfileRole(currentSession.user.id, profileData);
+            setUser(buildAuthUser(currentSession, profileData));
+            setProfileResolved(true);
+            return;
+        }
+
+        if (!cachedProfile) {
+            setUser(buildAuthUser(currentSession, null));
+            setProfileResolved(false);
+        }
     }, []);
 
     useEffect(() => {
@@ -163,6 +242,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
 
     const signOut = async () => {
+        clearCachedProfileRole();
         await supabase.auth.signOut();
     };
 
