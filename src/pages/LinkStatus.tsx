@@ -109,7 +109,9 @@ const LinkStatusPage = () => {
                         <div className="flex items-center gap-3">
                             <UsersRound className="h-7 w-7 text-primary" aria-hidden="true" />
                             <div>
-                                <h1 className="text-3xl font-black uppercase">{t("linkStatus.title")}</h1>
+                                <h1 className="text-3xl font-black uppercase">
+                                    {t("linkStatus.title")} ({profiles.length})
+                                </h1>
                                 <p className="mt-1 text-sm font-bold text-muted-foreground">{t("linkStatus.subtitle")}</p>
                             </div>
                         </div>
