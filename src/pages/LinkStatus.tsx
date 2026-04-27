@@ -52,6 +52,58 @@ const LinkStatusPage = () => {
     return (
         <main className="min-h-screen bg-background px-4 py-8">
             <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
+                <details className="group w-full bg-card border-4 border-foreground shadow-brutal">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 md:p-6">
+                        <span className="flex items-center gap-3 text-2xl font-black">
+                            <Info className="h-6 w-6 text-primary" />
+                            Bilgi
+                        </span>
+                        <ChevronDown className="h-6 w-6 transition-transform group-open:rotate-180" />
+                    </summary>
+                    <div className="border-t-4 border-foreground p-5 md:p-6">
+                        <a
+                            href={LINKEDIN_WHATSAPP_GROUP_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mb-5 inline-flex max-w-full items-center gap-2 border-4 border-foreground bg-primary px-4 py-3 font-black text-primary-foreground shadow-brutal-sm transition-transform hover:-translate-y-0.5"
+                        >
+                            <span className="truncate">{LINKEDIN_WHATSAPP_GROUP_URL}</span>
+                            <ExternalLink className="h-4 w-4 shrink-0" />
+                        </a>
+                        <div className="grid gap-5 lg:grid-cols-3">
+                            {linkedinInfoSections.map((section) => (
+                                <section key={section.title} className="border-4 border-foreground bg-background p-4">
+                                    <h3 className="mb-3 text-lg font-black">{section.title}</h3>
+                                    <ul className="space-y-2">
+                                        {section.items.map((item) => (
+                                            <li key={item} className="text-sm font-bold leading-snug text-muted-foreground">
+                                                {item}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </section>
+                            ))}
+                        </div>
+                    </div>
+                </details>
+                <details className="group w-full bg-card border-4 border-foreground shadow-brutal">
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 md:p-6">
+                        <span className="flex items-center gap-3 text-2xl font-black">
+                            <ListChecks className="h-6 w-6 text-primary" />
+                            Kurallar
+                        </span>
+                        <ChevronDown className="h-6 w-6 transition-transform group-open:rotate-180" />
+                    </summary>
+                    <div className="border-t-4 border-foreground p-5 md:p-6">
+                        <div className="grid gap-2 md:grid-cols-2">
+                            {linkedinRuleItems.map((item) => (
+                                <p key={item} className="border-2 border-foreground bg-background px-3 py-2 text-sm font-bold leading-snug text-muted-foreground">
+                                    {item}
+                                </p>
+                            ))}
+                        </div>
+                    </div>
+                </details>
                 <section className="w-full bg-card border-4 border-foreground p-5 shadow-brutal md:p-6">
                     <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                         <div className="flex items-center gap-3">
@@ -121,58 +173,6 @@ const LinkStatusPage = () => {
                         </ul>
                     )}
                 </section>
-                <details className="group w-full bg-card border-4 border-foreground shadow-brutal">
-                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 md:p-6">
-                        <span className="flex items-center gap-3 text-2xl font-black">
-                            <Info className="h-6 w-6 text-primary" />
-                            Bilgi
-                        </span>
-                        <ChevronDown className="h-6 w-6 transition-transform group-open:rotate-180" />
-                    </summary>
-                    <div className="border-t-4 border-foreground p-5 md:p-6">
-                        <a
-                            href={LINKEDIN_WHATSAPP_GROUP_URL}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="mb-5 inline-flex max-w-full items-center gap-2 border-4 border-foreground bg-primary px-4 py-3 font-black text-primary-foreground shadow-brutal-sm transition-transform hover:-translate-y-0.5"
-                        >
-                            <span className="truncate">{LINKEDIN_WHATSAPP_GROUP_URL}</span>
-                            <ExternalLink className="h-4 w-4 shrink-0" />
-                        </a>
-                        <div className="grid gap-5 lg:grid-cols-3">
-                            {linkedinInfoSections.map((section) => (
-                                <section key={section.title} className="border-4 border-foreground bg-background p-4">
-                                    <h3 className="mb-3 text-lg font-black">{section.title}</h3>
-                                    <ul className="space-y-2">
-                                        {section.items.map((item) => (
-                                            <li key={item} className="text-sm font-bold leading-snug text-muted-foreground">
-                                                {item}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </section>
-                            ))}
-                        </div>
-                    </div>
-                </details>
-                <details className="group w-full bg-card border-4 border-foreground shadow-brutal">
-                    <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-5 md:p-6">
-                        <span className="flex items-center gap-3 text-2xl font-black">
-                            <ListChecks className="h-6 w-6 text-primary" />
-                            Kurallar
-                        </span>
-                        <ChevronDown className="h-6 w-6 transition-transform group-open:rotate-180" />
-                    </summary>
-                    <div className="border-t-4 border-foreground p-5 md:p-6">
-                        <div className="grid gap-2 md:grid-cols-2">
-                            {linkedinRuleItems.map((item) => (
-                                <p key={item} className="border-2 border-foreground bg-background px-3 py-2 text-sm font-bold leading-snug text-muted-foreground">
-                                    {item}
-                                </p>
-                            ))}
-                        </div>
-                    </div>
-                </details>
             </div>
         </main>
     );
