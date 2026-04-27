@@ -8,87 +8,10 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { BrutalButton } from "@/components/ui/brutal-button";
 import { api } from "@/lib/api";
+import { linkedinInfoSections, LINKEDIN_WHATSAPP_GROUP_URL, linkedinRuleItems } from "@/lib/linkedinCommunityContent";
 import type { LinkedinProfile, LinkedinProfileFormData } from "@/types";
 
 const WHATSAPP_NUMBER_PATTERN = /^(05\d{9}|\+[1-9]\d{7,14})$/;
-const LINKEDIN_WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/LkUAfhwhQJd0cxOOLGX2Az";
-
-const infoSections = [
-    {
-        title: "Yeni kanalımızı devreye aldık.",
-        items: [
-            "🚫 Diğer gruplarda bu sistem yok",
-            "⚠️ Genelde düzensiz ilerlenir",
-            "❌ Gerçek destek sağlanmaz",
-            "🚀 Burada fark yaratıyoruz",
-            "📊 Daha disiplinli ilerliyoruz",
-            "🎯 Bu kanal görünürlük için kuruldu",
-            "🤝 Amaç karşılıklı destek sağlamak",
-            "👥 Herkes katkı verir",
-            "📈 Herkes fayda görür",
-            "⚙️ Düzenli ve disiplinli ilerleriz",
-            "🔥 İleride detaylar paylaşılacak",
-            "⏱️ Zaman limitleri açıklanacak",
-            "⚙️ Sistem netleşecek",
-            "🧠 Gerçek işleyiş anlatılacak",
-            "🙏 Desteğiniz için teşekkürler",
-        ],
-    },
-    {
-        title: "hyped.today ile gelişecek sistem",
-        items: [
-            "🤖 İleride hyped.today ile sistem gelişecek",
-            "⚙️ Daha akıllı yapı kurulacak",
-            "🚀 Otomasyon devreye alınacak",
-        ],
-    },
-    {
-        title: "Gerçek LinkedIn Etkileşim Kuralları",
-        items: [
-            "🚀 Gerçek LinkedIn Etkileşim Kuralları",
-            "🔗 Herkes link paylaşır",
-            "📅 Paylaşımlar düzenli yapılır",
-            "❤️ Her posta destek verilir",
-            "👍 Beğeni zorunlu",
-            "💬 Yorum teşvik edilir",
-            "⏳ Belirli sürede etkileşim",
-            "🚫 Gecikme kabul edilmez",
-            "⚠️ Pasif kalan uyarılır",
-            "❌ Tekrarında uzaklaştırılır",
-            "👤 Takip post sahibinde",
-            "🤖 Sistem sonra otomatik",
-            "💯 Gerçek destek esastır",
-            "🔄 Give to get kuralı",
-            "⭐ Kaliteli içerik öncelik",
-            "🚫 Spam paylaşım yasak",
-            "🧑‍🤝‍🧑 Saygılı iletişim şart",
-            "🛡️ Grup disiplini korunur",
-            "⚖️ Herkes eşit katkı sağlar",
-        ],
-    },
-];
-
-const ruleItems = [
-    "🔹 Herkes LinkedIn profil linkini paylaşır",
-    "🔹 Grup üyeleri birbirini ekler",
-    "🔹 24 saatte sadece 1 link paylaşılır",
-    "🔹 Paylaşım süreci planlı ilerler",
-    "🔹 24 saat içinde tam destek hedefi",
-    "🔹 Her post herkes tarafından etkileşim alır",
-    "🔹 Beğeni kontrolü post sahibinde",
-    "🔹 24 saat sonra eksikler taglenir",
-    "🔹 Destek vermeyenler açık belirtilir",
-    "🔹 3 ihlal → 1 hafta uzaklaştırma",
-    "🔹 Kurallar herkes için geçerlidir",
-    "🔹 Aktif destek verenler ödüllendirilir",
-    "🔹 WhatsApp export verileri baz alınır",
-    "🔹 Sistem başlangıç aşamasındadır",
-    "🔹 1 ay pilot süreç uygulanır",
-    "🔹 Sonrasında hyped.today entegrasyonu",
-    "🔹 Ek öneriler yarın 18:00’e kadar",
-    "🔹 Sonrasında kurallar finalize edilir",
-    "🔹 Süreç resmi olarak başlatılır",
-];
 
 const linkedinProfileSchema = z.object({
     first_name: z.string().trim().min(1, "linkedin.form.firstNameRequired").max(80, "linkedin.form.maxLength"),
@@ -296,7 +219,7 @@ const LinkedinPage = () => {
                         <ExternalLink className="h-4 w-4 shrink-0" />
                     </a>
                     <div className="grid gap-5 lg:grid-cols-3">
-                        {infoSections.map((section) => (
+                        {linkedinInfoSections.map((section) => (
                             <section key={section.title} className="border-4 border-foreground bg-background p-4">
                                 <h3 className="mb-3 text-lg font-black">{section.title}</h3>
                                 <ul className="space-y-2">
@@ -321,7 +244,7 @@ const LinkedinPage = () => {
                 </summary>
                 <div className="border-t-4 border-foreground p-5 md:p-6">
                     <div className="grid gap-2 md:grid-cols-2">
-                        {ruleItems.map((item) => (
+                        {linkedinRuleItems.map((item) => (
                             <p key={item} className="border-2 border-foreground bg-background px-3 py-2 text-sm font-bold leading-snug text-muted-foreground">
                                 {item}
                             </p>

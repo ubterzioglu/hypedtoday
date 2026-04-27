@@ -54,6 +54,10 @@ describe('LinkStatusPage', () => {
         expect(screen.getByText('+905****2233')).toBeInTheDocument();
         expect(screen.getByText('linkedin.com/in/ada')).toBeInTheDocument();
         expect(screen.getByText('linkStatus.status.approved')).toBeInTheDocument();
+        expect(screen.getByText('Bilgi')).toBeInTheDocument();
+        expect(screen.getByText('Kurallar')).toBeInTheDocument();
+        expect(screen.getByText('Yeni kanalımızı devreye aldık.')).toBeInTheDocument();
+        expect(screen.getByText('🔹 Herkes LinkedIn profil linkini paylaşır')).toBeInTheDocument();
     });
 
     it('renders an empty state when there are no users', async () => {
